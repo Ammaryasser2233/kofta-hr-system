@@ -1,0 +1,3215 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>كفتة على الفحم - نظام إدارة الموارد البشرية</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+      :root {
+        --bg-body: #f5f5f5;
+        --bg-card: #ffffff;
+        --bg-sidebar: #151515;
+        --text-main: #151515;
+        --text-muted: #6c757d;
+        --text-light: #ffffff;
+        --primary: #d4af37;
+        --primary-hover: #b5952f;
+        --danger: #dc3545;
+        --success: #198754;
+        --border: #e0e0e0;
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.1);
+        --radius: 16px;
+        --font: "Tajawal", sans-serif;
+        --sidebar-width: 280px;
+      }
+
+      [data-theme="dark"] {
+        --bg-body: #0f0f0f;
+        --bg-card: #1e1e1e;
+        --bg-sidebar: #000000;
+        --text-main: #f5f5f5;
+        --text-muted: #adb5bd;
+        --text-light: #f5f5f5;
+        --border: #333333;
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        outline: none;
+      }
+
+      body {
+        font-family: var(--font);
+        background-color: var(--bg-body);
+        color: var(--text-main);
+        transition:
+          background 0.3s ease,
+          color 0.3s ease;
+        overflow-x: hidden;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+      .flex {
+        display: flex;
+      }
+      .items-center {
+        align-items: center;
+      }
+      .justify-between {
+        justify-content: space-between;
+      }
+      .gap-2 {
+        gap: 0.5rem;
+      }
+      .gap-4 {
+        gap: 1rem;
+      }
+      .w-full {
+        width: 100%;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .text-primary {
+        color: var(--primary);
+      }
+      .text-danger {
+        color: var(--danger);
+      }
+      .text-success {
+        color: var(--success);
+      }
+      .text-muted {
+        color: var(--text-muted);
+      }
+      .font-bold {
+        font-weight: 700;
+      }
+      .mt-4 {
+        margin-top: 1rem;
+      }
+      .mb-4 {
+        margin-bottom: 1rem;
+      }
+      .p-2 {
+        padding: 0.5rem;
+      }
+      .p-4 {
+        padding: 1rem;
+      }
+
+      .btn {
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-family: var(--font);
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        white-space: nowrap;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: #151515;
+      }
+      .btn-primary:hover {
+        background: var(--primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text-main);
+      }
+      .btn-outline:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        background: rgba(212, 175, 55, 0.05);
+      }
+
+      .btn-danger {
+        background: rgba(220, 53, 69, 0.1);
+        color: var(--danger);
+      }
+      .btn-danger:hover {
+        background: var(--danger);
+        color: white;
+      }
+
+      .btn-success {
+        background: var(--success);
+        color: white;
+      }
+      .btn-success:hover {
+        background: #146c43;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(25, 135, 84, 0.4);
+      }
+
+      .btn-info {
+        background: #0dcaf0;
+        color: #000;
+      }
+      .btn-info:hover {
+        background: #31d2f2;
+        transform: translateY(-2px);
+      }
+
+      .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+      }
+
+      .card {
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--bg-body);
+        color: var(--text-main);
+        font-family: var(--font);
+        transition: border-color 0.3s;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--primary);
+      }
+
+      #login-section {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #151515 0%, #2c2c2c 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .login-box {
+        width: 100%;
+        max-width: 420px;
+        z-index: 10;
+        padding: 2.5rem;
+        background: rgba(21, 21, 21, 0.85);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 24px;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      }
+
+      .login-logo {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 1.5rem;
+        object-fit: contain;
+      }
+
+      #app-container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: var(--sidebar-width);
+        background: var(--bg-sidebar);
+        color: var(--text-light);
+        position: fixed;
+        height: 100vh;
+        right: 0;
+        top: 0;
+        padding: 2rem 1rem;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .brand {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 3rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 1rem;
+      }
+
+      .nav-links {
+        list-style: none;
+        flex: 1;
+      }
+      .nav-item {
+        margin-bottom: 0.5rem;
+        padding: 0.8rem 1rem;
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #adb5bd;
+        transition: all 0.3s;
+      }
+      .nav-item:hover,
+      .nav-item.active {
+        background: rgba(212, 175, 55, 0.15);
+        color: var(--primary);
+      }
+
+      .main-content {
+        flex: 1;
+        margin-right: var(--sidebar-width);
+        padding: 2rem;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+      .page-title {
+        font-size: 1.8rem;
+        font-weight: 800;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      .stat-card {
+        position: relative;
+        overflow: hidden;
+      }
+      .stat-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--primary);
+      }
+      .stat-value {
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin: 0.5rem 0;
+      }
+      .stat-label {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+      .stat-icon {
+        position: absolute;
+        left: 1.5rem;
+        top: 1.5rem;
+        font-size: 2rem;
+        opacity: 0.1;
+        color: var(--primary);
+      }
+
+      .table-container {
+        overflow-x: auto;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 800px;
+      }
+      th {
+        background: var(--bg-body);
+        padding: 1rem;
+        text-align: right;
+        font-weight: 700;
+        color: var(--text-muted);
+        border-bottom: 2px solid var(--border);
+        white-space: nowrap;
+      }
+      td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--primary);
+      }
+
+      .employee-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+      .emp-card {
+        text-align: center;
+        position: relative;
+      }
+      .emp-card img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1rem;
+        border: 3px solid var(--primary);
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      .emp-card .actions {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .toast-container {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 9999;
+      }
+      .toast {
+        background: var(--bg-card);
+        color: var(--text-main);
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        margin-top: 10px;
+        box-shadow: var(--shadow-lg);
+        border-right: 4px solid var(--primary);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: slideIn 0.3s ease;
+        min-width: 250px;
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(5px);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+      }
+      .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .modal {
+        background: var(--bg-card);
+        width: 90%;
+        max-width: 600px;
+        border-radius: 20px;
+        padding: 2rem;
+        transform: scale(0.9);
+        transition: transform 0.3s;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .modal-overlay.active .modal {
+        transform: scale(1);
+      }
+
+      .filter-bar {
+        background: linear-gradient(
+          135deg,
+          var(--bg-card) 0%,
+          var(--bg-body) 100%
+        );
+        border: 1px solid var(--border);
+      }
+      .filter-bar label {
+        font-weight: 700;
+        color: var(--text-main);
+        white-space: nowrap;
+      }
+      .filter-bar input,
+      .filter-bar select {
+        max-width: 200px;
+      }
+      .filter-summary {
+        background: rgba(212, 175, 55, 0.1);
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        margin-top: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .filter-summary .stat {
+        text-align: center;
+        flex: 1;
+        min-width: 120px;
+      }
+      .filter-summary .stat-value {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--primary);
+      }
+      .filter-summary .stat-label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+      .badge-loan {
+        background: rgba(212, 175, 55, 0.2);
+        color: #b5952f;
+      }
+      .badge-deduction {
+        background: rgba(220, 53, 69, 0.2);
+        color: var(--danger);
+      }
+
+      .payroll-carryover {
+        background: rgba(220, 53, 69, 0.1);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        color: var(--danger);
+        font-weight: bold;
+        font-size: 0.85rem;
+      }
+
+      /* أزرار التصدير */
+      .export-buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px dashed var(--border);
+      }
+      .export-buttons .btn {
+        flex: 1;
+        min-width: 150px;
+        justify-content: center;
+      }
+
+      .file-warning {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        z-index: 9999;
+        max-width: 350px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+      .file-warning.show {
+        display: block;
+      }
+      .file-warning button {
+        background: #856404;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 5px;
+        font-size: 0.8rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="file-warning" id="fileWarning">
+      <i class="fas fa-exclamation-triangle"></i>
+      <strong>تشغّل من القرص المحلي</strong><br />
+      <small
+        >للطباعة بشكل صحيح، يُفضّل رفع الملف على استضافة أو استخدام خادم
+        محلي.</small
+      ><br />
+      <button onclick="this.parentElement.classList.remove('show')">
+        إغلاق
+      </button>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <section id="login-section">
+      <div class="login-box">
+        <img
+          src="https://www.dropbox.com/scl/fi/fprczdxu04y7hi4ysqdqk/unnamed__4_-removebg-preview-1.png?rlkey=3f9ysoqw95oeeoc77i6jbs8h1&st=z82tk790&dl=1"
+          alt="Logo"
+          class="login-logo"
+          onerror="this.src = 'https://via.placeholder.com/100?text=Logo'"
+        />
+        <h2 style="color: var(--primary); margin-bottom: 0.5rem">
+          كفتة على الفحم
+        </h2>
+        <p style="color: #aaa; margin-bottom: 2rem; font-size: 0.9rem">
+          نظام إدارة الموظفين الاحترافي
+        </p>
+
+        <form id="loginForm">
+          <div style="margin-bottom: 1rem; text-align: right">
+            <label
+              style="
+                display: block;
+                margin-bottom: 0.5rem;
+                color: #ccc;
+                font-size: 0.9rem;
+              "
+              >البريد الإلكتروني</label
+            >
+            <input
+              type="email"
+              id="loginEmail"
+              placeholder="admin@kofta.com"
+              style="
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.2);
+                color: white;
+              "
+              required
+            />
+          </div>
+          <div style="margin-bottom: 1.5rem; text-align: right">
+            <label
+              style="
+                display: block;
+                margin-bottom: 0.5rem;
+                color: #ccc;
+                font-size: 0.9rem;
+              "
+              >كلمة المرور</label
+            >
+            <input
+              type="password"
+              id="loginPassword"
+              placeholder="******"
+              style="
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.2);
+                color: white;
+              "
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary w-full"
+            style="justify-content: center; height: 50px; font-size: 1.1rem"
+          >
+            تسجيل الدخول
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <div id="app-container" class="hidden">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand"><i class="fas fa-fire-alt"></i> كفتة على الفحم</div>
+        <ul class="nav-links">
+          <li class="nav-item active" onclick="navigate('dashboard')">
+            <i class="fas fa-chart-pie"></i> لوحة التحكم
+          </li>
+          <li class="nav-item" onclick="navigate('employees')">
+            <i class="fas fa-users"></i> الموظفين
+          </li>
+          <li class="nav-item" onclick="navigate('loans')">
+            <i class="fas fa-hand-holding-usd"></i> السلفيات والخصومات
+          </li>
+          <li class="nav-item" onclick="navigate('payroll')">
+            <i class="fas fa-money-check-alt"></i> الرواتب
+          </li>
+          <li class="nav-item" onclick="navigate('reports')">
+            <i class="fas fa-file-invoice"></i> التقارير
+          </li>
+        </ul>
+        <div style="margin-top: auto">
+          <button
+            class="btn btn-outline w-full"
+            onclick="toggleTheme()"
+            style="
+              justify-content: center;
+              border-color: rgba(255, 255, 255, 0.2);
+              color: #fff;
+            "
+          >
+            <i class="fas fa-moon"></i> الوضع الليلي
+          </button>
+          <button
+            class="btn btn-danger w-full mt-4"
+            onclick="logout()"
+            style="justify-content: center"
+          >
+            <i class="fas fa-sign-out-alt"></i> خروج
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="header">
+          <div class="flex items-center gap-4">
+            <h1 class="page-title" id="pageTitle">لوحة التحكم</h1>
+          </div>
+          <div class="flex items-center gap-4">
+            <div id="userInfo" class="flex items-center gap-2">
+              <div style="text-align: left">
+                <div style="font-weight: bold; font-size: 0.9rem">
+                  المدير العام
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted)">
+                  Admin
+                </div>
+              </div>
+              <img
+                src="https://ui-avatars.com/api/?name=Admin&background=D4AF37&color=151515"
+                class="avatar"
+              />
+            </div>
+          </div>
+        </header>
+
+        <section id="dashboard" class="view-section">
+          <div class="stats-grid">
+            <div class="card stat-card">
+              <i class="fas fa-users stat-icon"></i>
+              <div class="stat-value text-primary" id="dashTotalEmp">0</div>
+              <div class="stat-label">عدد الموظفين</div>
+            </div>
+            <div class="card stat-card">
+              <i class="fas fa-wallet stat-icon"></i>
+              <div class="stat-value text-primary" id="dashTotalSalaries">
+                0
+              </div>
+              <div class="stat-label">إجمالي المرتبات (ج.س)</div>
+            </div>
+            <div class="card stat-card">
+              <i class="fas fa-hand-holding-usd stat-icon"></i>
+              <div class="stat-value text-primary" id="dashTotalLoans">0</div>
+              <div class="stat-label">إجمالي السلفيات (الشهر)</div>
+            </div>
+            <div class="card stat-card">
+              <i class="fas fa-exclamation-circle stat-icon"></i>
+              <div class="stat-value text-primary" id="dashDeductions">0</div>
+              <div class="stat-label">إجمالي الخصومات (الشهر)</div>
+            </div>
+            <div class="card stat-card">
+              <i class="fas fa-coins stat-icon"></i>
+              <div class="stat-value text-primary" id="dashNetSalaries">0</div>
+              <div class="stat-label">صافي الرواتب المستحقة (الشهر)</div>
+            </div>
+          </div>
+          <div class="flex gap-4 flex-wrap">
+            <div class="card" style="flex: 1; min-width: 300px">
+              <h3 class="mb-4 font-bold">توزيع الموظفين (الأقسام)</h3>
+              <div style="height: 250px"><canvas id="deptChart"></canvas></div>
+            </div>
+            <div class="card" style="flex: 1; min-width: 300px">
+              <h3 class="mb-4 font-bold">المصروفات الشهرية (الشهر الحالي)</h3>
+              <div style="height: 250px">
+                <canvas id="expenseChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- أزرار التصدير للوحة التحكم -->
+          <div class="export-buttons">
+            <button class="btn btn-info" onclick="exportDashboardToPDF()">
+              <i class="fas fa-file-pdf"></i> تصدير لوحة التحكم PDF
+            </button>
+            <button class="btn btn-success" onclick="exportAllDataToExcel()">
+              <i class="fas fa-file-excel"></i> تصدير جميع البيانات Excel
+            </button>
+          </div>
+        </section>
+
+        <section id="employees" class="view-section hidden">
+          <div class="card mb-4 filter-bar">
+            <div class="flex gap-4 items-center flex-wrap justify-between">
+              <div class="flex gap-4 items-center flex-wrap" style="flex: 1">
+                <input
+                  type="text"
+                  id="searchEmployee"
+                  placeholder="بحث بالاسم..."
+                  style="max-width: 300px"
+                  onkeyup="renderEmployees()"
+                />
+                <div
+                  class="flex gap-2"
+                  style="
+                    background: var(--bg-body);
+                    border: 1px solid var(--border);
+                    padding: 0.5rem;
+                    border-radius: 8px;
+                  "
+                >
+                  <button
+                    class="btn btn-sm btn-primary"
+                    onclick="setEmployeeView('grid')"
+                  >
+                    <i class="fas fa-th-large"></i> كروت
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline"
+                    onclick="setEmployeeView('table')"
+                  >
+                    <i class="fas fa-list"></i> جدول
+                  </button>
+                </div>
+              </div>
+              <div class="flex gap-2">
+                <button
+                  class="btn btn-primary"
+                  onclick="openModal('employeeModal')"
+                >
+                  <i class="fas fa-plus"></i> إضافة موظف
+                </button>
+              </div>
+            </div>
+
+            <!-- أزرار التصدير للموظفين -->
+            <div class="export-buttons">
+              <button class="btn btn-info" onclick="printAllEmployees()">
+                <i class="fas fa-print"></i> طباعة قائمة الموظفين
+              </button>
+              <button
+                class="btn btn-success"
+                onclick="exportEmployeesToExcel()"
+              >
+                <i class="fas fa-file-excel"></i> تصدير الموظفين Excel
+              </button>
+            </div>
+          </div>
+          <div id="employeesGrid" class="employee-grid"></div>
+          <div id="employeesTableContainer" class="card hidden">
+            <div class="table-container">
+              <table id="employeesTable">
+                <thead>
+                  <tr>
+                    <th>الموظف</th>
+                    <th>القسم</th>
+                    <th>الوظيفة</th>
+                    <th>الراتب الأساسي</th>
+                    <th>الإجراءات</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="loans" class="view-section hidden">
+          <div class="card mb-4 filter-bar">
+            <div class="flex gap-4 items-center flex-wrap justify-between">
+              <div class="flex gap-4 items-center flex-wrap" style="flex: 1">
+                <div class="flex items-center gap-2">
+                  <label><i class="fas fa-calendar-alt"></i> فلتر الشهر:</label>
+                  <input
+                    type="month"
+                    id="loanFilterMonth"
+                    onchange="renderLoans()"
+                  />
+                </div>
+                <div class="flex items-center gap-2">
+                  <label><i class="fas fa-filter"></i> النوع:</label>
+                  <select
+                    id="loanFilterType"
+                    onchange="renderLoans()"
+                    style="max-width: 150px"
+                  >
+                    <option value="all">الكل</option>
+                    <option value="سلفة">سلفيات فقط</option>
+                    <option value="خصم">خصومات فقط</option>
+                  </select>
+                </div>
+                <div class="flex items-center gap-2">
+                  <label><i class="fas fa-user"></i> الموظف:</label>
+                  <select
+                    id="loanFilterEmp"
+                    onchange="renderLoans()"
+                    style="max-width: 200px"
+                  >
+                    <option value="all">جميع الموظفين</option>
+                  </select>
+                </div>
+              </div>
+              <div class="flex gap-2">
+                <button class="btn btn-primary" onclick="openLoanModal()">
+                  <i class="fas fa-plus"></i> إضافة سلفة/خصم
+                </button>
+              </div>
+            </div>
+
+            <div class="filter-summary" id="loanFilterSummary">
+              <div class="stat">
+                <div class="stat-value" id="loanFilterCount">0</div>
+                <div class="stat-label">عدد المعاملات</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value" id="loanFilterTotalLoans">0</div>
+                <div class="stat-label">إجمالي السلفيات</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value" id="loanFilterTotalDeductions">0</div>
+                <div class="stat-label">إجمالي الخصومات</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value" id="loanFilterGrandTotal">0</div>
+                <div class="stat-label">الإجمالي الكلي</div>
+              </div>
+            </div>
+
+            <!-- أزرار التصدير للسلفيات -->
+            <div class="export-buttons">
+              <button class="btn btn-info" onclick="printAllLoans()">
+                <i class="fas fa-print"></i> طباعة جميع السلفيات
+              </button>
+              <button class="btn btn-success" onclick="exportLoansToExcel()">
+                <i class="fas fa-file-excel"></i> تصدير السلفيات Excel
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="table-container">
+              <table id="loansTable">
+                <thead>
+                  <tr>
+                    <th>الموظف</th>
+                    <th>النوع</th>
+                    <th>المبلغ</th>
+                    <th>تاريخ الإضافة</th>
+                    <th>الوقت</th>
+                    <th>يخصم من شهر</th>
+                    <th>الملاحظات</th>
+                    <th>إجراءات</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="payroll" class="view-section hidden">
+          <div class="card mb-4 filter-bar">
+            <div class="flex gap-4 items-center flex-wrap justify-between">
+              <div class="flex gap-4 items-center flex-wrap">
+                <div class="flex items-center gap-2">
+                  <label
+                    ><i class="fas fa-calendar-alt"></i> حساب رواتب شهر:</label
+                  >
+                  <input
+                    type="month"
+                    id="payrollMonth"
+                    onchange="calculatePayroll()"
+                  />
+                </div>
+                <div class="flex items-center gap-2">
+                  <label><i class="fas fa-user"></i> الموظف:</label>
+                  <select
+                    id="payrollFilterEmp"
+                    onchange="calculatePayroll()"
+                    style="max-width: 200px"
+                  >
+                    <option value="all">جميع الموظفين</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="filter-summary" id="payrollFilterSummary">
+              <div class="stat">
+                <div class="stat-value" id="payrollFilterEmpCount">0</div>
+                <div class="stat-label">عدد الموظفين</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value" id="payrollFilterGross">0</div>
+                <div class="stat-label">إجمالي الاستحقاقات</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value" id="payrollFilterDeductions">0</div>
+                <div class="stat-label">إجمالي الخصومات</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value" id="payrollFilterNet">0</div>
+                <div class="stat-label">صافي المستحقات</div>
+              </div>
+            </div>
+
+            <!-- أزرار التصدير للرواتب -->
+            <div class="export-buttons">
+              <button class="btn btn-info" onclick="printAllPayroll()">
+                <i class="fas fa-print"></i> طباعة كشف الرواتب الكل
+              </button>
+              <button class="btn btn-success" onclick="exportPayrollToExcel()">
+                <i class="fas fa-file-excel"></i> تصدير الرواتب Excel
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="table-container">
+              <table id="payrollTable">
+                <thead>
+                  <tr>
+                    <th>الموظف</th>
+                    <th>الأساسي</th>
+                    <th>البدلات</th>
+                    <th>سلفيات الشهر</th>
+                    <th>خصومات الشهر</th>
+                    <th>مترحلات من أشهر سابقة</th>
+                    <th>الصافي المستحق</th>
+                    <th>الحالة</th>
+                    <th>طباعة</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div
+              class="flex justify-between mt-4 font-bold text-primary"
+              style="font-size: 1.2rem"
+            >
+              <span>الإجمالي الكلي للصافي:</span>
+              <span id="payrollGrandTotal">0 ج.س</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="reports" class="view-section hidden">
+          <div class="stats-grid">
+            <div
+              class="card text-center"
+              onclick="navigate('employees')"
+              style="
+                cursor: pointer;
+                transition: 0.3s;
+                border: 2px solid transparent;
+              "
+              onmouseover="this.style.borderColor = 'var(--primary)'"
+              onmouseout="this.style.borderColor = 'transparent'"
+            >
+              <i class="fas fa-users fa-3x text-primary mb-4"></i>
+              <h3>تقرير الموظفين</h3>
+            </div>
+            <div
+              class="card text-center"
+              onclick="navigate('loans')"
+              style="
+                cursor: pointer;
+                transition: 0.3s;
+                border: 2px solid transparent;
+              "
+              onmouseover="this.style.borderColor = 'var(--primary)'"
+              onmouseout="this.style.borderColor = 'transparent'"
+            >
+              <i class="fas fa-hand-holding-usd fa-3x text-primary mb-4"></i>
+              <h3>تقرير السلفيات</h3>
+            </div>
+            <div
+              class="card text-center"
+              onclick="exportAllDataToExcel()"
+              style="
+                cursor: pointer;
+                transition: 0.3s;
+                border: 2px solid transparent;
+              "
+              onmouseover="this.style.borderColor = 'var(--primary)'"
+              onmouseout="this.style.borderColor = 'transparent'"
+            >
+              <i class="fas fa-file-excel fa-3x text-success mb-4"></i>
+              <h3>تصدير جميع البيانات</h3>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-overlay" id="employeeModal">
+      <div class="modal">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="font-bold text-xl">بيانات الموظف</h2>
+          <button onclick="closeModal('employeeModal')" class="btn btn-outline">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <form id="employeeForm">
+          <input type="hidden" id="empId" />
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+            <div>
+              <label class="block mb-2 text-sm">الاسم الثلاثي</label
+              ><input type="text" id="empName" required />
+            </div>
+            <div>
+              <label class="block mb-2 text-sm">الرقم الوطني</label
+              ><input type="text" id="empNationalId" />
+            </div>
+            <div>
+              <label class="block mb-2 text-sm">رقم الهاتف</label
+              ><input type="tel" id="empPhone" />
+            </div>
+            <div>
+              <label class="block mb-2 text-sm">القسم</label>
+              <select id="empDept">
+                <option value="المطبخ">المطبخ</option>
+                <option value="الخدمة">الخدمة</option>
+                <option value="التسليم">التسليم</option>
+                <option value="النظافة">النظافة</option>
+                <option value="الإدارة">الإدارة</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-2 text-sm">الوظيفة</label
+              ><input type="text" id="empPosition" />
+            </div>
+            <div>
+              <label class="block mb-2 text-sm">تاريخ التعيين</label
+              ><input type="date" id="empJoinDate" />
+            </div>
+            <div>
+              <label class="block mb-2 text-sm">الراتب الأساسي</label
+              ><input type="number" id="empSalary" required />
+            </div>
+            <div>
+              <label class="block mb-2 text-sm">بدل وجبة (ج.س)</label
+              ><input type="number" id="empMeal" value="0" />
+            </div>
+            <div>
+              <label class="block mb-2 text-sm">بدل مواصلات (ج.س)</label
+              ><input type="number" id="empTransport" value="0" />
+            </div>
+          </div>
+          <div class="mt-4 flex justify-end gap-2">
+            <button
+              type="button"
+              onclick="closeModal('employeeModal')"
+              class="btn btn-outline"
+            >
+              إلغاء
+            </button>
+            <button type="submit" class="btn btn-primary">حفظ البيانات</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="loanModal">
+      <div class="modal">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="font-bold text-xl">إضافة سلفة أو خصم</h2>
+          <button onclick="closeModal('loanModal')" class="btn btn-outline">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <form id="loanForm">
+          <div class="mb-4">
+            <label class="block mb-2 text-sm">الموظف</label
+            ><select id="loanEmpSelect" required></select>
+          </div>
+          <div class="flex gap-4 mb-4">
+            <div class="w-full">
+              <label class="block mb-2 text-sm">النوع</label>
+              <select id="loanType">
+                <option value="سلفة">سلفة</option>
+                <option value="خصم">خصم</option>
+              </select>
+            </div>
+            <div class="w-full">
+              <label class="block mb-2 text-sm">المبلغ</label
+              ><input type="number" id="loanAmount" required />
+            </div>
+          </div>
+          <div class="flex gap-4 mb-4">
+            <div class="w-full">
+              <label class="block mb-2 text-sm">تاريخ الإضافة</label
+              ><input type="date" id="loanDate" required />
+            </div>
+            <div class="w-full">
+              <label class="block mb-2 text-sm">الوقت</label
+              ><input type="time" id="loanTime" required />
+            </div>
+          </div>
+          <div
+            class="mb-4"
+            style="
+              background: rgba(212, 175, 55, 0.1);
+              padding: 1rem;
+              border-radius: 8px;
+              border: 1px solid var(--primary);
+            "
+          >
+            <label
+              class="block mb-2 text-sm font-bold"
+              style="color: var(--primary)"
+            >
+              <i class="fas fa-calendar-check"></i> يخصم من شهر (الشهر المستهدف
+              للخصم)
+            </label>
+            <input type="month" id="loanTargetMonth" required />
+            <small
+              class="text-muted"
+              style="display: block; margin-top: 0.5rem"
+            >
+              اختر الشهر الذي سيتم خصم هذا المبلغ من راتبه.
+            </small>
+          </div>
+          <div class="mb-4">
+            <label class="block mb-2 text-sm">ملاحظات</label
+            ><textarea id="loanNote" rows="3"></textarea>
+          </div>
+          <div class="flex justify-end gap-2">
+            <button
+              type="button"
+              onclick="closeModal('loanModal')"
+              class="btn btn-outline"
+            >
+              إلغاء
+            </button>
+            <button type="submit" class="btn btn-primary">حفظ</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyA2VKEqvt0k7VVt3aZ9IXmhLSdxFjdSOTA",
+        authDomain: "koft2-e8b93.firebaseapp.com",
+        projectId: "koft2-e8b93",
+        storageBucket: "koft2-e8b93.firebasestorage.app",
+        messagingSenderId: "893700387236",
+        appId: "1:893700387236:web:6020e71651b33db2b31131",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      let employees = [];
+      let loans = [];
+      let currentUser = null;
+      let charts = {};
+      let currentViewMode = "grid";
+      let payrollData = [];
+
+      const LOGO_URL =
+        "https://www.dropbox.com/scl/fi/fprczdxu04y7hi4ysqdqk/unnamed__4_-removebg-preview-1.png?rlkey=3f9ysoqw95oeeoc77i6jbs8h1&st=z82tk790&dl=1";
+      const RESTAURANT_NAME = "كفتة على الفحم";
+      const RESTAURANT_TAGLINE = "نظام إدارة الموارد البشرية";
+
+      if (window.location.protocol === "file:") {
+        document.getElementById("fileWarning").classList.add("show");
+      }
+
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          currentUser = user;
+          document.getElementById("login-section").classList.add("hidden");
+          document.getElementById("app-container").classList.remove("hidden");
+          loadAllData();
+        } else {
+          currentUser = null;
+          document.getElementById("login-section").classList.remove("hidden");
+          document.getElementById("app-container").classList.add("hidden");
+        }
+      });
+
+      document.getElementById("loginForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("loginEmail").value;
+        const pass = document.getElementById("loginPassword").value;
+        auth
+          .signInWithEmailAndPassword(email, pass)
+          .catch((err) => showToast("خطأ في الدخول: " + err.message, "error"));
+      });
+
+      function logout() {
+        if (confirm("هل أنت متأكد من تسجيل الخروج؟")) auth.signOut();
+      }
+
+      async function loadAllData() {
+        if (!currentUser) return;
+        try {
+          const empSnap = await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("employees")
+            .get();
+          employees = empSnap.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          const loanSnap = await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("loans")
+            .orderBy("date", "desc")
+            .get();
+          loans = loanSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+          populateEmployeeSelects();
+          populateFilterSelects();
+          renderEmployees();
+          renderLoans();
+          updateDashboard();
+
+          const today = new Date();
+          const yyyy = today.getFullYear();
+          const mm = String(today.getMonth() + 1).padStart(2, "0");
+          const dd = String(today.getDate()).padStart(2, "0");
+          const time =
+            String(today.getHours()).padStart(2, "0") +
+            ":" +
+            String(today.getMinutes()).padStart(2, "0");
+          const currentMonth = `${yyyy}-${mm}`;
+
+          document.getElementById("payrollMonth").value = currentMonth;
+          document.getElementById("loanFilterMonth").value = currentMonth;
+          document.getElementById("loanDate").value = `${yyyy}-${mm}-${dd}`;
+          document.getElementById("loanTime").value = time;
+          document.getElementById("loanTargetMonth").value = currentMonth;
+
+          calculatePayroll();
+          showToast("تم تحميل البيانات بنجاح");
+        } catch (error) {
+          console.error("خطأ في تحميل البيانات:", error);
+          showToast("خطأ في تحميل البيانات: " + error.message, "error");
+        }
+      }
+
+      function navigate(viewId) {
+        document
+          .querySelectorAll(".view-section")
+          .forEach((el) => el.classList.add("hidden"));
+        document.getElementById(viewId).classList.remove("hidden");
+        document
+          .querySelectorAll(".nav-item")
+          .forEach((el) => el.classList.remove("active"));
+
+        const navItems = document.querySelectorAll(".nav-item");
+        if (viewId === "dashboard") navItems[0].classList.add("active");
+        if (viewId === "employees") navItems[1].classList.add("active");
+        if (viewId === "loans") navItems[2].classList.add("active");
+        if (viewId === "payroll") navItems[3].classList.add("active");
+        if (viewId === "reports") navItems[4].classList.add("active");
+
+        const titles = {
+          dashboard: "لوحة التحكم",
+          employees: "إدارة الموظفين",
+          loans: "السلفيات والخصومات",
+          payroll: "نظام الرواتب",
+          reports: "التقارير",
+        };
+        document.getElementById("pageTitle").innerText = titles[viewId];
+      }
+
+      function updateDashboard() {
+        const currentMonthPrefix = new Date().toISOString().slice(0, 7);
+
+        document.getElementById("dashTotalEmp").innerText = employees.length;
+
+        let monthlySal = 0,
+          monthlyLoans = 0,
+          monthlyDeduct = 0,
+          monthlyNet = 0;
+
+        employees.forEach((e) => {
+          const salary = Number(e.salary || 0);
+          monthlySal += salary;
+          const allowance =
+            Number(e.mealAllowance || 0) + Number(e.transportAllowance || 0);
+          const empLoans = loans
+            .filter(
+              (l) =>
+                l.empId === e.id &&
+                l.targetMonth === currentMonthPrefix &&
+                l.type === "سلفة",
+            )
+            .reduce((a, b) => a + Number(b.amount), 0);
+          const empDeduct = loans
+            .filter(
+              (l) =>
+                l.empId === e.id &&
+                l.targetMonth === currentMonthPrefix &&
+                l.type === "خصم",
+            )
+            .reduce((a, b) => a + Number(b.amount), 0);
+          monthlyNet += salary + allowance - empLoans - empDeduct;
+        });
+
+        loans.forEach((l) => {
+          if (l.targetMonth === currentMonthPrefix) {
+            if (l.type === "سلفة") monthlyLoans += Number(l.amount);
+            else monthlyDeduct += Number(l.amount);
+          }
+        });
+
+        document.getElementById("dashTotalSalaries").innerText =
+          monthlySal.toLocaleString();
+        document.getElementById("dashTotalLoans").innerText =
+          monthlyLoans.toLocaleString();
+        document.getElementById("dashDeductions").innerText =
+          monthlyDeduct.toLocaleString();
+        document.getElementById("dashNetSalaries").innerText =
+          monthlyNet.toLocaleString();
+
+        renderCharts(monthlySal, monthlyLoans, monthlyDeduct);
+      }
+
+      function renderCharts(mSal, mLoans, mDeduct) {
+        const ctxDept = document.getElementById("deptChart").getContext("2d");
+        const depts = {};
+        employees.forEach((e) => (depts[e.dept] = (depts[e.dept] || 0) + 1));
+        if (charts.dept) charts.dept.destroy();
+        charts.dept = new Chart(ctxDept, {
+          type: "doughnut",
+          data: {
+            labels: Object.keys(depts),
+            datasets: [
+              {
+                data: Object.values(depts),
+                backgroundColor: [
+                  "#D4AF37",
+                  "#151515",
+                  "#6c757d",
+                  "#dc3545",
+                  "#198754",
+                ],
+              },
+            ],
+          },
+          options: { responsive: true, maintainAspectRatio: false },
+        });
+
+        const ctxExp = document.getElementById("expenseChart").getContext("2d");
+        if (charts.exp) charts.exp.destroy();
+        charts.exp = new Chart(ctxExp, {
+          type: "bar",
+          data: {
+            labels: ["رواتب", "سلفيات", "خصومات"],
+            datasets: [
+              {
+                label: "المصروفات (ج.س)",
+                data: [mSal, mLoans, mDeduct],
+                backgroundColor: ["#D4AF37", "#dc3545", "#151515"],
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true } },
+          },
+        });
+      }
+
+      document
+        .getElementById("employeeForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const data = {
+            name: document.getElementById("empName").value,
+            nationalId: document.getElementById("empNationalId").value,
+            phone: document.getElementById("empPhone").value,
+            dept: document.getElementById("empDept").value,
+            position: document.getElementById("empPosition").value,
+            joinDate: document.getElementById("empJoinDate").value,
+            salary: Number(document.getElementById("empSalary").value),
+            mealAllowance: Number(document.getElementById("empMeal").value),
+            transportAllowance: Number(
+              document.getElementById("empTransport").value,
+            ),
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          };
+          const id = document.getElementById("empId").value;
+          try {
+            if (id)
+              await db
+                .collection("users")
+                .doc(currentUser.uid)
+                .collection("employees")
+                .doc(id)
+                .update(data);
+            else
+              await db
+                .collection("users")
+                .doc(currentUser.uid)
+                .collection("employees")
+                .add(data);
+            closeModal("employeeModal");
+            loadAllData();
+            showToast("تم الحفظ بنجاح");
+          } catch (err) {
+            showToast(err.message, "error");
+          }
+        });
+
+      function setEmployeeView(mode) {
+        currentViewMode = mode;
+        document
+          .getElementById("employeesGrid")
+          .classList.toggle("hidden", mode !== "grid");
+        document
+          .getElementById("employeesTableContainer")
+          .classList.toggle("hidden", mode !== "table");
+        renderEmployees();
+      }
+
+      function renderEmployees() {
+        const search = document
+          .getElementById("searchEmployee")
+          .value.toLowerCase();
+        const filtered = employees.filter((e) =>
+          e.name.toLowerCase().includes(search),
+        );
+
+        const grid = document.getElementById("employeesGrid");
+        grid.innerHTML = filtered
+          .map(
+            (e) => `
+          <div class="card emp-card">
+            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.name)}&background=random" alt="avatar">
+            <h3 class="font-bold text-primary">${e.name}</h3>
+            <p class="text-muted">${e.position || "بدون وظيفة"}</p>
+            <p class="text-sm">${e.dept}</p>
+            <div class="actions">
+              <button class="btn btn-sm btn-outline" onclick="editEmployee('${e.id}')"><i class="fas fa-edit"></i> تعديل</button>
+              <button class="btn btn-sm btn-primary" onclick="printEmployeeCard('${e.id}')"><i class="fas fa-print"></i> طباعة البطاقة</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        `,
+          )
+          .join("");
+
+        const tbody = document.querySelector("#employeesTable tbody");
+        tbody.innerHTML = filtered
+          .map(
+            (e) => `
+          <tr>
+            <td>
+              <div class="flex items-center gap-2">
+                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.name)}&background=random" class="avatar">
+                <span>${e.name}</span>
+              </div>
+            </td>
+            <td>${e.dept}</td>
+            <td>${e.position || "-"}</td>
+            <td>${Number(e.salary).toLocaleString()}</td>
+            <td>
+              <button class="btn btn-sm btn-outline" onclick="printEmployeeCard('${e.id}')"><i class="fas fa-print"></i></button>
+              <button class="btn btn-sm btn-primary" onclick="editEmployee('${e.id}')"><i class="fas fa-edit"></i></button>
+            </td>
+          </tr>
+        `,
+          )
+          .join("");
+      }
+
+      function editEmployee(id) {
+        const emp = employees.find((e) => e.id === id);
+        if (!emp) return;
+        document.getElementById("empId").value = emp.id;
+        document.getElementById("empName").value = emp.name;
+        document.getElementById("empNationalId").value = emp.nationalId || "";
+        document.getElementById("empPhone").value = emp.phone || "";
+        document.getElementById("empDept").value = emp.dept;
+        document.getElementById("empPosition").value = emp.position || "";
+        document.getElementById("empJoinDate").value = emp.joinDate || "";
+        document.getElementById("empSalary").value = emp.salary;
+        document.getElementById("empMeal").value = emp.mealAllowance || 0;
+        document.getElementById("empTransport").value =
+          emp.transportAllowance || 0;
+        openModal("employeeModal");
+      }
+
+      async function deleteEmployee(id) {
+        if (!confirm("هل أنت متأكد من حذف هذا الموظف؟")) return;
+        try {
+          await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("employees")
+            .doc(id)
+            .delete();
+          loadAllData();
+          showToast("تم الحذف بنجاح");
+        } catch (err) {
+          showToast(err.message, "error");
+        }
+      }
+
+      function openLoanModal() {
+        document.getElementById("loanForm").reset();
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, "0");
+        const dd = String(today.getDate()).padStart(2, "0");
+        const time =
+          String(today.getHours()).padStart(2, "0") +
+          ":" +
+          String(today.getMinutes()).padStart(2, "0");
+        const currentMonth = `${yyyy}-${mm}`;
+
+        document.getElementById("loanDate").value = `${yyyy}-${mm}-${dd}`;
+        document.getElementById("loanTime").value = time;
+        document.getElementById("loanTargetMonth").value = currentMonth;
+        openModal("loanModal");
+      }
+
+      document
+        .getElementById("loanForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const date = document.getElementById("loanDate").value;
+          const time = document.getElementById("loanTime").value;
+          const targetMonth = document.getElementById("loanTargetMonth").value;
+
+          const data = {
+            empId: document.getElementById("loanEmpSelect").value,
+            empName:
+              document.getElementById("loanEmpSelect").options[
+                document.getElementById("loanEmpSelect").selectedIndex
+              ].text,
+            type: document.getElementById("loanType").value,
+            amount: Number(document.getElementById("loanAmount").value),
+            date: date,
+            time: time,
+            targetMonth: targetMonth,
+            note: document.getElementById("loanNote").value,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          };
+          try {
+            await db
+              .collection("users")
+              .doc(currentUser.uid)
+              .collection("loans")
+              .add(data);
+            closeModal("loanModal");
+            loadAllData();
+            showToast("تم إضافة المعاملة بنجاح");
+          } catch (err) {
+            showToast(err.message, "error");
+          }
+        });
+
+      function renderLoans() {
+        const filterMonth = document.getElementById("loanFilterMonth").value;
+        const filterType = document.getElementById("loanFilterType").value;
+        const filterEmp = document.getElementById("loanFilterEmp").value;
+
+        let filtered = loans.filter((l) => {
+          let match = true;
+          if (filterMonth && l.targetMonth !== filterMonth) match = false;
+          if (filterType !== "all" && l.type !== filterType) match = false;
+          if (filterEmp !== "all" && l.empId !== filterEmp) match = false;
+          return match;
+        });
+
+        const totalLoans = filtered
+          .filter((l) => l.type === "سلفة")
+          .reduce((sum, l) => sum + Number(l.amount), 0);
+        const totalDeductions = filtered
+          .filter((l) => l.type === "خصم")
+          .reduce((sum, l) => sum + Number(l.amount), 0);
+
+        document.getElementById("loanFilterCount").innerText = filtered.length;
+        document.getElementById("loanFilterTotalLoans").innerText =
+          totalLoans.toLocaleString() + " ج.س";
+        document.getElementById("loanFilterTotalDeductions").innerText =
+          totalDeductions.toLocaleString() + " ج.س";
+        document.getElementById("loanFilterGrandTotal").innerText =
+          (totalLoans + totalDeductions).toLocaleString() + " ج.س";
+
+        const tbody = document.querySelector("#loansTable tbody");
+        if (filtered.length === 0) {
+          tbody.innerHTML =
+            '<tr><td colspan="8" class="text-center text-muted">لا توجد معاملات مطابقة للفلتر</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = filtered
+          .map(
+            (l) => `
+          <tr>
+            <td>${l.empName}</td>
+            <td><span class="badge ${l.type === "سلفة" ? "badge-loan" : "badge-deduction"}">${l.type}</span></td>
+            <td>${Number(l.amount).toLocaleString()}</td>
+            <td>${l.date}</td>
+            <td>${l.time || "--:--"}</td>
+            <td><strong>${l.targetMonth || "-"}</strong></td>
+            <td>${l.note || "-"}</td>
+            <td>
+               <button class="btn btn-sm btn-outline" onclick="printLoanVoucher('${l.id}')"><i class="fas fa-print"></i> طباعة</button>
+               <button class="btn btn-sm btn-danger" onclick="deleteLoan('${l.id}')"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+        `,
+          )
+          .join("");
+      }
+
+      async function deleteLoan(id) {
+        if (!confirm("حذف هذه السجل؟")) return;
+        try {
+          await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("loans")
+            .doc(id)
+            .delete();
+          loadAllData();
+          showToast("تم الحذف بنجاح");
+        } catch (err) {
+          showToast(err.message, "error");
+        }
+      }
+
+      function calculatePayroll() {
+        const month = document.getElementById("payrollMonth").value;
+        const filterEmp = document.getElementById("payrollFilterEmp").value;
+        if (!month) return;
+
+        const tbody = document.querySelector("#payrollTable tbody");
+        let grandTotal = 0;
+        let totalGross = 0;
+        let totalDeductions = 0;
+        let empCount = 0;
+
+        payrollData = [];
+
+        const filteredEmployees =
+          filterEmp === "all"
+            ? employees
+            : employees.filter((e) => e.id === filterEmp);
+
+        tbody.innerHTML = filteredEmployees
+          .map((emp) => {
+            const base = Number(emp.salary || 0);
+            const allowances =
+              Number(emp.mealAllowance || 0) +
+              Number(emp.transportAllowance || 0);
+            const grossSalary = base + allowances;
+
+            const currentMonthTransactions = loans.filter(
+              (l) => l.empId === emp.id && l.targetMonth === month,
+            );
+            const currentLoans = currentMonthTransactions
+              .filter((l) => l.type === "سلفة")
+              .reduce((sum, l) => sum + Number(l.amount), 0);
+            const currentDeductions = currentMonthTransactions
+              .filter((l) => l.type === "خصم")
+              .reduce((sum, l) => sum + Number(l.amount), 0);
+
+            let carryOver = 0;
+            const allMonths = [
+              ...new Set(
+                loans
+                  .filter((l) => l.empId === emp.id)
+                  .map((l) => l.targetMonth),
+              ),
+            ].sort();
+
+            for (const prevMonth of allMonths) {
+              if (prevMonth >= month) break;
+              const prevTransactions = loans.filter(
+                (l) => l.empId === emp.id && l.targetMonth === prevMonth,
+              );
+              const prevLoans = prevTransactions
+                .filter((l) => l.type === "سلفة")
+                .reduce((sum, l) => sum + Number(l.amount), 0);
+              const prevDeductions = prevTransactions
+                .filter((l) => l.type === "خصم")
+                .reduce((sum, l) => sum + Number(l.amount), 0);
+              const prevNet = grossSalary - prevLoans - prevDeductions;
+              if (prevNet < 0) carryOver += Math.abs(prevNet);
+            }
+
+            const totalDedForMonth =
+              currentLoans + currentDeductions + carryOver;
+            let net = grossSalary - totalDedForMonth;
+
+            let newCarryOver = 0;
+            if (net < 0) {
+              newCarryOver = Math.abs(net);
+              net = 0;
+            }
+
+            payrollData.push({
+              name: emp.name,
+              dept: emp.dept,
+              position: emp.position || "-",
+              empId: emp.id.slice(-6).toUpperCase(),
+              base: base,
+              mealAllowance: Number(emp.mealAllowance || 0),
+              transportAllowance: Number(emp.transportAllowance || 0),
+              allowances: allowances,
+              grossSalary: grossSalary,
+              currentLoans: currentLoans,
+              currentDeductions: currentDeductions,
+              carryOver: carryOver,
+              totalDeductions: totalDedForMonth,
+              net: net,
+              newCarryOver: newCarryOver,
+              month: month,
+            });
+
+            grandTotal += net;
+            totalGross += grossSalary;
+            totalDeductions += totalDedForMonth;
+            empCount++;
+
+            let statusHtml = "";
+            if (newCarryOver > 0) {
+              statusHtml = `<span class="payroll-carryover"><i class="fas fa-exclamation-triangle"></i> مرحل: ${newCarryOver.toLocaleString()}</span>`;
+            } else if (net === 0 && grossSalary > 0) {
+              statusHtml = `<span class="text-muted">مخصوم بالكامل</span>`;
+            } else {
+              statusHtml = `<span class="text-success"><i class="fas fa-check-circle"></i> مستحق</span>`;
+            }
+
+            return `
+            <tr>
+              <td><strong>${emp.name}</strong></td>
+              <td>${base.toLocaleString()}</td>
+              <td>${allowances.toLocaleString()}</td>
+              <td>${currentLoans > 0 ? '<span class="text-danger">' + currentLoans.toLocaleString() + "</span>" : "0"}</td>
+              <td>${currentDeductions > 0 ? '<span class="text-danger">' + currentDeductions.toLocaleString() + "</span>" : "0"}</td>
+              <td>${carryOver > 0 ? '<span class="payroll-carryover">-' + carryOver.toLocaleString() + "</span>" : "0"}</td>
+              <td class="font-bold text-primary" style="font-size:1.1rem">${net.toLocaleString()} ج.س</td>
+              <td>${statusHtml}</td>
+              <td>
+                 <button class="btn btn-sm btn-outline" onclick="printPayslip('${emp.id}', '${month}')"><i class="fas fa-print"></i></button>
+              </td>
+            </tr>
+          `;
+          })
+          .join("");
+
+        if (filteredEmployees.length === 0) {
+          tbody.innerHTML =
+            '<tr><td colspan="9" class="text-center text-muted">لا يوجد موظفين</td></tr>';
+        }
+
+        document.getElementById("payrollGrandTotal").innerText =
+          grandTotal.toLocaleString() + " ج.س";
+        document.getElementById("payrollFilterEmpCount").innerText = empCount;
+        document.getElementById("payrollFilterGross").innerText =
+          totalGross.toLocaleString() + " ج.س";
+        document.getElementById("payrollFilterDeductions").innerText =
+          totalDeductions.toLocaleString() + " ج.س";
+        document.getElementById("payrollFilterNet").innerText =
+          grandTotal.toLocaleString() + " ج.س";
+      }
+
+      function openModal(id) {
+        document.getElementById(id).classList.add("active");
+        if (id === "employeeModal" && !document.getElementById("empId").value) {
+          document.getElementById("employeeForm").reset();
+          document.getElementById("empId").value = "";
+        }
+      }
+      function closeModal(id) {
+        document.getElementById(id).classList.remove("active");
+      }
+
+      function showToast(msg, type = "success") {
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.style.borderRightColor =
+          type === "error" ? "var(--danger)" : "var(--primary)";
+        toast.innerHTML = `<i class="fas ${type === "error" ? "fa-exclamation-circle" : "fa-check-circle"}"></i> ${msg}`;
+        document.getElementById("toastContainer").appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
+
+      function populateEmployeeSelects() {
+        const select = document.getElementById("loanEmpSelect");
+        select.innerHTML =
+          '<option value="">اختر الموظف</option>' +
+          employees
+            .map((e) => `<option value="${e.id}">${e.name}</option>`)
+            .join("");
+      }
+
+      function populateFilterSelects() {
+        const loanFilterEmp = document.getElementById("loanFilterEmp");
+        loanFilterEmp.innerHTML =
+          '<option value="all">جميع الموظفين</option>' +
+          employees
+            .map((e) => `<option value="${e.id}">${e.name}</option>`)
+            .join("");
+
+        const payrollFilterEmp = document.getElementById("payrollFilterEmp");
+        payrollFilterEmp.innerHTML =
+          '<option value="all">جميع الموظفين</option>' +
+          employees
+            .map((e) => `<option value="${e.id}">${e.name}</option>`)
+            .join("");
+      }
+
+      function toggleTheme() {
+        const body = document.body;
+        body.setAttribute(
+          "data-theme",
+          body.getAttribute("data-theme") === "dark" ? "light" : "dark",
+        );
+      }
+
+      // ============================
+      //  EXPORT FUNCTIONS - جميع الأقسام
+      // ============================
+
+      // 1. تصدير الموظفين إلى Excel
+      function exportEmployeesToExcel() {
+        if (employees.length === 0) {
+          showToast("لا توجد موظفين لتصديرهم", "error");
+          return;
+        }
+
+        const excelData = employees.map((e, i) => ({
+          "#": i + 1,
+          "اسم الموظف": e.name,
+          "الرقم الوطني": e.nationalId || "-",
+          "رقم الهاتف": e.phone || "-",
+          القسم: e.dept,
+          الوظيفة: e.position || "-",
+          "تاريخ التعيين": e.joinDate || "-",
+          "الراتب الأساسي": Number(e.salary || 0),
+          "بدل وجبة": Number(e.mealAllowance || 0),
+          "بدل مواصلات": Number(e.transportAllowance || 0),
+          "إجمالي الراتب":
+            Number(e.salary || 0) +
+            Number(e.mealAllowance || 0) +
+            Number(e.transportAllowance || 0),
+        }));
+
+        // إضافة صف الإجماليات
+        const totalRow = {
+          "#": "",
+          "اسم الموظف": "الإجمالي",
+          "الرقم الوطني": "",
+          "رقم الهاتف": "",
+          القسم: "",
+          الوظيفة: "",
+          "تاريخ التعيين": "",
+          "الراتب الأساسي": employees.reduce(
+            (s, e) => s + Number(e.salary || 0),
+            0,
+          ),
+          "بدل وجبة": employees.reduce(
+            (s, e) => s + Number(e.mealAllowance || 0),
+            0,
+          ),
+          "بدل مواصلات": employees.reduce(
+            (s, e) => s + Number(e.transportAllowance || 0),
+            0,
+          ),
+          "إجمالي الراتب": employees.reduce(
+            (s, e) =>
+              s +
+              Number(e.salary || 0) +
+              Number(e.mealAllowance || 0) +
+              Number(e.transportAllowance || 0),
+            0,
+          ),
+        };
+        excelData.push(totalRow);
+
+        const ws = XLSX.utils.json_to_sheet(excelData);
+        ws["!cols"] = [
+          { wch: 5 },
+          { wch: 30 },
+          { wch: 20 },
+          { wch: 15 },
+          { wch: 15 },
+          { wch: 20 },
+          { wch: 15 },
+          { wch: 15 },
+          { wch: 12 },
+          { wch: 15 },
+          { wch: 15 },
+        ];
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "الموظفين");
+
+        const fileName = `قائمة_الموظفين_${new Date().toISOString().slice(0, 10)}.xlsx`;
+        XLSX.writeFile(wb, fileName);
+
+        showToast(`تم تصدير الموظفين بنجاح: ${fileName}`, "success");
+      }
+
+      // 2. تصدير السلفيات إلى Excel
+      function exportLoansToExcel() {
+        if (loans.length === 0) {
+          showToast("لا توجد سلفيات أو خصومات لتصديرها", "error");
+          return;
+        }
+
+        const excelData = loans.map((l, i) => {
+          const emp = employees.find((e) => e.id === l.empId);
+          return {
+            "#": i + 1,
+            "اسم الموظف": l.empName,
+            القسم: emp ? emp.dept : "-",
+            النوع: l.type,
+            المبلغ: Number(l.amount),
+            "تاريخ الإضافة": l.date,
+            الوقت: l.time || "--:--",
+            "يخصم من شهر": l.targetMonth || "-",
+            الملاحظات: l.note || "-",
+          };
+        });
+
+        const totalLoans = loans
+          .filter((l) => l.type === "سلفة")
+          .reduce((s, l) => s + Number(l.amount), 0);
+        const totalDeductions = loans
+          .filter((l) => l.type === "خصم")
+          .reduce((s, l) => s + Number(l.amount), 0);
+
+        excelData.push({
+          "#": "",
+          "اسم الموظف": "الإجمالي",
+          القسم: "",
+          النوع: "",
+          المبلغ: totalLoans + totalDeductions,
+          "تاريخ الإضافة": "",
+          الوقت: "",
+          "يخصم من شهر": "",
+          الملاحظات: `سلفيات: ${totalLoans.toLocaleString()} | خصومات: ${totalDeductions.toLocaleString()}`,
+        });
+
+        const ws = XLSX.utils.json_to_sheet(excelData);
+        ws["!cols"] = [
+          { wch: 5 },
+          { wch: 25 },
+          { wch: 15 },
+          { wch: 10 },
+          { wch: 15 },
+          { wch: 15 },
+          { wch: 10 },
+          { wch: 15 },
+          { wch: 30 },
+        ];
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "السلفيات والخصومات");
+
+        const fileName = `السلفيات_والخصومات_${new Date().toISOString().slice(0, 10)}.xlsx`;
+        XLSX.writeFile(wb, fileName);
+
+        showToast(`تم تصدير السلفيات بنجاح: ${fileName}`, "success");
+      }
+
+      // 3. تصدير الرواتب إلى Excel
+      function exportPayrollToExcel() {
+        if (payrollData.length === 0) {
+          showToast(
+            "لا توجد بيانات رواتب لتصديرها. يرجى حساب الرواتب أولاً",
+            "error",
+          );
+          return;
+        }
+
+        const month = payrollData[0].month;
+
+        const excelData = payrollData.map((p, i) => ({
+          "#": i + 1,
+          "اسم الموظف": p.name,
+          القسم: p.dept,
+          الوظيفة: p.position,
+          "الرقم الوظيفي": p.empId,
+          "الراتب الأساسي": p.base,
+          "بدل وجبة": p.mealAllowance,
+          "بدل مواصلات": p.transportAllowance,
+          "إجمالي البدلات": p.allowances,
+          "إجمالي الاستحقاقات": p.grossSalary,
+          "سلفيات الشهر": p.currentLoans,
+          "خصومات الشهر": p.currentDeductions,
+          "مترحلات من أشهر سابقة": p.carryOver,
+          "إجمالي الخصومات": p.totalDeductions,
+          "الصافي المستحق": p.net,
+          "مبلغ مرحل للشهر القادم": p.newCarryOver,
+          الحالة:
+            p.newCarryOver > 0
+              ? "مرحل"
+              : p.net === 0
+                ? "مخصوم بالكامل"
+                : "مستحق",
+        }));
+
+        const totalRow = {
+          "#": "",
+          "اسم الموظف": "الإجمالي الكلي",
+          القسم: "",
+          الوظيفة: "",
+          "الرقم الوظيفي": "",
+          "الراتب الأساسي": payrollData.reduce((s, p) => s + p.base, 0),
+          "بدل وجبة": payrollData.reduce((s, p) => s + p.mealAllowance, 0),
+          "بدل مواصلات": payrollData.reduce(
+            (s, p) => s + p.transportAllowance,
+            0,
+          ),
+          "إجمالي البدلات": payrollData.reduce((s, p) => s + p.allowances, 0),
+          "إجمالي الاستحقاقات": payrollData.reduce(
+            (s, p) => s + p.grossSalary,
+            0,
+          ),
+          "سلفيات الشهر": payrollData.reduce((s, p) => s + p.currentLoans, 0),
+          "خصومات الشهر": payrollData.reduce(
+            (s, p) => s + p.currentDeductions,
+            0,
+          ),
+          "مترحلات من أشهر سابقة": payrollData.reduce(
+            (s, p) => s + p.carryOver,
+            0,
+          ),
+          "إجمالي الخصومات": payrollData.reduce(
+            (s, p) => s + p.totalDeductions,
+            0,
+          ),
+          "الصافي المستحق": payrollData.reduce((s, p) => s + p.net, 0),
+          "مبلغ مرحل للشهر القادم": payrollData.reduce(
+            (s, p) => s + p.newCarryOver,
+            0,
+          ),
+          الحالة: "",
+        };
+        excelData.push(totalRow);
+
+        const ws = XLSX.utils.json_to_sheet(excelData);
+        ws["!cols"] = [
+          { wch: 5 },
+          { wch: 25 },
+          { wch: 15 },
+          { wch: 15 },
+          { wch: 12 },
+          { wch: 15 },
+          { wch: 12 },
+          { wch: 12 },
+          { wch: 12 },
+          { wch: 15 },
+          { wch: 12 },
+          { wch: 12 },
+          { wch: 15 },
+          { wch: 15 },
+          { wch: 15 },
+          { wch: 15 },
+          { wch: 15 },
+        ];
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "كشف الرواتب");
+
+        const infoData = [
+          { الحقل: "اسم المطعم", القيمة: RESTAURANT_NAME },
+          { الحقل: "الشهر", القيمة: month },
+          {
+            الحقل: "تاريخ التصدير",
+            القيمة: new Date().toLocaleString("ar-EG"),
+          },
+          { الحقل: "عدد الموظفين", القيمة: payrollData.length },
+          {
+            الحقل: "إجمالي الاستحقاقات",
+            القيمة: payrollData.reduce((s, p) => s + p.grossSalary, 0) + " ج.س",
+          },
+          {
+            الحقل: "إجمالي الخصومات",
+            القيمة:
+              payrollData.reduce((s, p) => s + p.totalDeductions, 0) + " ج.س",
+          },
+          {
+            الحقل: "صافي المستحقات",
+            القيمة: payrollData.reduce((s, p) => s + p.net, 0) + " ج.س",
+          },
+        ];
+        const wsInfo = XLSX.utils.json_to_sheet(infoData);
+        wsInfo["!cols"] = [{ wch: 25 }, { wch: 40 }];
+        XLSX.utils.book_append_sheet(wb, wsInfo, "معلومات");
+
+        const fileName = `كشف_الرواتب_${month}.xlsx`;
+        XLSX.writeFile(wb, fileName);
+
+        showToast(`تم تصدير كشف الرواتب بنجاح: ${fileName}`, "success");
+      }
+
+      // 4. تصدير جميع البيانات إلى Excel
+      function exportAllDataToExcel() {
+        const wb = XLSX.utils.book_new();
+
+        // ورقة الموظفين
+        const empData = employees.map((e, i) => ({
+          "#": i + 1,
+          الاسم: e.name,
+          القسم: e.dept,
+          الوظيفة: e.position || "-",
+          الراتب: Number(e.salary || 0),
+          الهاتف: e.phone || "-",
+        }));
+        const wsEmp = XLSX.utils.json_to_sheet(empData);
+        XLSX.utils.book_append_sheet(wb, wsEmp, "الموظفين");
+
+        // ورقة السلفيات
+        const loanData = loans.map((l, i) => ({
+          "#": i + 1,
+          الموظف: l.empName,
+          النوع: l.type,
+          المبلغ: Number(l.amount),
+          التاريخ: l.date,
+          "الشهر المستهدف": l.targetMonth || "-",
+        }));
+        const wsLoan = XLSX.utils.json_to_sheet(loanData);
+        XLSX.utils.book_append_sheet(wb, wsLoan, "السلفيات");
+
+        // ورقة الملخص
+        const currentMonth = new Date().toISOString().slice(0, 7);
+        const summaryData = [
+          { البند: "إجمالي الموظفين", القيمة: employees.length },
+          {
+            البند: "إجمالي السلفيات",
+            القيمة: loans.filter((l) => l.type === "سلفة").length,
+          },
+          {
+            البند: "إجمالي الخصومات",
+            القيمة: loans.filter((l) => l.type === "خصم").length,
+          },
+          {
+            البند: "إجمالي الرواتب الشهرية",
+            القيمة:
+              employees.reduce((s, e) => s + Number(e.salary || 0), 0) + " ج.س",
+          },
+          {
+            البند: "سلفيات الشهر الحالي",
+            القيمة:
+              loans
+                .filter(
+                  (l) => l.targetMonth === currentMonth && l.type === "سلفة",
+                )
+                .reduce((s, l) => s + Number(l.amount), 0) + " ج.س",
+          },
+          {
+            البند: "خصومات الشهر الحالي",
+            القيمة:
+              loans
+                .filter(
+                  (l) => l.targetMonth === currentMonth && l.type === "خصم",
+                )
+                .reduce((s, l) => s + Number(l.amount), 0) + " ج.س",
+          },
+        ];
+        const wsSummary = XLSX.utils.json_to_sheet(summaryData);
+        wsSummary["!cols"] = [{ wch: 35 }, { wch: 30 }];
+        XLSX.utils.book_append_sheet(wb, wsSummary, "ملخص البيانات");
+
+        const fileName = `جميع_البيانات_${new Date().toISOString().slice(0, 10)}.xlsx`;
+        XLSX.writeFile(wb, fileName);
+
+        showToast(`تم تصدير جميع البيانات بنجاح: ${fileName}`, "success");
+      }
+
+      // ============================
+      //  PRINT FUNCTIONS - جميع الأقسام
+      // ============================
+
+      let printWindow = null;
+
+      function printContent(htmlContent, title = "طباعة") {
+        if (printWindow && !printWindow.closed) printWindow.close();
+        printWindow = window.open("", "_blank", "width=900,height=700");
+
+        if (!printWindow) {
+          showToast("يرجى السماح بالنوافذ المنبثقة للطباعة", "error");
+          return;
+        }
+
+        const fullHtml = `
+          <!DOCTYPE html>
+          <html lang="ar" dir="rtl">
+          <head>
+            <meta charset="UTF-8">
+            <title>${title}</title>
+            <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <style>
+              * { margin: 0; padding: 0; box-sizing: border-box; }
+              body {
+                font-family: 'Tajawal', sans-serif;
+                background: white;
+                color: #000;
+                direction: rtl;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+              }
+              @page { margin: 15mm 10mm; size: A4; }
+              
+              .print-container { max-width: 210mm; margin: 0 auto; padding: 5mm; }
+              
+              .print-header { margin-bottom: 25px; }
+              .header-top { display: flex; justify-content: space-between; align-items: center; padding: 15px 10px; }
+              .header-logo-section { flex: 0 0 100px; display: flex; justify-content: center; align-items: center; }
+              .header-logo { width: 90px; height: 90px; object-fit: contain; }
+              .header-title-section { flex: 1; text-align: center; padding: 0 20px; }
+              .restaurant-name { font-size: 28pt; font-weight: 900; color: #d4af37; margin: 0; letter-spacing: 1px; }
+              .restaurant-tagline { font-size: 10pt; color: #666; margin: 5px 0 10px 0; font-weight: 500; }
+              .doc-title { font-size: 18pt; font-weight: 800; color: #151515; margin: 5px 0; border-bottom: 2px solid #d4af37; display: inline-block; padding-bottom: 5px; }
+              .doc-subtitle { font-size: 10pt; color: #666; margin: 5px 0 0 0; }
+              .header-info-section { flex: 0 0 180px; text-align: left; }
+              .info-box { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 6px; padding: 6px 10px; margin-bottom: 5px; font-size: 9pt; color: #333; }
+              .info-box i { color: #d4af37; margin-left: 5px; }
+              .header-gold-line { height: 4px; background: linear-gradient(90deg, transparent 0%, #d4af37 20%, #d4af37 80%, transparent 100%); border-radius: 2px; margin-top: 10px; }
+              
+              .print-footer { margin-top: 40px; padding-top: 15px; }
+              .footer-gold-line { height: 2px; background: linear-gradient(90deg, transparent 0%, #d4af37 20%, #d4af37 80%, transparent 100%); margin-bottom: 10px; }
+              .footer-content { display: flex; justify-content: space-between; align-items: center; padding: 10px; }
+              .footer-logo img { width: 40px; height: 40px; object-fit: contain; }
+              .footer-text { text-align: center; flex: 1; }
+              .footer-text strong { color: #d4af37; font-size: 11pt; }
+              .footer-text p { margin: 2px 0; font-size: 9pt; color: #666; }
+              .footer-contact { text-align: left; font-size: 9pt; color: #666; }
+              .footer-contact p { margin: 2px 0; }
+              
+              .doc-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+              .doc-table th, .doc-table td { border: 1px solid #000; padding: 10px; text-align: center; color: #000; }
+              .doc-table th { background-color: #f0f0f0 !important; font-weight: bold; }
+              
+              .doc-footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid #000; display: flex; justify-content: space-between; }
+              .sign-box { text-align: center; width: 30%; }
+              .sign-line { border-bottom: 1px dotted #000; height: 40px; margin-bottom: 5px; }
+              
+              .btn-print {
+                position: fixed; top: 20px; left: 20px;
+                padding: 12px 24px; background: #d4af37; color: #000;
+                border: none; border-radius: 8px;
+                font-family: 'Tajawal', sans-serif;
+                font-weight: bold; cursor: pointer; font-size: 16px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000;
+              }
+              .btn-print:hover { background: #b5952f; }
+              
+              .text-left { text-align: left; }
+              .text-right { text-align: right; }
+              .text-center { text-align: center; }
+              .text-muted { color: #999; }
+              
+              .payroll-summary-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 10pt; }
+              .payroll-summary-table th, .payroll-summary-table td { border: 1px solid #000; padding: 8px 6px; text-align: center; color: #000; }
+              .payroll-summary-table th { background-color: #d4af37 !important; color: #000; font-weight: bold; }
+              .payroll-summary-table tr:nth-child(even) { background-color: #f9f9f9; }
+              .payroll-summary-table .total-row { background-color: #151515 !important; color: #d4af37 !important; font-weight: bold; font-size: 12pt; }
+              .payroll-summary-table .total-row td { color: #d4af37 !important; }
+              
+              .summary-box { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 20px 0; }
+              .summary-item { background: #f9f9f9; border: 2px solid #d4af37; border-radius: 8px; padding: 15px; text-align: center; }
+              .summary-item .label { font-size: 9pt; color: #666; margin-bottom: 5px; }
+              .summary-item .value { font-size: 16pt; font-weight: bold; color: #d4af37; }
+              
+              @media print {
+                .btn-print { display: none !important; }
+                body { background: white !important; }
+                .payroll-summary-table { page-break-inside: auto; }
+                .payroll-summary-table tr { page-break-inside: avoid; page-break-after: auto; }
+              }
+            </style>
+          </head>
+          <body>
+            <button class="btn-print" onclick="window.print()">
+              <i class="fas fa-print"></i> طباعة
+            </button>
+            <div class="print-container">
+              ${htmlContent}
+            </div>
+          </body>
+          </html>
+        `;
+
+        printWindow.document.open();
+        printWindow.document.write(fullHtml);
+        printWindow.document.close();
+
+        setTimeout(() => {
+          try {
+            printWindow.focus();
+            printWindow.print();
+          } catch (err) {
+            console.error("خطأ في الطباعة:", err);
+          }
+        }, 800);
+      }
+
+      function getPrintHeader(docTitle, docSubtitle = "") {
+        return `
+          <div class="print-header">
+            <div class="header-top">
+              <div class="header-logo-section">
+                <img src="${LOGO_URL}" alt="logo" class="header-logo" onerror="this.style.display='none'">
+              </div>
+              <div class="header-title-section">
+                <h1 class="restaurant-name">${RESTAURANT_NAME}</h1>
+                <p class="restaurant-tagline">${RESTAURANT_TAGLINE}</p>
+                <h2 class="doc-title">${docTitle}</h2>
+                ${docSubtitle ? `<p class="doc-subtitle">${docSubtitle}</p>` : ""}
+              </div>
+              <div class="header-info-section">
+                <div class="info-box">
+                  <i class="fas fa-calendar-alt"></i>
+                  <span>تاريخ الطباعة: ${new Date().toLocaleDateString("ar-EG")}</span>
+                </div>
+                <div class="info-box">
+                  <i class="fas fa-clock"></i>
+                  <span>الوقت: ${new Date().toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" })}</span>
+                </div>
+              </div>
+            </div>
+            <div class="header-gold-line"></div>
+          </div>
+        `;
+      }
+
+      function getPrintFooter() {
+        return `
+          <div class="print-footer">
+            <div class="footer-gold-line"></div>
+            <div class="footer-content">
+              <div class="footer-logo">
+                <img src="${LOGO_URL}" alt="logo" onerror="this.style.display='none'">
+              </div>
+              <div class="footer-text">
+                <strong>${RESTAURANT_NAME}</strong>
+                <p>${RESTAURANT_TAGLINE}</p>
+                <p style="font-size: 8pt; color: #999; margin-top: 5px;">
+                  <i class="fas fa-shield-alt"></i> مستند رسمي - جميع الحقوق محفوظة © ${new Date().getFullYear()}
+                </p>
+              </div>
+              <div class="footer-contact">
+                <p><i class="fas fa-fire-alt" style="color: #d4af37;"></i> كفتة على الفحم</p>
+                <p style="font-size: 8pt;">نظام إدارة الموارد البشرية</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // طباعة جميع الموظفين
+      function printAllEmployees() {
+        if (employees.length === 0) {
+          showToast("لا توجد موظفين للطباعة", "error");
+          return;
+        }
+
+        const header = getPrintHeader(
+          "كشف الموظفين الشامل",
+          `إجمالي: ${employees.length} موظف`,
+        );
+        const footer = getPrintFooter();
+
+        const rows = employees
+          .map(
+            (e, i) => `
+          <tr>
+            <td>${i + 1}</td>
+            <td style="text-align:right; font-weight:bold;">${e.name}</td>
+            <td>${e.dept}</td>
+            <td>${e.position || "-"}</td>
+            <td>${Number(e.salary || 0).toLocaleString()}</td>
+            <td>${e.phone || "-"}</td>
+          </tr>
+        `,
+          )
+          .join("");
+
+        const html = `
+          ${header}
+          
+          <table class="payroll-summary-table">
+            <thead>
+              <tr>
+                <th width="30">#</th>
+                <th>اسم الموظف</th>
+                <th>القسم</th>
+                <th>الوظيفة</th>
+                <th>الراتب الأساسي</th>
+                <th>الهاتف</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+              <tr class="total-row">
+                <td colspan="4" style="text-align:center;">الإجمالي الكلي</td>
+                <td>${employees.reduce((s, e) => s + Number(e.salary || 0), 0).toLocaleString()}</td>
+                <td>-</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          ${footer}
+        `;
+
+        printContent(html, "كشف الموظفين");
+      }
+
+      // طباعة جميع السلفيات
+      function printAllLoans() {
+        if (loans.length === 0) {
+          showToast("لا توجد سلفيات للطباعة", "error");
+          return;
+        }
+
+        const header = getPrintHeader(
+          "كشف السلفيات والخصومات الشامل",
+          `إجمالي: ${loans.length} معاملة`,
+        );
+        const footer = getPrintFooter();
+
+        const totalLoans = loans
+          .filter((l) => l.type === "سلفة")
+          .reduce((s, l) => s + Number(l.amount), 0);
+        const totalDeductions = loans
+          .filter((l) => l.type === "خصم")
+          .reduce((s, l) => s + Number(l.amount), 0);
+
+        const rows = loans
+          .map(
+            (l, i) => `
+          <tr>
+            <td>${i + 1}</td>
+            <td style="text-align:right;">${l.empName}</td>
+            <td><span style="color:${l.type === "سلفة" ? "#b5952f" : "#dc3545"}; font-weight:bold;">${l.type}</span></td>
+            <td>${Number(l.amount).toLocaleString()}</td>
+            <td>${l.date}</td>
+            <td>${l.targetMonth || "-"}</td>
+          </tr>
+        `,
+          )
+          .join("");
+
+        const html = `
+          ${header}
+          
+          <div class="summary-box">
+            <div class="summary-item">
+              <div class="label">عدد المعاملات</div>
+              <div class="value">${loans.length}</div>
+            </div>
+            <div class="summary-item">
+              <div class="label">إجمالي السلفيات</div>
+              <div class="value">${totalLoans.toLocaleString()}</div>
+            </div>
+            <div class="summary-item">
+              <div class="label">إجمالي الخصومات</div>
+              <div class="value">${totalDeductions.toLocaleString()}</div>
+            </div>
+            <div class="summary-item">
+              <div class="label">الإجمالي الكلي</div>
+              <div class="value">${(totalLoans + totalDeductions).toLocaleString()}</div>
+            </div>
+          </div>
+          
+          <table class="payroll-summary-table">
+            <thead>
+              <tr>
+                <th width="30">#</th>
+                <th>اسم الموظف</th>
+                <th>النوع</th>
+                <th>المبلغ</th>
+                <th>التاريخ</th>
+                <th>الشهر المستهدف</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+              <tr class="total-row">
+                <td colspan="3" style="text-align:center;">الإجمالي الكلي</td>
+                <td>${(totalLoans + totalDeductions).toLocaleString()}</td>
+                <td colspan="2">-</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          ${footer}
+        `;
+
+        printContent(html, "كشف السلفيات");
+      }
+
+      // طباعة كشف الرواتب الكلي
+      function printAllPayroll() {
+        if (payrollData.length === 0) {
+          showToast(
+            "لا توجد بيانات رواتب لعرضها. يرجى حساب الرواتب أولاً",
+            "error",
+          );
+          return;
+        }
+
+        const month = payrollData[0].month;
+        const header = getPrintHeader("كشف الرواتب الشامل", `شهر: ${month}`);
+        const footer = getPrintFooter();
+
+        const totalGross = payrollData.reduce((s, p) => s + p.grossSalary, 0);
+        const totalLoans = payrollData.reduce((s, p) => s + p.currentLoans, 0);
+        const totalDeductions = payrollData.reduce(
+          (s, p) => s + p.currentDeductions,
+          0,
+        );
+        const totalCarryOver = payrollData.reduce((s, p) => s + p.carryOver, 0);
+        const totalNet = payrollData.reduce((s, p) => s + p.net, 0);
+        const totalNewCarryOver = payrollData.reduce(
+          (s, p) => s + p.newCarryOver,
+          0,
+        );
+
+        const rows = payrollData
+          .map(
+            (p, i) => `
+          <tr>
+            <td>${i + 1}</td>
+            <td style="text-align:right; font-weight:bold;">${p.name}</td>
+            <td>${p.dept}</td>
+            <td>${p.base.toLocaleString()}</td>
+            <td>${p.allowances.toLocaleString()}</td>
+            <td>${p.grossSalary.toLocaleString()}</td>
+            <td style="color:#dc3545;">${p.currentLoans.toLocaleString()}</td>
+            <td style="color:#dc3545;">${p.currentDeductions.toLocaleString()}</td>
+            <td style="color:#dc3545;">${p.carryOver > 0 ? "-" + p.carryOver.toLocaleString() : "0"}</td>
+            <td style="color:#d4af37; font-weight:bold;">${p.net.toLocaleString()}</td>
+            <td>${p.newCarryOver > 0 ? '<span style="color:#dc3545;">' + p.newCarryOver.toLocaleString() + "</span>" : "-"}</td>
+          </tr>
+        `,
+          )
+          .join("");
+
+        const html = `
+          ${header}
+          
+          <div class="summary-box">
+            <div class="summary-item">
+              <div class="label">عدد الموظفين</div>
+              <div class="value">${payrollData.length}</div>
+            </div>
+            <div class="summary-item">
+              <div class="label">إجمالي الاستحقاقات</div>
+              <div class="value">${totalGross.toLocaleString()}</div>
+            </div>
+            <div class="summary-item">
+              <div class="label">إجمالي الخصومات</div>
+              <div class="value">${(totalLoans + totalDeductions + totalCarryOver).toLocaleString()}</div>
+            </div>
+            <div class="summary-item">
+              <div class="label">صافي المستحقات</div>
+              <div class="value">${totalNet.toLocaleString()}</div>
+            </div>
+          </div>
+          
+          <table class="payroll-summary-table">
+            <thead>
+              <tr>
+                <th width="30">#</th>
+                <th>اسم الموظف</th>
+                <th>القسم</th>
+                <th>الأساسي</th>
+                <th>البدلات</th>
+                <th>الإجمالي</th>
+                <th>السلفيات</th>
+                <th>الخصومات</th>
+                <th>مترحلات</th>
+                <th>الصافي</th>
+                <th>يُرحّل</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+              <tr class="total-row">
+                <td colspan="3" style="text-align:center;">الإجمالي الكلي</td>
+                <td>${payrollData.reduce((s, p) => s + p.base, 0).toLocaleString()}</td>
+                <td>${totalGross - payrollData.reduce((s, p) => s + p.base, 0) > 0 ? (totalGross - payrollData.reduce((s, p) => s + p.base, 0)).toLocaleString() : "0"}</td>
+                <td>${totalGross.toLocaleString()}</td>
+                <td>${totalLoans.toLocaleString()}</td>
+                <td>${totalDeductions.toLocaleString()}</td>
+                <td>${totalCarryOver > 0 ? "-" + totalCarryOver.toLocaleString() : "0"}</td>
+                <td>${totalNet.toLocaleString()}</td>
+                <td>${totalNewCarryOver > 0 ? totalNewCarryOver.toLocaleString() : "-"}</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div style="margin-top:30px; padding:15px; background:#f5f5f5; border-radius:8px; text-align:center; border:2px solid #d4af37;">
+            <p style="font-size:12pt; margin:0;">
+              <i class="fas fa-pen-fancy" style="color:#d4af37;"></i>
+              <strong>إجمالي صافي الرواتب كتابةً:</strong> 
+              <span style="color:#d4af37; font-size:14pt; font-weight:bold;">${numberToArabicWords(totalNet)}</span> 
+              جنيه سوداني فقط لا غير
+            </p>
+          </div>
+          
+          <div class="doc-footer">
+            <div class="sign-box">
+              <div class="sign-line"></div>
+              <p>المحاسب</p>
+            </div>
+            <div class="sign-box">
+              <div class="sign-line"></div>
+              <p>المدير المالي</p>
+            </div>
+            <div class="sign-box">
+              <div class="sign-line"></div>
+              <p>المدير العام</p>
+            </div>
+          </div>
+          
+          ${footer}
+        `;
+
+        printContent(html, `كشف الرواتب - ${month}`);
+      }
+
+      // تصدير لوحة التحكم إلى PDF (محاكاة)
+      function exportDashboardToPDF() {
+        const header = getPrintHeader(
+          "تقرير لوحة التحكم",
+          `تاريخ: ${new Date().toLocaleDateString("ar-EG")}`,
+        );
+        const footer = getPrintFooter();
+
+        const currentMonth = new Date().toISOString().slice(0, 7);
+        const monthlySal = employees.reduce(
+          (s, e) => s + Number(e.salary || 0),
+          0,
+        );
+        const monthlyLoans = loans
+          .filter((l) => l.targetMonth === currentMonth && l.type === "سلفة")
+          .reduce((s, l) => s + Number(l.amount), 0);
+        const monthlyDeduct = loans
+          .filter((l) => l.targetMonth === currentMonth && l.type === "خصم")
+          .reduce((s, l) => s + Number(l.amount), 0);
+
+        const html = `
+          ${header}
+          
+          <div class="summary-box">
+            <div class="summary-item">
+              <div class="label">عدد الموظفين</div>
+              <div class="value">${employees.length}</div>
+            </div>
+            <div class="summary-item">
+              <div class="label">إجمالي المرتبات</div>
+              <div class="value">${monthlySal.toLocaleString()}</div>
+            </div>
+            <div class="summary-item">
+              <div class="label">إجمالي السلفيات</div>
+              <div class="value">${monthlyLoans.toLocaleString()}</div>
+            </div>
+            <div class="summary-item">
+              <div class="label">إجمالي الخصومات</div>
+              <div class="value">${monthlyDeduct.toLocaleString()}</div>
+            </div>
+          </div>
+          
+          <h3 style="margin: 20px 0 10px 0; border-bottom: 2px solid #d4af37; padding-bottom: 5px;">توزيع الموظفين حسب الأقسام</h3>
+          <table class="payroll-summary-table">
+            <thead>
+              <tr>
+                <th>القسم</th>
+                <th>عدد الموظفين</th>
+                <th>النسبة المئوية</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${(() => {
+                const depts = {};
+                employees.forEach(
+                  (e) => (depts[e.dept] = (depts[e.dept] || 0) + 1),
+                );
+                return Object.entries(depts)
+                  .map(
+                    ([dept, count]) => `
+                  <tr>
+                    <td style="text-align:right;">${dept}</td>
+                    <td>${count}</td>
+                    <td>${((count / employees.length) * 100).toFixed(1)}%</td>
+                  </tr>
+                `,
+                  )
+                  .join("");
+              })()}
+            </tbody>
+          </table>
+          
+          ${footer}
+        `;
+
+        printContent(html, "تقرير لوحة التحكم");
+      }
+
+      // طباعة قسيمة راتب فردية
+      function printPayslip(empId, month) {
+        const emp = employees.find((e) => e.id === empId);
+        if (!emp) return;
+
+        const empTransactions = loans.filter(
+          (l) => l.empId === empId && l.targetMonth === month,
+        );
+        const base = Number(emp.salary || 0);
+        const mealAllowance = Number(emp.mealAllowance || 0);
+        const transportAllowance = Number(emp.transportAllowance || 0);
+        const grossSalary = base + mealAllowance + transportAllowance;
+
+        const currentLoans = empTransactions
+          .filter((l) => l.type === "سلفة")
+          .reduce((sum, l) => sum + Number(l.amount), 0);
+        const currentDeductions = empTransactions
+          .filter((l) => l.type === "خصم")
+          .reduce((sum, l) => sum + Number(l.amount), 0);
+
+        let carryOver = 0;
+        const allMonths = [
+          ...new Set(
+            loans.filter((l) => l.empId === empId).map((l) => l.targetMonth),
+          ),
+        ].sort();
+        for (const prevMonth of allMonths) {
+          if (prevMonth >= month) break;
+          const prevTransactions = loans.filter(
+            (l) => l.empId === empId && l.targetMonth === prevMonth,
+          );
+          const prevLoans = prevTransactions
+            .filter((l) => l.type === "سلفة")
+            .reduce((sum, l) => sum + Number(l.amount), 0);
+          const prevDeductions = prevTransactions
+            .filter((l) => l.type === "خصم")
+            .reduce((sum, l) => sum + Number(l.amount), 0);
+          const prevNet = grossSalary - prevLoans - prevDeductions;
+          if (prevNet < 0) carryOver += Math.abs(prevNet);
+        }
+
+        const totalDedForMonth = currentLoans + currentDeductions + carryOver;
+        let net = grossSalary - totalDedForMonth;
+        let newCarryOver = 0;
+        if (net < 0) {
+          newCarryOver = Math.abs(net);
+          net = 0;
+        }
+
+        const header = getPrintHeader("قسيمة راتب شهرية", `الفترة: ${month}`);
+        const footer = getPrintFooter();
+
+        const loanRows =
+          empTransactions.length > 0
+            ? empTransactions
+                .map(
+                  (t) => `
+          <tr>
+            <td class="text-right">${t.type}</td>
+            <td>${t.date}</td>
+            <td>${t.time || "--:--"}</td>
+            <td>${Number(t.amount).toLocaleString()}</td>
+            <td>${t.note || "-"}</td>
+          </tr>
+        `,
+                )
+                .join("")
+            : '<tr><td colspan="5" class="text-center text-muted">لا توجد خصومات أو سلفيات هذا الشهر</td></tr>';
+
+        const carryOverRow =
+          carryOver > 0
+            ? `
+          <tr style="background:#ffebee;">
+            <td class="text-right"><strong>مترحلات من أشهر سابقة</strong></td>
+            <td colspan="2">-</td>
+            <td><strong>${carryOver.toLocaleString()}</strong></td>
+            <td>خصومات لم تُسدد من أشهر سابقة</td>
+          </tr>
+        `
+            : "";
+
+        const newCarryOverRow =
+          newCarryOver > 0
+            ? `
+          <tr style="background:#fff3cd;">
+            <td colspan="3" class="text-right"><strong>مبلغ مرحل للشهر التالي</strong></td>
+            <td><strong>${newCarryOver.toLocaleString()}</strong></td>
+            <td>سيُخصم من راتب الشهر القادم</td>
+          </tr>
+        `
+            : "";
+
+        const html = `
+          ${header}
+
+          <div style="background:#f9f9f9; padding:15px; border-radius:8px; margin-bottom:20px; border:1px solid #e0e0e0;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div><strong>اسم الموظف:</strong> ${emp.name}</div>
+              <div><strong>القسم:</strong> ${emp.dept}</div>
+              <div><strong>الوظيفة:</strong> ${emp.position || "-"}</div>
+              <div><strong>الرقم الوظيفي:</strong> ${emp.id.slice(-6).toUpperCase()}</div>
+            </div>
+          </div>
+          
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>البيان</th>
+                <th>التاريخ</th>
+                <th>الوقت</th>
+                <th>المبلغ (ج.س)</th>
+                <th>ملاحظات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-right"><strong>الراتب الأساسي</strong></td>
+                <td colspan="2">-</td>
+                <td><strong>${base.toLocaleString()}</strong></td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td class="text-right">بدل وجبة</td>
+                <td colspan="2">-</td>
+                <td>${mealAllowance.toLocaleString()}</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td class="text-right">بدل مواصلات</td>
+                <td colspan="2">-</td>
+                <td>${transportAllowance.toLocaleString()}</td>
+                <td>-</td>
+              </tr>
+              <tr style="background:#e8f5e9;">
+                <td colspan="3" class="text-right"><strong>إجمالي الاستحقاقات</strong></td>
+                <td><strong>${grossSalary.toLocaleString()}</strong></td>
+                <td>-</td>
+              </tr>
+              
+              ${
+                empTransactions.length > 0
+                  ? `
+                <tr>
+                  <td colspan="5" class="text-center" style="background:#fff3cd; font-weight:bold; padding:12px;">
+                    <i class="fas fa-list-alt"></i> تفاصيل الخصومات والسلفيات
+                  </td>
+                </tr>
+                ${loanRows}
+              `
+                  : ""
+              }
+              
+              ${carryOverRow}
+              
+              <tr style="background:#ffebee;">
+                <td colspan="3" class="text-right"><strong>إجمالي الخصومات والسلفيات</strong></td>
+                <td><strong>${totalDedForMonth.toLocaleString()}</strong></td>
+                <td>-</td>
+              </tr>
+              <tr style="background:#d4af37; color:#000; font-size:16pt;">
+                <td colspan="3" class="text-right"><strong>صافي الراتب المستحق</strong></td>
+                <td><strong>${net.toLocaleString()} ج.س</strong></td>
+                <td>-</td>
+              </tr>
+              ${newCarryOverRow}
+            </tbody>
+          </table>
+
+          <div style="margin-top:25px; padding:15px; background:#f5f5f5; border-radius:8px; text-align:center; border:2px solid #d4af37;">
+            <p style="font-size:11pt; margin:0;">
+              <i class="fas fa-pen-fancy" style="color:#d4af37;"></i>
+              <strong>المبلغ الإجمالي كتابةً:</strong> 
+              <span style="color:#d4af37; font-size:13pt; font-weight:bold;">${numberToArabicWords(net)}</span> 
+              جنيه سوداني فقط لا غير
+            </p>
+          </div>
+
+          <div class="doc-footer">
+            <div class="sign-box">
+              <div class="sign-line"></div>
+              <p>الموظف</p>
+            </div>
+            <div class="sign-box">
+              <div class="sign-line"></div>
+              <p>المحاسب</p>
+            </div>
+            <div class="sign-box">
+              <div class="sign-line"></div>
+              <p>المدير العام</p>
+            </div>
+          </div>
+          
+          ${footer}
+        `;
+
+        printContent(html, `قسيمة راتب ${emp.name} - ${month}`);
+      }
+
+      function printEmployeeCard(empId) {
+        const emp = employees.find((e) => e.id === empId);
+        if (!emp) return;
+
+        const initial = emp.name.charAt(0);
+        const header = getPrintHeader(
+          "بطاقة تعريف الموظف",
+          `الرقم الوظيفي: ${emp.id.slice(-6).toUpperCase()}`,
+        );
+        const footer = getPrintFooter();
+
+        const html = `
+          ${header}
+          
+          <div style="display: flex; justify-content: center; gap: 30px; margin-top: 30px;">
+            <div style="width: 90mm; height: 57mm; border: 3px solid #d4af37; border-radius: 12px; padding: 15px; display: flex; align-items: center; gap: 15px; background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%); position: relative;">
+              <div style="text-align: center; flex: 1;">
+                <img src="${LOGO_URL}" style="width: 50px; height: 50px;" onerror="this.style.display='none'">
+                <h3 style="margin: 0; font-size: 11pt; color: #d4af37; font-weight: bold;">${RESTAURANT_NAME}</h3>
+              </div>
+              <div style="flex: 2; text-align: right;">
+                <h4 style="margin: 0 0 8px 0; font-size: 14pt; color: #000; font-weight: bold; border-bottom: 2px solid #d4af37; padding-bottom: 5px;">${emp.name}</h4>
+                <p style="margin: 4px 0; font-size: 9pt; color: #333;"><strong>الوظيفة:</strong> ${emp.position || "موظف"}</p>
+                <p style="margin: 4px 0; font-size: 9pt; color: #333;"><strong>القسم:</strong> ${emp.dept}</p>
+                <p style="margin: 4px 0; font-size: 9pt; color: #333;"><strong>الرقم الوظيفي:</strong> ${emp.id.slice(-6).toUpperCase()}</p>
+              </div>
+              <div style="position: absolute; top: 10px; left: 10px; width: 35px; height: 35px; background: #d4af37; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16pt;">${initial}</div>
+            </div>
+          </div>
+          
+          ${footer}
+        `;
+
+        printContent(html, `بطاقة ${emp.name}`);
+      }
+
+      function printLoanVoucher(loanId) {
+        const loan = loans.find((l) => l.id === loanId);
+        if (!loan) return;
+        const emp = employees.find((e) => e.id === loan.empId);
+
+        const header = getPrintHeader(
+          `سند ${loan.type}`,
+          `رقم السند: #${loan.id.slice(-6).toUpperCase()}`,
+        );
+        const footer = getPrintFooter();
+
+        const html = `
+          ${header}
+
+          <div style="border: 2px solid #d4af37; padding: 20px; margin-bottom: 20px; border-radius: 8px; background: #fffdf5;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:20px; padding:12px; background:#fff; border-radius:6px; border: 1px solid #e0e0e0;">
+              <div>
+                <p style="margin:3px 0;"><strong>الموظف:</strong> ${loan.empName}</p>
+                <p style="margin:3px 0;"><strong>القسم:</strong> ${emp ? emp.dept : "-"}</p>
+              </div>
+              <div style="text-align: left;">
+                <p style="margin:3px 0;"><strong>التاريخ:</strong> ${loan.date}</p>
+                <p style="margin:3px 0;"><strong>الوقت:</strong> ${loan.time || "--:--"}</p>
+                ${loan.targetMonth ? `<p style="margin:3px 0;"><strong>يخصم من شهر:</strong> ${loan.targetMonth}</p>` : ""}
+              </div>
+            </div>
+            
+            <table class="doc-table">
+              <tr>
+                <th width="60%">البيان</th>
+                <th>المبلغ (ج.س)</th>
+              </tr>
+              <tr>
+                <td class="text-right">تم صرف / خصم مبلغ (${loan.type})</td>
+                <td><strong>${Number(loan.amount).toLocaleString()}</strong></td>
+              </tr>
+              <tr>
+                <td class="text-right" colspan="2">
+                  <strong>ملاحظات:</strong> ${loan.note || "لا يوجد"}
+                </td>
+              </tr>
+            </table>
+
+            <div style="font-size: 24px; font-weight: bold; color: #d4af37; margin: 10px 0; text-align: center;">
+              <i class="fas fa-coins" style="margin-left: 10px;"></i>
+              المجموع: ${Number(loan.amount).toLocaleString()} ج.س
+            </div>
+          </div>
+
+          <div class="doc-footer">
+            <div class="sign-box">
+              <div class="sign-line"></div>
+              <p>توقيع الموظف</p>
+            </div>
+            <div class="sign-box">
+              <div class="sign-line"></div>
+              <p>المدير المالي</p>
+            </div>
+            <div class="sign-box">
+              <div class="sign-line"></div>
+              <p>اعتماد المدير العام</p>
+            </div>
+          </div>
+          
+          ${footer}
+        `;
+
+        printContent(html, `سند ${loan.type} - ${loan.empName}`);
+      }
+
+      function numberToArabicWords(num) {
+        if (num === 0) return "صفر";
+        if (num < 0) return "سالب " + numberToArabicWords(-num);
+
+        num = Math.floor(num);
+
+        const ones = [
+          "",
+          "واحد",
+          "اثنان",
+          "ثلاثة",
+          "أربعة",
+          "خمسة",
+          "ستة",
+          "سبعة",
+          "ثمانية",
+          "تسعة",
+          "عشرة",
+          "أحد عشر",
+          "اثنا عشر",
+          "ثلاثة عشر",
+          "أربعة عشر",
+          "خمسة عشر",
+          "ستة عشر",
+          "سبعة عشر",
+          "ثمانية عشر",
+          "تسعة عشر",
+        ];
+        const tens = [
+          "",
+          "",
+          "عشرون",
+          "ثلاثون",
+          "أربعون",
+          "خمسون",
+          "ستون",
+          "سبعون",
+          "ثمانون",
+          "تسعون",
+        ];
+        const hundreds = [
+          "",
+          "مائة",
+          "مئتان",
+          "ثلاثمائة",
+          "أربعمائة",
+          "خمسمائة",
+          "ستمائة",
+          "سبعمائة",
+          "ثمانمائة",
+          "تسعمائة",
+        ];
+
+        function convert(n) {
+          if (n < 20) return ones[n];
+          if (n < 100) {
+            const t = Math.floor(n / 10);
+            const o = n % 10;
+            return o ? ones[o] + " و" + tens[t] : tens[t];
+          }
+          if (n < 1000) {
+            const h = Math.floor(n / 100);
+            const r = n % 100;
+            return hundreds[h] + (r ? " و" + convert(r) : "");
+          }
+          if (n < 1000000) {
+            const th = Math.floor(n / 1000);
+            const r = n % 1000;
+            let thText = "";
+            if (th === 1) thText = "ألف";
+            else if (th === 2) thText = "ألفان";
+            else if (th >= 3 && th <= 10) thText = convert(th) + " آلاف";
+            else thText = convert(th) + " ألف";
+            return thText + (r ? " و" + convert(r) : "");
+          }
+          if (n < 1000000000) {
+            const m = Math.floor(n / 1000000);
+            const r = n % 1000000;
+            let mText = "";
+            if (m === 1) mText = "مليون";
+            else if (m === 2) mText = "مليونان";
+            else mText = convert(m) + " مليون";
+            return mText + (r ? " و" + convert(r) : "");
+          }
+          return n.toString();
+        }
+
+        return convert(num);
+      }
+    </script>
+  </body>
+</html>
