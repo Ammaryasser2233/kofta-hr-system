@@ -3,11 +3,32 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<title>كفتة على الفحم - نظام إدارة الموارد البشرية</title>
+
+<!-- ========== PWA Meta Tags ========== -->
 <meta name="theme-color" content="#151515" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="كفتة على الفحم" />
-<title>كفتة على الفحم - نظام إدارة الموارد البشرية</title>
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="application-name" content="كفتة على الفحم" />
+<meta name="msapplication-TileColor" content="#151515" />
+<meta name="msapplication-tap-highlight" content="no" />
+<meta name="format-detection" content="telephone=no" />
+
+<!-- ✅ PWA Manifest - مهم جداً -->
+<link rel="manifest" href="./manifest.json" />
+
+<!-- ✅ أيقونات التطبيق - SVG مضمونة 100% + PNG احتياطي -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23151515' rx='80'/%3E%3Ctext x='50%25' y='55%25' font-family='Arial' font-size='280' font-weight='bold' fill='%23d4af37' text-anchor='middle' dominant-baseline='middle'%3E🔥%3C/text%3E%3C/svg%3E" />
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" onerror="this.remove()" />
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" onerror="this.remove()" />
+
+<!-- ✅ أيقونات Apple (iPhone/iPad) -->
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23151515' rx='80'/%3E%3Ctext x='50%25' y='55%25' font-family='Arial' font-size='280' font-weight='bold' fill='%23d4af37' text-anchor='middle' dominant-baseline='middle'%3E🔥%3C/text%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" sizes="152x152" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23151515' rx='80'/%3E%3Ctext x='50%25' y='55%25' font-family='Arial' font-size='280' font-weight='bold' fill='%23d4af37' text-anchor='middle' dominant-baseline='middle'%3E🔥%3C/text%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" sizes="120x120" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23151515' rx='80'/%3E%3Ctext x='50%25' y='55%25' font-family='Arial' font-size='280' font-weight='bold' fill='%23d4af37' text-anchor='middle' dominant-baseline='middle'%3E🔥%3C/text%3E%3C/svg%3E" />
+
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -42,9 +63,27 @@
 --text-muted: #adb5bd;
 --border: #333333;
 }
-* { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-html, body { overscroll-behavior: none; -webkit-overflow-scrolling: touch; }
-body { font-family: var(--font); background-color: var(--bg-body); color: var(--text-main); transition: background 0.3s, color 0.3s; overflow-x: hidden; font-size: 14px; padding-bottom: var(--bottom-nav-height); }
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+outline: none;
+-webkit-tap-highlight-color: transparent;
+}
+html, body {
+overscroll-behavior: none;
+-webkit-overflow-scrolling: touch;
+}
+body {
+font-family: var(--font);
+background-color: var(--bg-body);
+color: var(--text-main);
+transition: background 0.3s, color 0.3s;
+overflow-x: hidden;
+font-size: 14px;
+padding-bottom: var(--bottom-nav-height);
+}
+input, select, textarea { font-size: 16px !important; }
 .hidden { display: none !important; }
 .flex { display: flex; }
 .items-center { align-items: center; }
@@ -60,8 +99,23 @@ body { font-family: var(--font); background-color: var(--bg-body); color: var(--
 .font-bold { font-weight: 700; }
 .mt-4 { margin-top: 1rem; }
 .mb-4 { margin-bottom: 1rem; }
-
-.btn { padding: 0.7rem 1.2rem; border-radius: 10px; border: none; cursor: pointer; font-family: var(--font); font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.9rem; white-space: nowrap; min-height: 48px; min-width: 48px; }
+.btn {
+padding: 0.7rem 1.2rem;
+border-radius: 10px;
+border: none;
+cursor: pointer;
+font-family: var(--font);
+font-weight: 600;
+transition: all 0.3s ease;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 0.5rem;
+font-size: 0.9rem;
+white-space: nowrap;
+min-height: 48px;
+min-width: 48px;
+}
 .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 .btn:active:not(:disabled) { transform: scale(0.96); }
 .btn-primary { background: var(--primary); color: #151515; }
@@ -78,43 +132,172 @@ body { font-family: var(--font); background-color: var(--bg-body); color: var(--
 .btn-warning:hover:not(:disabled) { background: #e86a0a; }
 .btn-sm { padding: 0.5rem 0.9rem; font-size: 0.85rem; min-height: 40px; }
 .btn-icon { width: 48px; height: 48px; padding: 0; border-radius: 12px; }
-
-.card { background: var(--bg-card); border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow); border: 1px solid var(--border); transition: transform 0.2s, box-shadow 0.2s; }
+.card {
+background: var(--bg-card);
+border-radius: var(--radius);
+padding: 1rem;
+box-shadow: var(--shadow);
+border: 1px solid var(--border);
+transition: transform 0.2s, box-shadow 0.2s;
+}
 .card:active { transform: scale(0.99); }
-
-input, select, textarea { width: 100%; padding: 0.8rem; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-body); color: var(--text-main); font-family: var(--font); font-size: 16px; min-height: 48px; }
+input, select, textarea {
+width: 100%;
+padding: 0.8rem;
+border-radius: 10px;
+border: 1px solid var(--border);
+background: var(--bg-body);
+color: var(--text-main);
+font-family: var(--font);
+font-size: 16px;
+min-height: 48px;
+}
 input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); }
-
-#login-section { min-height: 100vh; background: linear-gradient(135deg, #151515 0%, #2c2c2c 100%); display: flex; justify-content: center; align-items: center; padding: 1rem; }
-.login-box { width: 100%; max-width: 400px; padding: 2rem; background: rgba(21, 21, 21, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 20px; text-align: center; }
+#login-section {
+min-height: 100vh;
+background: linear-gradient(135deg, #151515 0%, #2c2c2c 100%);
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 1rem;
+}
+.login-box {
+width: 100%;
+max-width: 400px;
+padding: 2rem;
+background: rgba(21, 21, 21, 0.85);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+border: 1px solid rgba(212, 175, 55, 0.3);
+border-radius: 20px;
+text-align: center;
+}
 .login-logo { width: 90px; height: 90px; margin: 0 auto 1rem; object-fit: contain; }
-
 #app-container { display: flex; min-height: 100vh; }
-
-.sidebar { width: var(--sidebar-width); background: var(--bg-sidebar); color: var(--text-light); position: fixed; height: 100vh; right: 0; top: 0; padding: 1.5rem 0.8rem; z-index: 100; display: flex; flex-direction: column; transition: transform 0.3s ease; }
-.brand { font-size: 1.2rem; font-weight: 800; color: var(--primary); margin-bottom: 2rem; display: flex; align-items: center; gap: 8px; padding: 0 0.8rem; }
+.sidebar {
+width: var(--sidebar-width);
+background: var(--bg-sidebar);
+color: var(--text-light);
+position: fixed;
+height: 100vh;
+right: 0;
+top: 0;
+padding: 1.5rem 0.8rem;
+z-index: 100;
+display: flex;
+flex-direction: column;
+transition: transform 0.3s ease;
+}
+.brand {
+font-size: 1.2rem;
+font-weight: 800;
+color: var(--primary);
+margin-bottom: 2rem;
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 0 0.8rem;
+}
 .nav-links { list-style: none; flex: 1; }
-.nav-item { margin-bottom: 0.4rem; padding: 0.9rem 0.8rem; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #adb5bd; transition: all 0.3s; font-size: 0.95rem; min-height: 48px; }
+.nav-item {
+margin-bottom: 0.4rem;
+padding: 0.9rem 0.8rem;
+border-radius: 12px;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 12px;
+color: #adb5bd;
+transition: all 0.3s;
+font-size: 0.95rem;
+min-height: 48px;
+}
 .nav-item:hover, .nav-item.active { background: rgba(212, 175, 55, 0.15); color: var(--primary); }
-
 .main-content { flex: 1; margin-right: var(--sidebar-width); padding: 1.5rem; transition: margin 0.3s; }
 .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
 .page-title { font-size: 1.5rem; font-weight: 800; }
-.mobile-menu-btn { display: none; background: var(--primary); color: #151515; border: none; width: 48px; height: 48px; border-radius: 12px; cursor: pointer; font-size: 1.2rem; align-items: center; justify-content: center; }
-.sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 99; backdrop-filter: blur(5px); }
+.mobile-menu-btn {
+display: none;
+background: var(--primary);
+color: #151515;
+border: none;
+width: 48px;
+height: 48px;
+border-radius: 12px;
+cursor: pointer;
+font-size: 1.2rem;
+align-items: center;
+justify-content: center;
+}
+.sidebar-overlay {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.5);
+z-index: 99;
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+}
 
 /* ========== Bottom Navigation ========== */
-.bottom-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; height: var(--bottom-nav-height); background: var(--bg-card); border-top: 1px solid var(--border); z-index: 1000; box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1); padding-bottom: env(safe-area-inset-bottom); }
+.bottom-nav {
+display: none;
+position: fixed;
+bottom: 0;
+left: 0;
+right: 0;
+height: var(--bottom-nav-height);
+background: var(--bg-card);
+border-top: 1px solid var(--border);
+z-index: 1000;
+box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+padding-bottom: env(safe-area-inset-bottom);
+}
 .bottom-nav-items { display: flex; justify-content: space-around; align-items: center; height: 100%; list-style: none; padding: 0 0.5rem; }
-.bottom-nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 0.5rem; border-radius: 12px; cursor: pointer; color: var(--text-muted); transition: all 0.3s; flex: 1; min-height: 48px; font-size: 0.7rem; font-weight: 600; }
+.bottom-nav-item {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 4px;
+padding: 0.5rem;
+border-radius: 12px;
+cursor: pointer;
+color: var(--text-muted);
+transition: all 0.3s;
+flex: 1;
+min-height: 48px;
+font-size: 0.7rem;
+font-weight: 600;
+}
 .bottom-nav-item i { font-size: 1.3rem; transition: transform 0.3s; }
 .bottom-nav-item.active { color: var(--primary); background: rgba(212, 175, 55, 0.1); }
 .bottom-nav-item.active i { transform: translateY(-2px); }
 .bottom-nav-item:active { transform: scale(0.95); }
 
 /* ========== FAB ========== */
-.fab { position: fixed; bottom: calc(var(--bottom-nav-height) + 20px); left: 20px; width: 60px; height: 60px; border-radius: 50%; background: var(--primary); color: #151515; border: none; cursor: pointer; font-size: 1.5rem; box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4); z-index: 999; display: none; align-items: center; justify-content: center; transition: all 0.3s; }
-.fab:hover { transform: scale(1.1) rotate(90deg); }
+.fab {
+position: fixed;
+bottom: calc(var(--bottom-nav-height) + 20px);
+left: 20px;
+width: 60px;
+height: 60px;
+border-radius: 50%;
+background: var(--primary);
+color: #151515;
+border: none;
+cursor: pointer;
+font-size: 1.5rem;
+box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+z-index: 999;
+display: none;
+align-items: center;
+justify-content: center;
+transition: all 0.3s;
+}
 .fab:active { transform: scale(0.95); }
 
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
@@ -123,7 +306,6 @@ input:focus, select:focus, textarea:focus { border-color: var(--primary); box-sh
 .stat-value { font-size: 1.8rem; font-weight: 800; margin: 0.5rem 0; }
 .stat-label { color: var(--text-muted); font-size: 0.85rem; }
 .stat-icon { position: absolute; left: 1rem; top: 1rem; font-size: 2rem; opacity: 0.1; color: var(--primary); }
-
 .table-container { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
 table { width: 100%; border-collapse: collapse; min-width: 700px; }
 th { background: var(--bg-body); padding: 1rem; text-align: right; font-weight: 700; color: var(--text-muted); border-bottom: 2px solid var(--border); white-space: nowrap; font-size: 0.85rem; }
@@ -141,30 +323,25 @@ tr:last-child td { border-bottom: none; }
 .mobile-card-actions .btn { flex: 1; font-size: 0.8rem; }
 
 .avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
-
 .employee-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
 .emp-card { text-align: center; position: relative; }
 .emp-card img { width: 80px; height: 80px; margin-bottom: 0.8rem; border: 3px solid var(--primary); border-radius: 50%; object-fit: cover; }
 .emp-card .actions { margin-top: 0.8rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
-
 .pagination { display: flex; justify-content: center; align-items: center; gap: 0.4rem; margin-top: 1rem; flex-wrap: wrap; }
 .pagination-btn { padding: 0.6rem 1rem; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-main); border-radius: 10px; cursor: pointer; font-family: var(--font); font-weight: 600; min-width: 44px; min-height: 44px; font-size: 0.9rem; }
 .pagination-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
 .pagination-btn.active { background: var(--primary); color: #151515; border-color: var(--primary); }
 .pagination-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .pagination-info { color: var(--text-muted); font-size: 0.85rem; margin: 0 0.8rem; }
-
 .toast-container { position: fixed; bottom: calc(var(--bottom-nav-height) + 20px); left: 20px; z-index: 9999; max-width: 90%; }
 .toast { background: var(--bg-card); color: var(--text-main); padding: 1rem 1.2rem; border-radius: 12px; margin-top: 8px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); border-right: 4px solid var(--primary); display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; font-size: 0.9rem; }
 .toast.error { border-right-color: var(--danger); }
 @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); z-index: 1000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.3s; }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 1000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.3s; }
 .modal-overlay.active { opacity: 1; visibility: visible; }
 .modal { background: var(--bg-card); width: 90%; max-width: 550px; border-radius: 16px; padding: 1.5rem; transform: scale(0.9); transition: transform 0.3s; max-height: 90vh; overflow-y: auto; }
 .modal-overlay.active .modal { transform: scale(1); }
 .modal.large { max-width: 95%; }
-
 .filter-bar { background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-body) 100%); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
 .filter-bar label { font-weight: 700; color: var(--text-main); white-space: nowrap; font-size: 0.9rem; }
 .filter-bar input, .filter-bar select { max-width: 180px; }
@@ -172,27 +349,21 @@ tr:last-child td { border-bottom: none; }
 .filter-summary .stat { text-align: center; flex: 1; min-width: 100px; }
 .filter-summary .stat-value { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
 .filter-summary .stat-label { font-size: 0.8rem; color: var(--text-muted); }
-
 .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
 .badge-loan { background: rgba(212, 175, 55, 0.2); color: #b5952f; }
 .badge-deduction { background: rgba(220, 53, 69, 0.2); color: var(--danger); }
 .badge-days { background: rgba(13, 202, 240, 0.2); color: #0dcaf0; font-weight: bold; }
 .payroll-carryover { background: rgba(220, 53, 69, 0.1); padding: 0.3rem 0.6rem; border-radius: 6px; color: var(--danger); font-weight: bold; font-size: 0.85rem; }
-
 .export-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border); }
 .export-buttons .btn { flex: 1; min-width: 140px; }
-
 .file-warning { position: fixed; top: 10px; right: 10px; background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; padding: 12px; border-radius: 10px; font-size: 0.85rem; z-index: 9999; max-width: 320px; display: none; }
 .file-warning.show { display: block; }
 .file-warning button { background: #856404; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-top: 8px; font-size: 0.8rem; }
-
 .action-btn { transition: all 0.2s ease; }
 .action-btn:active { transform: scale(0.95); }
-
 .top-progress { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: transparent; z-index: 9998; }
 .top-progress.active { background: linear-gradient(90deg, var(--primary), var(--primary-hover)); animation: progressAnim 1s infinite; }
 @keyframes progressAnim { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-
 .work-days-box { background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%); border: 2px solid var(--primary); border-radius: 12px; padding: 1rem; margin-top: 1rem; }
 .work-days-box .box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
 .work-days-box .box-title { font-weight: 800; color: var(--primary); font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; }
@@ -210,16 +381,13 @@ tr:last-child td { border-bottom: none; }
 .emp-days-table input { max-width: 80px; padding: 0.5rem; text-align: center; font-weight: bold; border-color: var(--primary); }
 .emp-days-actions { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
 .emp-days-actions .btn { flex: 1; min-width: 120px; }
-
 .sort-buttons { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border); }
 .sort-btn { padding: 0.6rem 1rem; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-muted); border-radius: 10px; cursor: pointer; font-family: var(--font); font-weight: 600; font-size: 0.85rem; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; }
 .sort-btn:hover { border-color: var(--primary); color: var(--primary); }
 .sort-btn.active { background: var(--primary); color: #151515; border-color: var(--primary); }
-
 .carryover-info { background: rgba(220, 53, 69, 0.1); border: 1px solid var(--danger); border-radius: 10px; padding: 1rem; margin-top: 1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
 .carryover-info i { color: var(--danger); font-size: 1.2rem; }
 .carryover-info .info-text { flex: 1; font-size: 0.9rem; color: var(--danger); }
-
 .statement-header { background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%); border: 2px solid var(--primary); border-radius: 12px; padding: 1.2rem; margin-bottom: 1rem; }
 .statement-header h3 { color: var(--primary); margin-bottom: 0.8rem; font-size: 1.3rem; }
 .statement-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
@@ -249,6 +417,16 @@ tr:last-child td { border-bottom: none; }
 .filter-toggle i { transition: transform 0.3s; }
 .filter-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
 .filter-content.show { max-height: 600px; }
+
+/* ========== PWA Install Banner ========== */
+#installBanner { display: none; position: fixed; bottom: calc(var(--bottom-nav-height) + 20px); right: 20px; z-index: 9998; background: linear-gradient(135deg, #d4af37 0%, #b5952f 100%); color: #151515; padding: 14px 20px; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); font-family: 'Tajawal', sans-serif; font-weight: 700; cursor: pointer; align-items: center; gap: 10px; font-size: 0.95rem; transition: all 0.3s; }
+#installBanner:hover { transform: translateY(-2px); }
+#installBanner.show { display: flex; }
+#installBanner .close-btn { background: rgba(0,0,0,0.2); color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; margin-right: 8px; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
+
+/* ========== Connection Status ========== */
+#connectionStatus { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background: #dc3545; color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; z-index: 9999; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-family: 'Tajawal', sans-serif; }
+#connectionStatus.show { display: block; }
 
 /* ========== Mobile Responsive ========== */
 @media (max-width: 768px) {
@@ -294,6 +472,7 @@ tr:last-child td { border-bottom: none; }
 </head>
 <body>
 <div class="top-progress" id="topProgress"></div>
+<div id="connectionStatus"><i class="fas fa-wifi"></i> لا يوجد اتصال بالإنترنت - البيانات محفوظة محلياً</div>
 <div class="file-warning" id="fileWarning">
 <i class="fas fa-exclamation-triangle"></i>
 <strong>تشغّل من القرص المحلي</strong><br />
@@ -303,10 +482,12 @@ tr:last-child td { border-bottom: none; }
 <div class="toast-container" id="toastContainer"></div>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
+<!-- ========== FAB Button ========== -->
 <button class="fab" id="fabButton" onclick="handleFabClick()">
 <i class="fas fa-plus"></i>
 </button>
 
+<!-- ========== Bottom Navigation ========== -->
 <nav class="bottom-nav">
 <ul class="bottom-nav-items">
 <li class="bottom-nav-item active" onclick="navigate('dashboard')"><i class="fas fa-chart-pie"></i><span>الرئيسية</span></li>
@@ -316,6 +497,13 @@ tr:last-child td { border-bottom: none; }
 <li class="bottom-nav-item" onclick="navigate('reports')"><i class="fas fa-file-invoice"></i><span>التقارير</span></li>
 </ul>
 </nav>
+
+<!-- ========== PWA Install Banner ========== -->
+<div id="installBanner" onclick="installApp()">
+<i class="fas fa-download" style="font-size:1.2rem;"></i>
+<span>تثبيت التطبيق</span>
+<button class="close-btn" onclick="event.stopPropagation(); document.getElementById('installBanner').classList.remove('show');">×</button>
+</div>
 
 <section id="login-section">
 <div class="login-box">
@@ -556,6 +744,7 @@ tr:last-child td { border-bottom: none; }
 </main>
 </div>
 
+<!-- ========== Modals ========== -->
 <div class="modal-overlay" id="employeeModal">
 <div class="modal">
 <div class="flex justify-between items-center mb-4">
@@ -623,6 +812,7 @@ tr:last-child td { border-bottom: none; }
 </div>
 
 <script>
+// ========== Firebase Config ==========
 const firebaseConfig = {
 apiKey: "AIzaSyA2VKEqvt0k7VVt3aZ9IXmhLSdxFjdSOTA",
 authDomain: "koft2-e8b93.firebaseapp.com",
@@ -634,6 +824,14 @@ appId: "1:893700387236:web:6020e71651b33db2b31131",
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
+
+// ✅ تفعيل التخزين المحلي للعمل بدون إنترنت
+db.enablePersistence({ synchronizeTabs: true })
+.then(() => console.log('[Firestore] Offline persistence enabled'))
+.catch((err) => {
+if (err.code === 'failed-precondition') console.warn('[Firestore] Multiple tabs open');
+else if (err.code === 'unimplemented') console.warn('[Firestore] Browser lacks support');
+});
 
 let employees = [];
 let loans = [];
@@ -657,7 +855,9 @@ const LOGO_URL = "https://www.dropbox.com/scl/fi/fprczdxu04y7hi4ysqdqk/unnamed__
 const RESTAURANT_NAME = "كفتة على الفحم";
 const RESTAURANT_TAGLINE = "نظام إدارة الموارد البشرية";
 
-if (window.location.protocol === "file:") document.getElementById("fileWarning").classList.add("show");
+if (window.location.protocol === "file:") {
+document.getElementById("fileWarning").classList.add("show");
+}
 
 function setLoading(loading) {
 isLoading = loading;
@@ -670,8 +870,14 @@ function setSubmitting(btnId, submitting) {
 isSubmitting = submitting;
 const btn = document.getElementById(btnId);
 if (!btn) return;
-if (submitting) { btn.disabled = true; btn.dataset.originalText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...'; }
-else { btn.disabled = false; btn.innerHTML = btn.dataset.originalText || btn.innerHTML; }
+if (submitting) {
+btn.disabled = true;
+btn.dataset.originalText = btn.innerHTML;
+btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+} else {
+btn.disabled = false;
+btn.innerHTML = btn.dataset.originalText || btn.innerHTML;
+}
 }
 
 function toggleSidebar() {
@@ -704,14 +910,19 @@ e.preventDefault();
 if (isSubmitting) return;
 setSubmitting("loginBtn", true);
 try {
-await auth.signInWithEmailAndPassword(document.getElementById("loginEmail").value, document.getElementById("loginPassword").value);
+await auth.signInWithEmailAndPassword(
+document.getElementById("loginEmail").value,
+document.getElementById("loginPassword").value,
+);
 } catch (err) {
 showToast("خطأ في الدخول: " + err.message, "error");
 setSubmitting("loginBtn", false);
 }
 });
 
-function logout() { if (confirm("هل أنت متأكد من تسجيل الخروج؟")) auth.signOut(); }
+function logout() {
+if (confirm("هل أنت متأكد من تسجيل الخروج؟")) auth.signOut();
+}
 
 async function loadAllData() {
 if (!currentUser) return;
@@ -916,6 +1127,8 @@ tbody.innerHTML = pageData.map((e) => `
 <button class="btn btn-sm btn-danger action-btn" onclick="deleteEmployee('${e.id}')"><i class="fas fa-trash"></i></button>
 </td>
 </tr>`).join("") || '<tr><td colspan="5" class="text-center text-muted">لا توجد نتائج</td></tr>';
+
+// Mobile Cards
 const mobileCards = document.getElementById("employeesMobileCards");
 mobileCards.innerHTML = pageData.map((e) => `
 <div class="mobile-card">
@@ -936,6 +1149,7 @@ mobileCards.innerHTML = pageData.map((e) => `
 <button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')"><i class="fas fa-trash"></i> حذف</button>
 </div>
 </div>`).join("");
+
 renderPagination("employeesPagination", filtered.length, empCurrentPage, "goToEmployeePage");
 }
 
@@ -984,7 +1198,9 @@ await batch.commit();
 delete workDaysPerEmployee[id];
 await loadAllData();
 showToast(`تم حذف الموظف "${emp.name}" بنجاح`);
-} catch (err) { showToast("خطأ في الحذف: " + err.message, "error"); }
+} catch (err) {
+showToast("خطأ في الحذف: " + err.message, "error");
+}
 }
 
 function setTodayDate() {
@@ -1037,7 +1253,10 @@ try {
 await db.collection("users").doc(currentUser.uid).collection("loans").add(data);
 closeModal("loanModal");
 await loadAllData();
-} catch (err) { showToast(err.message, "error"); setSubmitting("loanSubmitBtn", false); }
+} catch (err) {
+showToast(err.message, "error");
+setSubmitting("loanSubmitBtn", false);
+}
 });
 
 function renderLoans() {
@@ -1068,7 +1287,9 @@ if (loanCurrentPage < 1) loanCurrentPage = 1;
 const start = (loanCurrentPage - 1) * ITEMS_PER_PAGE;
 const pageData = filteredLoans.slice(start, start + ITEMS_PER_PAGE);
 const tbody = document.querySelector("#loansTable tbody");
-tbody.innerHTML = pageData.length === 0 ? '<tr><td colspan="8" class="text-center text-muted">لا توجد معاملات مطابقة للفلتر</td></tr>' : pageData.map((l) => `
+tbody.innerHTML = pageData.length === 0
+? '<tr><td colspan="8" class="text-center text-muted">لا توجد معاملات مطابقة للفلتر</td></tr>'
+: pageData.map((l) => `
 <tr>
 <td>${l.empName}</td>
 <td><span class="badge ${l.type === "سلفة" ? "badge-loan" : "badge-deduction"}">${l.type}</span></td>
@@ -1082,6 +1303,8 @@ tbody.innerHTML = pageData.length === 0 ? '<tr><td colspan="8" class="text-cente
 <button class="btn btn-sm btn-danger action-btn" onclick="deleteLoan('${l.id}')"><i class="fas fa-trash"></i></button>
 </td>
 </tr>`).join("");
+
+// Mobile Cards
 const mobileCards = document.getElementById("loansMobileCards");
 mobileCards.innerHTML = pageData.length === 0 ? '<p class="text-center text-muted" style="padding: 2rem;">لا توجد معاملات</p>' : pageData.map((l) => `
 <div class="mobile-card">
@@ -1100,18 +1323,32 @@ ${l.note ? `<div class="mobile-card-row"><span class="label">ملاحظات</spa
 <button class="btn btn-sm btn-danger" onclick="deleteLoan('${l.id}')"><i class="fas fa-trash"></i> حذف</button>
 </div>
 </div>`).join("");
+
 renderPagination("loansPagination", filteredLoans.length, loanCurrentPage, "goToLoanPage");
 }
 
 function updateActiveFilterBadge(month, type, emp, dateFrom, dateTo) {
 const badge = document.getElementById("activeFilterBadge");
 const filters = [];
-if (dateFrom || dateTo) { const dateText = dateFrom && dateTo ? `${dateFrom} → ${dateTo}` : dateFrom || dateTo; filters.push(`<span class="active-filter-badge"><i class="fas fa-calendar-day"></i> التاريخ: ${dateText}</span>`); }
+if (dateFrom || dateTo) {
+const dateText = dateFrom && dateTo ? `${dateFrom} → ${dateTo}` : dateFrom || dateTo;
+filters.push(`<span class="active-filter-badge"><i class="fas fa-calendar-day"></i> التاريخ: ${dateText}</span>`);
+}
 if (month) filters.push(`<span class="active-filter-badge"><i class="fas fa-calendar"></i> شهر: ${month}</span>`);
 if (type !== "all") filters.push(`<span class="active-filter-badge"><i class="fas fa-filter"></i> النوع: ${type}</span>`);
-if (emp !== "all") { const empName = employees.find((e) => e.id === emp)?.name || "-"; filters.push(`<span class="active-filter-badge"><i class="fas fa-user"></i> الموظف: ${empName}</span>`); }
-if (filters.length > 0) { badge.innerHTML = `<div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;"><span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fas fa-info-circle"></i> الفلاتر النشطة:</span>${filters.join("")}<span style="font-size: 0.85rem; color: var(--primary); font-weight: bold;">(إجمالي: ${filteredLoans.length} معاملة)</span></div>`; }
-else { badge.innerHTML = ""; }
+if (emp !== "all") {
+const empName = employees.find((e) => e.id === emp)?.name || "-";
+filters.push(`<span class="active-filter-badge"><i class="fas fa-user"></i> الموظف: ${empName}</span>`);
+}
+if (filters.length > 0) {
+badge.innerHTML = `<div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+<span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fas fa-info-circle"></i> الفلاتر النشطة:</span>
+${filters.join("")}
+<span style="font-size: 0.85rem; color: var(--primary); font-weight: bold;">(إجمالي: ${filteredLoans.length} معاملة)</span>
+</div>`;
+} else {
+badge.innerHTML = "";
+}
 }
 
 function clearLoanFilters() {
@@ -1127,8 +1364,13 @@ showToast("تم مسح جميع الفلاتر", "success");
 
 async function deleteLoan(id) {
 if (!confirm("حذف هذه السجل؟")) return;
-try { await db.collection("users").doc(currentUser.uid).collection("loans").doc(id).delete(); await loadAllData(); showToast("تم الحذف بنجاح"); }
-catch (err) { showToast(err.message, "error"); }
+try {
+await db.collection("users").doc(currentUser.uid).collection("loans").doc(id).delete();
+await loadAllData();
+showToast("تم الحذف بنجاح");
+} catch (err) {
+showToast(err.message, "error");
+}
 }
 
 function setWorkDaysMode(mode) {
@@ -1137,8 +1379,18 @@ const allBtn = document.getElementById("modeAllBtn");
 const perEmpBtn = document.getElementById("modePerEmpBtn");
 const globalMode = document.getElementById("globalMode");
 const employeeMode = document.getElementById("employeeMode");
-if (mode === "all") { allBtn.classList.add("active"); perEmpBtn.classList.remove("active"); globalMode.classList.remove("hide"); employeeMode.classList.remove("show"); }
-else { perEmpBtn.classList.add("active"); allBtn.classList.remove("active"); globalMode.classList.add("hide"); employeeMode.classList.add("show"); renderEmpDaysTable(); }
+if (mode === "all") {
+allBtn.classList.add("active");
+perEmpBtn.classList.remove("active");
+globalMode.classList.remove("hide");
+employeeMode.classList.remove("show");
+} else {
+perEmpBtn.classList.add("active");
+allBtn.classList.remove("active");
+globalMode.classList.add("hide");
+employeeMode.classList.add("show");
+renderEmpDaysTable();
+}
 calculatePayroll();
 }
 
@@ -1150,16 +1402,33 @@ tbody.innerHTML = filteredEmployees.map((emp) => {
 const days = workDaysPerEmployee[emp.id] || 30;
 return `<tr>
 <td><div class="emp-info"><img src="https://ui-avatars.com/api/?name=${encodeURIComponent(emp.name)}&background=random" alt=""><div><div class="name">${emp.name}</div><div class="dept">${emp.position || "-"}</div></div></div></td>
-<td><span class="badge" style="background: rgba(212, 175, 55, 0.2); color: #b5952f">${emp.dept}</span></td>
+<td><span class="badge" style="background: rgba(212, 175, 55, 0.2); color: #b5952f;">${emp.dept}</span></td>
 <td><strong>${Number(emp.salary || 0).toLocaleString()}</strong></td>
 <td><input type="number" min="1" max="31" value="${days}" onchange="updateEmployeeDays('${emp.id}', this.value)" onkeyup="updateEmployeeDays('${emp.id}', this.value)" /></td>
 </tr>`;
 }).join("") || '<tr><td colspan="4" class="text-center text-muted">لا يوجد موظفين</td></tr>';
 }
 
-function updateEmployeeDays(empId, days) { const d = Math.max(1, Math.min(31, Number(days) || 30)); workDaysPerEmployee[empId] = d; }
-function setAllEmployeesDays(days) { const d = Math.max(1, Math.min(31, Number(days) || 30)); employees.forEach((emp) => { workDaysPerEmployee[emp.id] = d; }); renderEmpDaysTable(); calculatePayroll(); showToast(`تم تعيين ${d} يوم لجميع الموظفين`, "success"); }
-function getEmployeeWorkDays(empId) { if (workDaysMode === "all") { return Math.max(1, Math.min(31, Number(document.getElementById("workDaysInput").value) || 30)); } else { return workDaysPerEmployee[empId] || 30; } }
+function updateEmployeeDays(empId, days) {
+const d = Math.max(1, Math.min(31, Number(days) || 30));
+workDaysPerEmployee[empId] = d;
+}
+
+function setAllEmployeesDays(days) {
+const d = Math.max(1, Math.min(31, Number(days) || 30));
+employees.forEach((emp) => { workDaysPerEmployee[emp.id] = d; });
+renderEmpDaysTable();
+calculatePayroll();
+showToast(`تم تعيين ${d} يوم لجميع الموظفين`, "success");
+}
+
+function getEmployeeWorkDays(empId) {
+if (workDaysMode === "all") {
+return Math.max(1, Math.min(31, Number(document.getElementById("workDaysInput").value) || 30));
+} else {
+return workDaysPerEmployee[empId] || 30;
+}
+}
 
 function calculatePayroll() {
 const month = document.getElementById("payrollMonth").value;
@@ -1201,7 +1470,12 @@ const totalDedForMonth = currentLoans + currentDeductions + carryOver;
 let net = grossSalary - totalDedForMonth;
 let newCarryOver = 0;
 if (net < 0) newCarryOver = Math.abs(net);
-payrollData.push({ empId: emp.id, name: emp.name, dept: emp.dept, position: emp.position || "-", baseSalary, actualBaseSalary, mealAllowance, actualMealAllowance, transportAllowance, actualTransportAllowance, allowances: actualAllowances, grossSalary, currentLoans, currentDeductions, carryOver, totalDeductions: totalDedForMonth, net, newCarryOver, month, workDays });
+payrollData.push({
+empId: emp.id, name: emp.name, dept: emp.dept, position: emp.position || "-",
+baseSalary, actualBaseSalary, mealAllowance, actualMealAllowance, transportAllowance, actualTransportAllowance,
+allowances: actualAllowances, grossSalary, currentLoans, currentDeductions, carryOver,
+totalDeductions: totalDedForMonth, net, newCarryOver, month, workDays,
+});
 });
 const carryoverInfo = document.getElementById("carryoverInfo");
 if (carryoverInfo) carryoverInfo.style.display = hasCarryOver ? "flex" : "none";
@@ -1216,8 +1490,9 @@ if (payrollCurrentPage < 1) payrollCurrentPage = 1;
 const start = (payrollCurrentPage - 1) * ITEMS_PER_PAGE;
 const pageData = payrollData.slice(start, start + ITEMS_PER_PAGE);
 const tbody = document.querySelector("#payrollTable tbody");
-if (payrollData.length === 0) { tbody.innerHTML = '<tr><td colspan="10" class="text-center text-muted">لا يوجد موظفين</td></tr>'; }
-else {
+if (payrollData.length === 0) {
+tbody.innerHTML = '<tr><td colspan="10" class="text-center text-muted">لا يوجد موظفين</td></tr>';
+} else {
 tbody.innerHTML = pageData.map((emp) => {
 let statusHtml = "";
 if (emp.net < 0) statusHtml = `<span class="payroll-carryover"><i class="fas fa-exclamation-triangle"></i> عجز: ${Math.abs(emp.net).toLocaleString()}</span>`;
@@ -1242,6 +1517,8 @@ return `<tr>
 </tr>`;
 }).join("");
 }
+
+// Mobile Cards for Payroll
 const mobileCards = document.getElementById("payrollMobileCards");
 mobileCards.innerHTML = pageData.map((emp) => {
 let statusHtml = "";
@@ -1268,6 +1545,7 @@ ${statusHtml}
 </div>
 </div>`;
 }).join("");
+
 const grandTotal = payrollData.reduce((s, p) => s + p.net, 0);
 const totalGross = payrollData.reduce((s, p) => s + p.grossSalary, 0);
 const totalDeductions = payrollData.reduce((s, p) => s + p.totalDeductions, 0);
@@ -1296,9 +1574,15 @@ const maxVisible = 5;
 let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
 let endPage = Math.min(totalPages, startPage + maxVisible - 1);
 if (endPage - startPage < maxVisible - 1) startPage = Math.max(1, endPage - maxVisible + 1);
-if (startPage > 1) { html += `<button class="pagination-btn" onclick="${onPageChange}(1)">1</button>`; if (startPage > 2) html += `<span class="pagination-info">...</span>`; }
+if (startPage > 1) {
+html += `<button class="pagination-btn" onclick="${onPageChange}(1)">1</button>`;
+if (startPage > 2) html += `<span class="pagination-info">...</span>`;
+}
 for (let i = startPage; i <= endPage; i++) html += `<button class="pagination-btn ${i === currentPage ? "active" : ""}" onclick="${onPageChange}(${i})">${i}</button>`;
-if (endPage < totalPages) { if (endPage < totalPages - 1) html += `<span class="pagination-info">...</span>`; html += `<button class="pagination-btn" onclick="${onPageChange}(${totalPages})">${totalPages}</button>`; }
+if (endPage < totalPages) {
+if (endPage < totalPages - 1) html += `<span class="pagination-info">...</span>`;
+html += `<button class="pagination-btn" onclick="${onPageChange}(${totalPages})">${totalPages}</button>`;
+}
 html += `<button class="pagination-btn" ${currentPage === totalPages ? "disabled" : ""} onclick="${onPageChange}(${currentPage + 1})">التالي <i class="fas fa-chevron-left"></i></button>`;
 const start = (currentPage - 1) * ITEMS_PER_PAGE + 1;
 const end = Math.min(currentPage * ITEMS_PER_PAGE, totalItems);
@@ -1309,7 +1593,11 @@ container.innerHTML = html;
 function openModal(id) { document.getElementById(id).classList.add("active"); }
 function closeModal(id) {
 document.getElementById(id).classList.remove("active");
-if (id === "employeeModal") { document.getElementById("employeeForm").reset(); document.getElementById("empId").value = ""; document.getElementById("employeeModalTitle").innerText = "بيانات الموظف"; }
+if (id === "employeeModal") {
+document.getElementById("employeeForm").reset();
+document.getElementById("empId").value = "";
+document.getElementById("employeeModalTitle").innerText = "بيانات الموظف";
+}
 if (id === "loanModal") document.getElementById("loanForm").reset();
 setSubmitting("empSubmitBtn", false);
 setSubmitting("loanSubmitBtn", false);
@@ -1327,11 +1615,16 @@ setTimeout(() => toast.remove(), 3000);
 function populateEmployeeSelects() {
 document.getElementById("loanEmpSelect").innerHTML = '<option value="">اختر الموظف</option>' + employees.map((e) => `<option value="${e.id}">${e.name}</option>`).join("");
 }
+
 function populateFilterSelects() {
 document.getElementById("loanFilterEmp").innerHTML = '<option value="all">جميع الموظفين</option>' + employees.map((e) => `<option value="${e.id}">${e.name}</option>`).join("");
 document.getElementById("payrollFilterEmp").innerHTML = '<option value="all">جميع الموظفين</option>' + employees.map((e) => `<option value="${e.id}">${e.name}</option>`).join("");
 }
-function toggleTheme() { const body = document.body; body.setAttribute("data-theme", body.getAttribute("data-theme") === "dark" ? "light" : "dark"); }
+
+function toggleTheme() {
+const body = document.body;
+body.setAttribute("data-theme", body.getAttribute("data-theme") === "dark" ? "light" : "dark");
+}
 
 function handleFabClick() {
 if (currentSection === 'employees') openAddEmployeeModal();
@@ -1427,7 +1720,9 @@ else runningBalance -= row.debit;
 return { ...row, balance: runningBalance };
 });
 const tbody = document.getElementById("statementTableBody");
-tbody.innerHTML = filteredRows.length === 0 ? '<tr><td colspan="9" class="text-center text-muted" style="padding: 2rem;">لا توجد معاملات مطابقة للفلتر</td></tr>' : filteredRows.map((r, i) => {
+tbody.innerHTML = filteredRows.length === 0
+? '<tr><td colspan="9" class="text-center text-muted" style="padding: 2rem;">لا توجد معاملات مطابقة للفلتر</td></tr>'
+: filteredRows.map((r, i) => {
 const isSalary = r.type === "راتب";
 const isDifferentMonth = r.targetMonth !== stmt.month && !isSalary;
 return `<tr style="${isDifferentMonth ? "background: #fff9e6;" : ""}">
@@ -1455,8 +1750,12 @@ const filterInfo = document.getElementById("stmtFilterInfo");
 const filterInfoText = document.getElementById("stmtFilterInfoText");
 const filters = [];
 if (monthFrom || monthTo) filters.push(`شهر الخصم: ${monthFrom || "من البداية"} → ${monthTo || "حتى النهاية"}`);
-if (filters.length > 0) { filterInfo.style.display = "block"; filterInfoText.innerHTML = `تم تطبيق فلتر: <strong>${filters.join(" | ")}</strong> - عرض ${filteredRows.length} معاملة`; }
-else { filterInfo.style.display = "none"; }
+if (filters.length > 0) {
+filterInfo.style.display = "block";
+filterInfoText.innerHTML = `تم تطبيق فلتر: <strong>${filters.join(" | ")}</strong> - عرض ${filteredRows.length} معاملة`;
+} else {
+filterInfo.style.display = "none";
+}
 }
 
 function resetStatementFilters() {
@@ -1563,9 +1862,11 @@ function exportLoansToExcel() {
 if (filteredLoans.length === 0) { showToast("لا توجد سلفيات مطابقة للفلتر", "error"); return; }
 const excelData = filteredLoans.map((l, i) => {
 const emp = employees.find((e) => e.id === l.empId);
-return { "#": i + 1, "اسم الموظف": l.empName, القسم: emp ? emp.dept : "-", النوع: l.type,
+return {
+"#": i + 1, "اسم الموظف": l.empName, القسم: emp ? emp.dept : "-", النوع: l.type,
 المبلغ: Number(l.amount), التاريخ: l.date, الوقت: l.time || "--:--",
-"يخصم من شهر": l.targetMonth || "-", الملاحظات: l.note || "-" };
+"يخصم من شهر": l.targetMonth || "-", الملاحظات: l.note || "-",
+};
 });
 const ws = XLSX.utils.json_to_sheet(excelData);
 ws["!cols"] = [{ wch: 5 }, { wch: 25 }, { wch: 15 }, { wch: 10 }, { wch: 15 }, { wch: 12 }, { wch: 10 }, { wch: 15 }, { wch: 30 }];
@@ -1608,9 +1909,15 @@ showToast("تم تصدير كشف الرواتب", "success");
 function exportAllDataToExcel() {
 const wb = XLSX.utils.book_new();
 const sortedEmployees = [...employees].sort((a, b) => a.name.localeCompare(b.name, "ar"));
-const empData = sortedEmployees.map((e, i) => ({ "#": i + 1, الاسم: e.name, القسم: e.dept, الوظيفة: e.position || "-", الراتب: Number(e.salary || 0), الهاتف: e.phone || "-" }));
+const empData = sortedEmployees.map((e, i) => ({
+"#": i + 1, الاسم: e.name, القسم: e.dept, الوظيفة: e.position || "-",
+الراتب: Number(e.salary || 0), الهاتف: e.phone || "-",
+}));
 XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(empData), "الموظفين");
-const loanData = loans.map((l, i) => ({ "#": i + 1, الموظف: l.empName, النوع: l.type, المبلغ: Number(l.amount), التاريخ: l.date, "الشهر المستهدف": l.targetMonth || "-" }));
+const loanData = loans.map((l, i) => ({
+"#": i + 1, الموظف: l.empName, النوع: l.type, المبلغ: Number(l.amount),
+التاريخ: l.date, "الشهر المستهدف": l.targetMonth || "-",
+}));
 XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(loanData), "السلفيات");
 const currentMonth = new Date().toISOString().slice(0, 7);
 const summaryData = [
@@ -1689,7 +1996,9 @@ body { font-family: 'Tajawal', sans-serif; background: white; color: #000; direc
 printWindow.document.open();
 printWindow.document.write(fullHtml);
 printWindow.document.close();
-setTimeout(() => { try { printWindow.focus(); printWindow.print(); } catch (err) {} }, 800);
+setTimeout(() => {
+try { printWindow.focus(); printWindow.print(); } catch (err) {}
+}, 800);
 }
 
 function getPrintHeader(docTitle, docSubtitle = "") {
@@ -1737,7 +2046,10 @@ let filterDesc = [];
 if (filterDateFrom || filterDateTo) filterDesc.push(`التاريخ: ${filterDateFrom || "من البداية"} → ${filterDateTo || "حتى النهاية"}`);
 if (filterMonth) filterDesc.push(`شهر: ${filterMonth}`);
 if (filterType !== "all") filterDesc.push(`النوع: ${filterType}`);
-if (filterEmp !== "all") { const empName = employees.find((e) => e.id === filterEmp)?.name || "-"; filterDesc.push(`الموظف: ${empName}`); }
+if (filterEmp !== "all") {
+const empName = employees.find((e) => e.id === filterEmp)?.name || "-";
+filterDesc.push(`الموظف: ${empName}`);
+}
 const filterText = filterDesc.length > 0 ? filterDesc.join(" | ") : "بدون فلاتر";
 const header = getPrintHeader("كشف السلفيات والخصومات", `إجمالي: ${filteredLoans.length} معاملة (حسب الفلتر)`);
 const footer = getPrintFooter();
@@ -1852,6 +2164,70 @@ const header = getPrintHeader(`سند ${loan.type}`, `رقم: #${loan.id.slice(-
 const footer = getPrintFooter();
 const html = `${header}<div style="border: 2px solid #d4af37; padding: 20px; border-radius: 8px; background: #fffdf5;"><div style="display:flex; justify-content:space-between; margin-bottom:20px; padding:12px; background:#fff; border-radius:6px;"><div><p><strong>الموظف:</strong> ${loan.empName}</p><p><strong>القسم:</strong> ${emp ? emp.dept : "-"}</p></div><div style="text-align: left;"><p><strong>التاريخ:</strong> ${loan.date}</p><p><strong>الوقت:</strong> ${loan.time || "--:--"}</p></div></div><table class="doc-table"><tr><th>البيان</th><th>المبلغ (ج.س)</th></tr><tr><td class="text-right">تم صرف / خصم مبلغ (${loan.type})</td><td><strong>${Number(loan.amount).toLocaleString()}</strong></td></tr></table><div style="font-size: 24px; font-weight: bold; color: #d4af37; margin: 10px 0; text-align: center;">المجموع: ${Number(loan.amount).toLocaleString()} ج.س</div></div><div class="doc-footer"><div class="sign-box"><div class="sign-line"></div><p>الموظف</p></div><div class="sign-box"><div class="sign-line"></div><p>المدير المالي</p></div><div class="sign-box"><div class="sign-line"></div><p>المدير العام</p></div></div>${footer}`;
 printContent(html, `سند ${loan.type} - ${loan.empName}`);
+}
+
+// ========== PWA & Offline Features ==========
+
+// ✅ تسجيل Service Worker
+if ('serviceWorker' in navigator) {
+window.addEventListener('load', () => {
+navigator.serviceWorker.register('./sw.js')
+.then((reg) => console.log('[PWA] SW registered:', reg.scope))
+.catch((err) => console.warn('[PWA] SW failed:', err));
+});
+}
+
+// ✅ زر تثبيت التطبيق
+let deferredPrompt = null;
+const installBanner = document.getElementById('installBanner');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+e.preventDefault();
+deferredPrompt = e;
+installBanner.classList.add('show');
+});
+
+function installApp() {
+if (!deferredPrompt) {
+if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+showToast('📱 على iPhone: اضغط زر المشاركة ⬆️ ثم "إضافة إلى الشاشة الرئيسية"', 'success');
+} else {
+showToast('التطبيق مثبت بالفعل أو المتصفح لا يدعم التثبيت', 'error');
+}
+return;
+}
+deferredPrompt.prompt();
+deferredPrompt.userChoice.then((choice) => {
+console.log(`[PWA] Install outcome: ${choice.outcome}`);
+deferredPrompt = null;
+installBanner.classList.remove('show');
+if (choice.outcome === 'accepted') showToast('تم تثبيت التطبيق بنجاح! 🎉', 'success');
+});
+}
+
+window.addEventListener('appinstalled', () => {
+console.log('[PWA] App installed');
+installBanner.classList.remove('show');
+showToast('تم تثبيت التطبيق بنجاح! 🎉', 'success');
+});
+
+// ✅ كشف حالة الاتصال
+const statusEl = document.getElementById('connectionStatus');
+window.addEventListener('online', () => {
+statusEl.classList.remove('show');
+showToast('✅ عاد الاتصال بالإنترنت', 'success');
+});
+window.addEventListener('offline', () => {
+statusEl.classList.add('show');
+showToast('⚠️ انقطع الاتصال - البيانات محفوظة محلياً', 'error');
+});
+if (!navigator.onLine) statusEl.classList.add('show');
+
+// ✅ نصيحة لمستخدمي iOS
+if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && !window.navigator.standalone) {
+setTimeout(() => {
+showToast('💡 لتثبيت التطبيق: اضغط زر المشاركة ⬆️ ثم "إضافة إلى الشاشة الرئيسية"', 'success');
+}, 2000);
 }
 </script>
 </body>
