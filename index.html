@@ -170,6 +170,13 @@
       .btn-info:hover:not(:disabled) {
         background: #31d2f2;
       }
+      .btn-warning {
+        background: #fd7e14;
+        color: white;
+      }
+      .btn-warning:hover:not(:disabled) {
+        background: #e86a0a;
+      }
       .btn-sm {
         padding: 0.35rem 0.7rem;
         font-size: 0.8rem;
@@ -555,6 +562,9 @@
       .modal-overlay.active .modal {
         transform: scale(1);
       }
+      .modal.large {
+        max-width: 900px;
+      }
 
       .filter-bar {
         background: linear-gradient(
@@ -914,7 +924,6 @@
         font-weight: 700;
       }
 
-      /* مؤشر الفلتر النشط */
       .active-filter-badge {
         display: inline-flex;
         align-items: center;
@@ -926,6 +935,123 @@
         font-size: 0.8rem;
         font-weight: 600;
         margin-top: 0.5rem;
+      }
+
+      /* ✅ كشف الحساب - مودال كبير */
+      .statement-header {
+        background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
+        border: 2px solid var(--primary);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+      .statement-header h3 {
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+        font-size: 1.2rem;
+      }
+      .statement-info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.8rem;
+      }
+      .statement-info-item {
+        background: white;
+        padding: 0.6rem;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+      }
+      .statement-info-item .label {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-bottom: 0.2rem;
+      }
+      .statement-info-item .value {
+        font-weight: 700;
+        font-size: 1rem;
+      }
+
+      .statement-filters {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+        padding: 0.8rem;
+        background: var(--bg-body);
+        border-radius: 8px;
+        align-items: center;
+      }
+      .statement-filters label {
+        font-weight: 600;
+        font-size: 0.85rem;
+      }
+      .statement-filters input {
+        max-width: 150px;
+      }
+
+      .statement-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+      }
+      .statement-table th {
+        background: var(--primary);
+        color: #151515;
+        padding: 0.7rem;
+        font-size: 0.85rem;
+      }
+      .statement-table td {
+        padding: 0.6rem;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.85rem;
+      }
+      .statement-table tr:hover {
+        background: rgba(212, 175, 55, 0.05);
+      }
+      .statement-table .negative {
+        color: var(--danger);
+        font-weight: bold;
+      }
+      .statement-table .positive {
+        color: var(--success);
+        font-weight: bold;
+      }
+
+      .statement-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.8rem;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: var(--bg-body);
+        border-radius: 8px;
+      }
+      .statement-summary-item {
+        text-align: center;
+        padding: 0.6rem;
+        background: white;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+      }
+      .statement-summary-item .label {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+      .statement-summary-item .value {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--primary);
+      }
+      .statement-summary-item .value.negative {
+        color: var(--danger);
+      }
+      .statement-summary-item .value.positive {
+        color: var(--success);
+      }
+
+      .negative-salary {
+        color: var(--danger) !important;
+        font-weight: bold;
       }
     </style>
   </head>
@@ -1250,8 +1376,26 @@
           <div class="card mb-4 filter-bar">
             <div class="flex gap-4 items-center flex-wrap justify-between">
               <div class="flex gap-4 items-center flex-wrap" style="flex: 1">
+                <!-- ✅ فلتر بالتاريخ (من - إلى) -->
                 <div class="flex items-center gap-2">
-                  <label><i class="fas fa-calendar-alt"></i> فلتر الشهر:</label>
+                  <label><i class="fas fa-calendar-day"></i> من تاريخ:</label>
+                  <input
+                    type="date"
+                    id="loanFilterDateFrom"
+                    onchange="renderLoans()"
+                  />
+                </div>
+                <div class="flex items-center gap-2">
+                  <label><i class="fas fa-calendar-day"></i> إلى تاريخ:</label>
+                  <input
+                    type="date"
+                    id="loanFilterDateTo"
+                    onchange="renderLoans()"
+                  />
+                </div>
+                <!-- فلتر الشهر (اختياري) -->
+                <div class="flex items-center gap-2">
+                  <label><i class="fas fa-calendar-alt"></i> الشهر:</label>
                   <input
                     type="month"
                     id="loanFilterMonth"
@@ -1288,7 +1432,6 @@
               </div>
             </div>
 
-            <!-- ✅ مؤشر الفلتر النشط -->
             <div id="activeFilterBadge" style="margin-top: 0.6rem"></div>
 
             <div class="filter-summary">
@@ -1529,7 +1672,7 @@
                     <th>مترحلات</th>
                     <th>الصافي المستحق</th>
                     <th>الحالة</th>
-                    <th>طباعة</th>
+                    <th>الإجراءات</th>
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -1766,6 +1909,28 @@
       </div>
     </div>
 
+    <!-- ✅ مودال كشف الحساب الجديد -->
+    <div class="modal-overlay" id="statementModal">
+      <div class="modal large">
+        <div class="flex justify-between items-center mb-4">
+          <h2
+            class="font-bold"
+            style="font-size: 1.3rem; color: var(--primary)"
+          >
+            <i class="fas fa-file-invoice-dollar"></i> كشف حساب الموظف
+          </h2>
+          <button
+            onclick="closeModal('statementModal')"
+            class="btn btn-outline"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div id="statementContent"></div>
+      </div>
+    </div>
+
     <script>
       const firebaseConfig = {
         apiKey: "AIzaSyA2VKEqvt0k7VVt3aZ9IXmhLSdxFjdSOTA",
@@ -1797,8 +1962,6 @@
 
       let workDaysMode = "all";
       let workDaysPerEmployee = {};
-
-      // ✅ متغير جديد: حفظ البيانات المفلترة للسلفيات
       let filteredLoans = [];
 
       const LOGO_URL =
@@ -1906,10 +2069,14 @@
             ":" +
             String(today.getMinutes()).padStart(2, "0");
           const currentMonth = `${yyyy}-${mm}`;
+          const todayStr = `${yyyy}-${mm}-${dd}`;
 
           document.getElementById("payrollMonth").value = currentMonth;
           document.getElementById("loanFilterMonth").value = currentMonth;
-          document.getElementById("loanDate").value = `${yyyy}-${mm}-${dd}`;
+          // ✅ تعيين فلتر التاريخ لليوم الحالي
+          document.getElementById("loanFilterDateFrom").value = todayStr;
+          document.getElementById("loanFilterDateTo").value = todayStr;
+          document.getElementById("loanDate").value = todayStr;
           document.getElementById("loanTime").value = time;
           document.getElementById("loanTargetMonth").value = currentMonth;
 
@@ -2341,23 +2508,38 @@
           }
         });
 
-      // ✅ دالة renderLoans المحسّنة - تحفظ البيانات المفلترة
+      // ✅ دالة renderLoans المحسّنة مع الفلترة باليوم
       function renderLoans() {
         const filterMonth = document.getElementById("loanFilterMonth").value;
         const filterType = document.getElementById("loanFilterType").value;
         const filterEmp = document.getElementById("loanFilterEmp").value;
+        const filterDateFrom =
+          document.getElementById("loanFilterDateFrom").value;
+        const filterDateTo = document.getElementById("loanFilterDateTo").value;
 
-        // ✅ تطبيق الفلتر وحفظ النتيجة في filteredLoans
+        // ✅ تطبيق الفلتر
         filteredLoans = loans.filter((l) => {
           let match = true;
+          // فلتر الشهر
           if (filterMonth && l.targetMonth !== filterMonth) match = false;
+          // فلتر النوع
           if (filterType !== "all" && l.type !== filterType) match = false;
+          // فلتر الموظف
           if (filterEmp !== "all" && l.empId !== filterEmp) match = false;
+          // ✅ فلتر التاريخ من
+          if (filterDateFrom && l.date < filterDateFrom) match = false;
+          // ✅ فلتر التاريخ إلى
+          if (filterDateTo && l.date > filterDateTo) match = false;
           return match;
         });
 
-        // ✅ تحديث مؤشر الفلتر النشط
-        updateActiveFilterBadge(filterMonth, filterType, filterEmp);
+        updateActiveFilterBadge(
+          filterMonth,
+          filterType,
+          filterEmp,
+          filterDateFrom,
+          filterDateTo,
+        );
 
         const totalLoans = filteredLoans
           .filter((l) => l.type === "سلفة")
@@ -2414,14 +2596,18 @@
         );
       }
 
-      // ✅ عرض مؤشر الفلتر النشط
-      function updateActiveFilterBadge(month, type, emp) {
+      function updateActiveFilterBadge(month, type, emp, dateFrom, dateTo) {
         const badge = document.getElementById("activeFilterBadge");
         const filters = [];
 
+        if (dateFrom || dateTo) {
+          const dateText =
+            dateFrom && dateTo ? `${dateFrom} → ${dateTo}` : dateFrom || dateTo;
+          filters.push(
+            `<span class="active-filter-badge"><i class="fas fa-calendar-day"></i> التاريخ: ${dateText}</span>`,
+          );
+        }
         if (month) {
-          const empName =
-            emp !== "all" ? employees.find((e) => e.id === emp)?.name : null;
           filters.push(
             `<span class="active-filter-badge"><i class="fas fa-calendar"></i> شهر: ${month}</span>`,
           );
@@ -2451,11 +2637,12 @@
         }
       }
 
-      // ✅ مسح جميع الفلاتر
       function clearLoanFilters() {
         document.getElementById("loanFilterMonth").value = "";
         document.getElementById("loanFilterType").value = "all";
         document.getElementById("loanFilterEmp").value = "all";
+        document.getElementById("loanFilterDateFrom").value = "";
+        document.getElementById("loanFilterDateTo").value = "";
         loanCurrentPage = 1;
         renderLoans();
         showToast("تم مسح جميع الفلاتر", "success");
@@ -2569,6 +2756,7 @@
         }
       }
 
+      // ✅ حساب الرواتب - الصافي يظهر بالسالب
       function calculatePayroll() {
         const month = document.getElementById("payrollMonth").value;
         const filterEmp = document.getElementById("payrollFilterEmp").value;
@@ -2644,12 +2832,13 @@
             .reduce((sum, l) => sum + Number(l.amount), 0);
 
           const totalDedForMonth = currentLoans + currentDeductions + carryOver;
+          // ✅ الصافي يظهر بالسالب إذا كانت الخصومات أكثر من الراتب
           let net = grossSalary - totalDedForMonth;
 
           let newCarryOver = 0;
           if (net < 0) {
             newCarryOver = Math.abs(net);
-            net = 0;
+            // ✅ نترك net سالب (لا نصفره)
           }
 
           payrollData.push({
@@ -2702,13 +2891,20 @@
           tbody.innerHTML = pageData
             .map((emp) => {
               let statusHtml = "";
-              if (emp.newCarryOver > 0) {
+              if (emp.net < 0) {
+                statusHtml = `<span class="payroll-carryover"><i class="fas fa-exclamation-triangle"></i> عجز: ${Math.abs(emp.net).toLocaleString()}</span>`;
+              } else if (emp.newCarryOver > 0) {
                 statusHtml = `<span class="payroll-carryover"><i class="fas fa-exclamation-triangle"></i> مرحل: ${emp.newCarryOver.toLocaleString()}</span>`;
               } else if (emp.net === 0 && emp.grossSalary > 0) {
                 statusHtml = `<span class="text-muted">مخصوم بالكامل</span>`;
               } else {
                 statusHtml = `<span class="text-success"><i class="fas fa-check-circle"></i> مستحق</span>`;
               }
+
+              // ✅ عرض الصافي بالسالب باللون الأحمر
+              const netClass =
+                emp.net < 0 ? "negative-salary" : "font-bold text-primary";
+              const netDisplay = emp.net.toLocaleString() + " ج.س";
 
               return `
               <tr>
@@ -2719,9 +2915,16 @@
                 <td>${emp.currentLoans > 0 ? '<span class="text-danger">' + emp.currentLoans.toLocaleString() + "</span>" : "0"}</td>
                 <td>${emp.currentDeductions > 0 ? '<span class="text-danger">' + emp.currentDeductions.toLocaleString() + "</span>" : "0"}</td>
                 <td>${emp.carryOver > 0 ? '<span class="payroll-carryover">-' + emp.carryOver.toLocaleString() + "</span>" : "0"}</td>
-                <td class="font-bold text-primary" style="font-size:1rem">${emp.net.toLocaleString()} ج.س</td>
+                <td class="${netClass}" style="font-size:1rem">${netDisplay}</td>
                 <td>${statusHtml}</td>
-                <td><button class="btn btn-sm btn-outline action-btn" onclick="printPayslip('${emp.empId}', '${emp.month}')"><i class="fas fa-print"></i></button></td>
+                <td>
+                  <button class="btn btn-sm btn-warning action-btn" onclick="openStatement('${emp.empId}', '${emp.month}')" title="كشف الحساب">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline action-btn" onclick="printPayslip('${emp.empId}', '${emp.month}')" title="طباعة قسيمة">
+                    <i class="fas fa-print"></i>
+                  </button>
+                </td>
               </tr>
             `;
             })
@@ -2735,8 +2938,11 @@
           0,
         );
 
-        document.getElementById("payrollGrandTotal").innerText =
-          grandTotal.toLocaleString() + " ج.س";
+        const grandTotalEl = document.getElementById("payrollGrandTotal");
+        grandTotalEl.innerText = grandTotal.toLocaleString() + " ج.س";
+        grandTotalEl.className =
+          grandTotal < 0 ? "text-danger" : "text-primary";
+
         document.getElementById("payrollFilterEmpCount").innerText =
           payrollData.length;
         document.getElementById("payrollFilterGross").innerText =
@@ -2870,6 +3076,309 @@
         );
       }
 
+      // ✅✅✅ كشف حساب الموظف - الميزة الجديدة
+      function openStatement(empId, month) {
+        const emp = employees.find((e) => e.id === empId);
+        if (!emp) return;
+
+        const payrollRecord = payrollData.find(
+          (p) => p.empId === empId && p.month === month,
+        );
+        const workDays = payrollRecord ? payrollRecord.workDays : 30;
+
+        // جلب جميع معاملات الموظف مرتبة بالتاريخ
+        const empLoans = loans
+          .filter((l) => l.empId === empId)
+          .sort((a, b) => a.date.localeCompare(b.date));
+
+        // حساب الرصيد المتراكم يوم بيوم
+        const baseSalary = Number(emp.salary || 0);
+        const mealAllowance = Number(emp.mealAllowance || 0);
+        const transportAllowance = Number(emp.transportAllowance || 0);
+        const fullGrossSalary = baseSalary + mealAllowance + transportAllowance;
+
+        // الراتب الفعلي للشهر المحدد
+        const dailySalary = baseSalary / 30;
+        const actualBaseSalary = Math.round(dailySalary * workDays);
+        const actualMeal = Math.round((mealAllowance / 30) * workDays);
+        const actualTransport = Math.round(
+          (transportAllowance / 30) * workDays,
+        );
+        const actualGross = actualBaseSalary + actualMeal + actualTransport;
+
+        // بناء جدول اليومية
+        let runningBalance = 0;
+        const dailyRows = [];
+
+        // إضافة صف الراتب في بداية الشهر
+        const monthStart = `${month}-01`;
+        dailyRows.push({
+          date: monthStart,
+          time: "00:00",
+          type: "راتب",
+          description: `الراتب الفعلي (${workDays} يوم)`,
+          credit: actualGross,
+          debit: 0,
+          balance: actualGross,
+        });
+        runningBalance = actualGross;
+
+        // إضافة المعاملات
+        empLoans.forEach((l) => {
+          const amount = Number(l.amount);
+          const isLoan = l.type === "سلفة";
+          runningBalance -= amount;
+
+          dailyRows.push({
+            date: l.date,
+            time: l.time || "--:--",
+            type: l.type,
+            description: l.note || (isLoan ? "سلفة" : "خصم"),
+            credit: 0,
+            debit: amount,
+            balance: runningBalance,
+          });
+        });
+
+        const finalBalance = runningBalance;
+        const totalDebits = dailyRows.reduce((s, r) => s + r.debit, 0);
+        const totalCredits = dailyRows.reduce((s, r) => s + r.credit, 0);
+
+        const content = document.getElementById("statementContent");
+        content.innerHTML = `
+          <div class="statement-header">
+            <h3><i class="fas fa-user-tie"></i> ${emp.name}</h3>
+            <div class="statement-info-grid">
+              <div class="statement-info-item">
+                <div class="label">القسم</div>
+                <div class="value">${emp.dept}</div>
+              </div>
+              <div class="statement-info-item">
+                <div class="label">الوظيفة</div>
+                <div class="value">${emp.position || "-"}</div>
+              </div>
+              <div class="statement-info-item">
+                <div class="label">الراتب الأساسي</div>
+                <div class="value">${baseSalary.toLocaleString()} ج.س</div>
+              </div>
+              <div class="statement-info-item">
+                <div class="label">أيام العمل</div>
+                <div class="value">${workDays} يوم</div>
+              </div>
+              <div class="statement-info-item">
+                <div class="label">الراتب الفعلي</div>
+                <div class="value">${actualGross.toLocaleString()} ج.س</div>
+              </div>
+              <div class="statement-info-item">
+                <div class="label">الشهر</div>
+                <div class="value">${month}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="statement-filters">
+            <label><i class="fas fa-filter"></i> فلترة بالتاريخ:</label>
+            <input type="date" id="stmtDateFrom" value="${month}-01" onchange="filterStatementTable()" />
+            <span>إلى</span>
+            <input type="date" id="stmtDateTo" value="${month}-31" onchange="filterStatementTable()" />
+            <button class="btn btn-sm btn-outline" onclick="resetStatementFilter('${month}')">
+              <i class="fas fa-undo"></i> إعادة تعيين
+            </button>
+            <button class="btn btn-sm btn-primary" onclick="printStatement()">
+              <i class="fas fa-print"></i> طباعة الكشف
+            </button>
+          </div>
+          
+          <div id="statementTableContainer">
+            <table class="statement-table" id="statementTable">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>التاريخ</th>
+                  <th>الوقت</th>
+                  <th>النوع</th>
+                  <th>البيان</th>
+                  <th>دائن (+)</th>
+                  <th>مدين (-)</th>
+                  <th>الرصيد</th>
+                </tr>
+              </thead>
+              <tbody id="statementTableBody">
+                ${dailyRows
+                  .map(
+                    (r, i) => `
+                  <tr data-date="${r.date}">
+                    <td>${i + 1}</td>
+                    <td><strong>${r.date}</strong></td>
+                    <td>${r.time}</td>
+                    <td>
+                      <span class="badge ${r.type === "سلفة" ? "badge-loan" : r.type === "خصم" ? "badge-deduction" : ""}" 
+                            style="${r.type === "راتب" ? "background: rgba(25, 135, 84, 0.2); color: #198754;" : ""}">
+                        ${r.type}
+                      </span>
+                    </td>
+                    <td>${r.description}</td>
+                    <td class="${r.credit > 0 ? "positive" : ""}">${r.credit > 0 ? r.credit.toLocaleString() : "-"}</td>
+                    <td class="${r.debit > 0 ? "negative" : ""}">${r.debit > 0 ? r.debit.toLocaleString() : "-"}</td>
+                    <td class="${r.balance < 0 ? "negative" : "positive"}"><strong>${r.balance.toLocaleString()}</strong></td>
+                  </tr>
+                `,
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="statement-summary">
+            <div class="statement-summary-item">
+              <div class="label">إجمالي الدائن (الراتب)</div>
+              <div class="value positive">${totalCredits.toLocaleString()} ج.س</div>
+            </div>
+            <div class="statement-summary-item">
+              <div class="label">إجمالي المدين (الخصومات)</div>
+              <div class="value negative">${totalDebits.toLocaleString()} ج.س</div>
+            </div>
+            <div class="statement-summary-item">
+              <div class="label">الرصيد النهائي</div>
+              <div class="value ${finalBalance < 0 ? "negative" : "positive"}">${finalBalance.toLocaleString()} ج.س</div>
+            </div>
+            <div class="statement-summary-item">
+              <div class="label">الحالة</div>
+              <div class="value" style="font-size: 0.9rem;">
+                ${
+                  finalBalance < 0
+                    ? '<span style="color: var(--danger);">عجز (سلفيات > راتب)</span>'
+                    : finalBalance === 0
+                      ? '<span style="color: var(--text-muted);">متزن</span>'
+                      : '<span style="color: var(--success);">مستحق</span>'
+                }
+              </div>
+            </div>
+          </div>
+        `;
+
+        // حفظ البيانات للطباعة
+        window._currentStatement = {
+          emp,
+          month,
+          workDays,
+          actualGross,
+          baseSalary,
+          mealAllowance,
+          transportAllowance,
+          dailyRows,
+          finalBalance,
+          totalCredits,
+          totalDebits,
+        };
+
+        openModal("statementModal");
+      }
+
+      function filterStatementTable() {
+        const dateFrom = document.getElementById("stmtDateFrom").value;
+        const dateTo = document.getElementById("stmtDateTo").value;
+        const rows = document.querySelectorAll("#statementTableBody tr");
+
+        rows.forEach((row) => {
+          const rowDate = row.getAttribute("data-date");
+          if (!rowDate) return;
+
+          let show = true;
+          if (dateFrom && rowDate < dateFrom) show = false;
+          if (dateTo && rowDate > dateTo) show = false;
+
+          row.style.display = show ? "" : "none";
+        });
+      }
+
+      function resetStatementFilter(month) {
+        document.getElementById("stmtDateFrom").value = `${month}-01`;
+        document.getElementById("stmtDateTo").value = `${month}-31`;
+        filterStatementTable();
+      }
+
+      function printStatement() {
+        const stmt = window._currentStatement;
+        if (!stmt) return;
+
+        const {
+          emp,
+          month,
+          workDays,
+          actualGross,
+          baseSalary,
+          mealAllowance,
+          transportAllowance,
+          dailyRows,
+          finalBalance,
+          totalCredits,
+          totalDebits,
+        } = stmt;
+
+        const dateFrom = document.getElementById("stmtDateFrom").value;
+        const dateTo = document.getElementById("stmtDateTo").value;
+
+        const filteredRows = dailyRows.filter((r) => {
+          let show = true;
+          if (dateFrom && r.date < dateFrom) show = false;
+          if (dateTo && r.date > dateTo) show = false;
+          return show;
+        });
+
+        const rowsHtml = filteredRows
+          .map(
+            (r, i) => `
+          <tr>
+            <td>${i + 1}</td>
+            <td><strong>${r.date}</strong></td>
+            <td>${r.time}</td>
+            <td>${r.type}</td>
+            <td>${r.description}</td>
+            <td style="color: ${r.credit > 0 ? "#198754" : "#000"}; font-weight: ${r.credit > 0 ? "bold" : "normal"};">${r.credit > 0 ? r.credit.toLocaleString() : "-"}</td>
+            <td style="color: ${r.debit > 0 ? "#dc3545" : "#000"}; font-weight: ${r.debit > 0 ? "bold" : "normal"};">${r.debit > 0 ? r.debit.toLocaleString() : "-"}</td>
+            <td style="color: ${r.balance < 0 ? "#dc3545" : "#198754"}; font-weight: bold;">${r.balance.toLocaleString()}</td>
+          </tr>
+        `,
+          )
+          .join("");
+
+        const html = `
+          ${getPrintHeader("كشف حساب موظف", `${emp.name} - شهر ${month}`)}
+          <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e0e0e0;">
+            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+              <div><strong>الموظف:</strong> ${emp.name}</div>
+              <div><strong>القسم:</strong> ${emp.dept}</div>
+              <div><strong>الوظيفة:</strong> ${emp.position || "-"}</div>
+              <div><strong>الراتب الأساسي:</strong> ${baseSalary.toLocaleString()} ج.س</div>
+              <div><strong>أيام العمل:</strong> ${workDays} يوم</div>
+              <div><strong>الراتب الفعلي:</strong> ${actualGross.toLocaleString()} ج.س</div>
+            </div>
+          </div>
+          ${dateFrom || dateTo ? `<div style="background: #fff9e6; padding: 8px 12px; border-radius: 6px; margin-bottom: 15px; font-size: 10pt;"><strong>الفترة:</strong> ${dateFrom || "من البداية"} → ${dateTo || "حتى النهاية"}</div>` : ""}
+          <table class="payroll-summary-table">
+            <thead>
+              <tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>النوع</th><th>البيان</th><th>دائن (+)</th><th>مدين (-)</th><th>الرصيد</th></tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+          <div class="summary-box" style="margin-top: 20px;">
+            <div class="summary-item"><div class="label">إجمالي الدائن</div><div class="value" style="color: #198754;">${totalCredits.toLocaleString()}</div></div>
+            <div class="summary-item"><div class="label">إجمالي المدين</div><div class="value" style="color: #dc3545;">${totalDebits.toLocaleString()}</div></div>
+            <div class="summary-item"><div class="label">الرصيد النهائي</div><div class="value" style="color: ${finalBalance < 0 ? "#dc3545" : "#198754"};">${finalBalance.toLocaleString()}</div></div>
+            <div class="summary-item"><div class="label">الحالة</div><div class="value" style="font-size: 11pt;">${finalBalance < 0 ? "عجز" : finalBalance === 0 ? "متزن" : "مستحق"}</div></div>
+          </div>
+          <div class="doc-footer">
+            <div class="sign-box"><div class="sign-line"></div><p>الموظف</p></div>
+            <div class="sign-box"><div class="sign-line"></div><p>المحاسب</p></div>
+            <div class="sign-box"><div class="sign-line"></div><p>المدير العام</p></div>
+          </div>
+          ${getPrintFooter()}
+        `;
+
+        printContent(html, `كشف حساب ${emp.name} - ${month}`);
+      }
+
       function exportEmployeesToExcel() {
         if (employees.length === 0) {
           showToast("لا توجد موظفين", "error");
@@ -2917,7 +3426,6 @@
         showToast("تم تصدير الموظفين", "success");
       }
 
-      // ✅ تصدير السلفيات حسب الفلتر
       function exportLoansToExcel() {
         if (filteredLoans.length === 0) {
           showToast("لا توجد سلفيات مطابقة للفلتر", "error");
@@ -2932,7 +3440,7 @@
             القسم: emp ? emp.dept : "-",
             النوع: l.type,
             المبلغ: Number(l.amount),
-            "تاريخ الإضافة": l.date,
+            التاريخ: l.date,
             الوقت: l.time || "--:--",
             "يخصم من شهر": l.targetMonth || "-",
             الملاحظات: l.note || "-",
@@ -2946,7 +3454,7 @@
           { wch: 15 },
           { wch: 10 },
           { wch: 15 },
-          { wch: 15 },
+          { wch: 12 },
           { wch: 10 },
           { wch: 15 },
           { wch: 30 },
@@ -3235,7 +3743,6 @@
         printContent(html, "كشف الموظفين");
       }
 
-      // ✅ طباعة السلفيات حسب الفلتر
       function printAllLoans() {
         if (filteredLoans.length === 0) {
           showToast("لا توجد سلفيات مطابقة للفلتر", "error");
@@ -3245,9 +3752,15 @@
         const filterMonth = document.getElementById("loanFilterMonth").value;
         const filterType = document.getElementById("loanFilterType").value;
         const filterEmp = document.getElementById("loanFilterEmp").value;
+        const filterDateFrom =
+          document.getElementById("loanFilterDateFrom").value;
+        const filterDateTo = document.getElementById("loanFilterDateTo").value;
 
-        // بناء وصف الفلتر
         let filterDesc = [];
+        if (filterDateFrom || filterDateTo)
+          filterDesc.push(
+            `التاريخ: ${filterDateFrom || "من البداية"} → ${filterDateTo || "حتى النهاية"}`,
+          );
         if (filterMonth) filterDesc.push(`شهر: ${filterMonth}`);
         if (filterType !== "all") filterDesc.push(`النوع: ${filterType}`);
         if (filterEmp !== "all") {
@@ -3324,7 +3837,7 @@
         const rows = payrollData
           .map(
             (p, i) =>
-              `<tr><td>${i + 1}</td><td style="text-align:right; font-weight:bold;">${p.name}</td><td><strong>${p.workDays}</strong> يوم</td><td>${p.grossSalary.toLocaleString()}</td><td style="color:#dc3545;">${p.totalDeductions.toLocaleString()}</td><td style="color:#d4af37; font-weight:bold;">${p.net.toLocaleString()}</td></tr>`,
+              `<tr><td>${i + 1}</td><td style="text-align:right; font-weight:bold;">${p.name}</td><td><strong>${p.workDays}</strong> يوم</td><td>${p.grossSalary.toLocaleString()}</td><td style="color:#dc3545;">${p.totalDeductions.toLocaleString()}</td><td style="color:${p.net < 0 ? "#dc3545" : "#d4af37"}; font-weight:bold;">${p.net.toLocaleString()}</td></tr>`,
           )
           .join("");
         const html = `${header}<div class="work-days-info"><i class="fas fa-calendar-day"></i> وضع الحساب: ${modeBadge}</div><table class="payroll-summary-table"><thead><tr><th>#</th><th>الموظف</th><th>أيام العمل</th><th>الإجمالي</th><th>الخصومات</th><th>الصافي</th></tr></thead><tbody>${rows}<tr class="total-row"><td colspan="3">الإجمالي الكلي</td><td>${payrollData.reduce((s, p) => s + p.grossSalary, 0).toLocaleString()}</td><td>${payrollData.reduce((s, p) => s + p.totalDeductions, 0).toLocaleString()}</td><td>${totalNet.toLocaleString()}</td></tr></tbody></table>${footer}`;
@@ -3380,11 +3893,6 @@
         const carryOver = payrollRecord ? payrollRecord.carryOver : 0;
         const totalDedForMonth = currentLoans + currentDeductions + carryOver;
         let net = grossSalary - totalDedForMonth;
-        let newCarryOver = 0;
-        if (net < 0) {
-          newCarryOver = Math.abs(net);
-          net = 0;
-        }
 
         const header = getPrintHeader("قسيمة راتب شهرية", `الفترة: ${month}`);
         const footer = getPrintFooter();
@@ -3410,7 +3918,7 @@
               <tr style="background:#e8f5e9;"><td class="text-right"><strong>إجمالي الاستحقاقات</strong></td><td>${(baseSalary + mealAllowance + transportAllowance).toLocaleString()}</td><td><strong>${grossSalary.toLocaleString()}</strong></td></tr>
               ${carryOver > 0 ? `<tr style="background:#ffebee;"><td class="text-right"><strong>مترحلات من أشهر سابقة</strong></td><td colspan="2"><strong>${carryOver.toLocaleString()}</strong></td></tr>` : ""}
               <tr style="background:#ffebee;"><td class="text-right"><strong>إجمالي الخصومات والسلفيات</strong></td><td colspan="2"><strong>${totalDedForMonth.toLocaleString()}</strong></td></tr>
-              <tr style="background:#d4af37; color:#000; font-size:16pt;"><td class="text-right"><strong>صافي الراتب المستحق</strong></td><td colspan="2"><strong>${net.toLocaleString()} ج.س</strong></td></tr>
+              <tr style="background:${net < 0 ? "#dc3545" : "#d4af37"}; color:#fff; font-size:16pt;"><td class="text-right"><strong>صافي الراتب المستحق</strong></td><td colspan="2"><strong>${net.toLocaleString()} ج.س</strong></td></tr>
             </tbody>
           </table>
           <div class="doc-footer">
