@@ -563,7 +563,7 @@
         transform: scale(1);
       }
       .modal.large {
-        max-width: 900px;
+        max-width: 95%;
       }
 
       .filter-bar {
@@ -937,7 +937,6 @@
         margin-top: 0.5rem;
       }
 
-      /* ✅ كشف الحساب - مودال كبير */
       .statement-header {
         background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
         border: 2px solid var(--primary);
@@ -969,24 +968,6 @@
       .statement-info-item .value {
         font-weight: 700;
         font-size: 1rem;
-      }
-
-      .statement-filters {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        margin-bottom: 1rem;
-        padding: 0.8rem;
-        background: var(--bg-body);
-        border-radius: 8px;
-        align-items: center;
-      }
-      .statement-filters label {
-        font-weight: 600;
-        font-size: 0.85rem;
-      }
-      .statement-filters input {
-        max-width: 150px;
       }
 
       .statement-table {
@@ -1052,6 +1033,36 @@
       .negative-salary {
         color: var(--danger) !important;
         font-weight: bold;
+      }
+
+      .stmt-info-badge {
+        display: inline-block;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-right: 0.3rem;
+      }
+      .stmt-info-badge.added {
+        background: rgba(13, 202, 240, 0.2);
+        color: #0dcaf0;
+      }
+      .stmt-info-badge.deducted {
+        background: rgba(220, 53, 69, 0.2);
+        color: var(--danger);
+      }
+
+      .stmt-filter-box {
+        background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
+        border: 2px solid var(--primary);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+      .stmt-filter-box h4 {
+        color: var(--primary);
+        margin-bottom: 0.8rem;
+        font-size: 1rem;
       }
     </style>
   </head>
@@ -1307,9 +1318,8 @@
                   color: var(--text-main);
                   font-size: 0.85rem;
                 "
+                ><i class="fas fa-sort"></i> ترتيب حسب:</span
               >
-                <i class="fas fa-sort"></i> ترتيب حسب:
-              </span>
               <button
                 class="sort-btn active"
                 id="sortByNameBtn"
@@ -1376,7 +1386,6 @@
           <div class="card mb-4 filter-bar">
             <div class="flex gap-4 items-center flex-wrap justify-between">
               <div class="flex gap-4 items-center flex-wrap" style="flex: 1">
-                <!-- ✅ فلتر بالتاريخ (من - إلى) -->
                 <div class="flex items-center gap-2">
                   <label><i class="fas fa-calendar-day"></i> من تاريخ:</label>
                   <input
@@ -1393,7 +1402,6 @@
                     onchange="renderLoans()"
                   />
                 </div>
-                <!-- فلتر الشهر (اختياري) -->
                 <div class="flex items-center gap-2">
                   <label><i class="fas fa-calendar-alt"></i> الشهر:</label>
                   <input
@@ -1431,9 +1439,7 @@
                 </button>
               </div>
             </div>
-
             <div id="activeFilterBadge" style="margin-top: 0.6rem"></div>
-
             <div class="filter-summary">
               <div class="stat">
                 <div class="stat-value" id="loanFilterCount">0</div>
@@ -1452,7 +1458,6 @@
                 <div class="stat-label">الإجمالي الكلي</div>
               </div>
             </div>
-
             <div class="export-buttons">
               <button class="btn btn-info" onclick="printAllLoans()">
                 <i class="fas fa-print"></i> طباعة حسب الفلتر
@@ -1517,8 +1522,8 @@
             <div class="work-days-box">
               <div class="box-header">
                 <div class="box-title">
-                  <i class="fas fa-calendar-day"></i>
-                  <span>أيام العمل الفعلية</span>
+                  <i class="fas fa-calendar-day"></i
+                  ><span>أيام العمل الفعلية</span>
                 </div>
                 <div class="mode-toggle">
                   <button
@@ -1537,7 +1542,6 @@
                   </button>
                 </div>
               </div>
-
               <div class="global-mode" id="globalMode">
                 <label style="font-weight: 700; color: var(--text-main)"
                   >عدد الأيام:</label
@@ -1552,17 +1556,13 @@
                   onkeyup="calculatePayroll()"
                 />
                 <div class="info">
-                  <i class="fas fa-info-circle"></i>
-                  نفس عدد الأيام لجميع الموظفين. الافتراضي =
-                  <strong>30 يوم</strong>.
-                  <br />
-                  <small
+                  <i class="fas fa-info-circle"></i> نفس عدد الأيام لجميع
+                  الموظفين. الافتراضي = <strong>30 يوم</strong>. <br /><small
                     >مثال: راتب 500,000 وعملت 20 يوم → (500,000 ÷ 30) × 20 =
                     333,333 ج.س</small
                   >
                 </div>
               </div>
-
               <div class="employee-mode" id="employeeMode">
                 <div
                   style="
@@ -1621,9 +1621,7 @@
             >
               <i class="fas fa-exclamation-triangle"></i>
               <div class="info-text">
-                <strong>تنبيه:</strong> يوجد مبالغ مرحّلة من أشهر سابقة.
-                <br />
-                <small
+                <strong>تنبيه:</strong> يوجد مبالغ مرحّلة من أشهر سابقة.<br /><small
                   >يتم احتسابها تلقائياً وخصمها من راتب الشهر الحالي.</small
                 >
               </div>
@@ -1738,7 +1736,6 @@
       </main>
     </div>
 
-    <!-- Employee Modal -->
     <div class="modal-overlay" id="employeeModal">
       <div class="modal">
         <div class="flex justify-between items-center mb-4">
@@ -1827,7 +1824,6 @@
       </div>
     </div>
 
-    <!-- Loan Modal -->
     <div class="modal-overlay" id="loanModal">
       <div class="modal">
         <div class="flex justify-between items-center mb-4">
@@ -1864,12 +1860,34 @@
             <div class="w-full">
               <label class="block mb-2 text-sm" style="font-size: 0.85rem"
                 >تاريخ الإضافة</label
-              ><input type="date" id="loanDate" required />
+              >
+              <div style="display: flex; gap: 0.5rem">
+                <input type="date" id="loanDate" required style="flex: 1" />
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline"
+                  onclick="setTodayDate()"
+                  title="اليوم"
+                >
+                  <i class="fas fa-calendar-day"></i> اليوم
+                </button>
+              </div>
             </div>
             <div class="w-full">
               <label class="block mb-2 text-sm" style="font-size: 0.85rem"
                 >الوقت</label
-              ><input type="time" id="loanTime" required />
+              >
+              <div style="display: flex; gap: 0.5rem">
+                <input type="time" id="loanTime" required style="flex: 1" />
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline"
+                  onclick="setNowTime()"
+                  title="الوقت الحالي"
+                >
+                  <i class="fas fa-clock"></i> الآن
+                </button>
+              </div>
             </div>
           </div>
           <div
@@ -1909,7 +1927,6 @@
       </div>
     </div>
 
-    <!-- ✅ مودال كشف الحساب الجديد -->
     <div class="modal-overlay" id="statementModal">
       <div class="modal large">
         <div class="flex justify-between items-center mb-4">
@@ -1926,7 +1943,6 @@
             <i class="fas fa-times"></i>
           </button>
         </div>
-
         <div id="statementContent"></div>
       </div>
     </div>
@@ -2060,20 +2076,19 @@
           populateFilterSelects();
           updateDashboard();
 
-          const today = new Date();
-          const yyyy = today.getFullYear();
-          const mm = String(today.getMonth() + 1).padStart(2, "0");
-          const dd = String(today.getDate()).padStart(2, "0");
+          const now = new Date();
+          const yyyy = now.getFullYear();
+          const mm = String(now.getMonth() + 1).padStart(2, "0");
+          const dd = String(now.getDate()).padStart(2, "0");
           const time =
-            String(today.getHours()).padStart(2, "0") +
+            String(now.getHours()).padStart(2, "0") +
             ":" +
-            String(today.getMinutes()).padStart(2, "0");
+            String(now.getMinutes()).padStart(2, "0");
           const currentMonth = `${yyyy}-${mm}`;
           const todayStr = `${yyyy}-${mm}-${dd}`;
 
           document.getElementById("payrollMonth").value = currentMonth;
           document.getElementById("loanFilterMonth").value = currentMonth;
-          // ✅ تعيين فلتر التاريخ لليوم الحالي
           document.getElementById("loanFilterDateFrom").value = todayStr;
           document.getElementById("loanFilterDateTo").value = todayStr;
           document.getElementById("loanDate").value = todayStr;
@@ -2279,7 +2294,6 @@
       function setEmployeeSort(sortBy) {
         employeeSortBy = sortBy;
         empCurrentPage = 1;
-
         document
           .querySelectorAll(".sort-btn")
           .forEach((btn) => btn.classList.remove("active"));
@@ -2291,7 +2305,6 @@
         };
         const activeBtn = document.getElementById(btnMap[sortBy]);
         if (activeBtn) activeBtn.classList.add("active");
-
         renderEmployees();
       }
 
@@ -2312,8 +2325,8 @@
             return sorted.sort((a, b) => b.name.localeCompare(a.name, "ar"));
           case "dept":
             return sorted.sort((a, b) => {
-              const deptCompare = a.dept.localeCompare(b.dept, "ar");
-              if (deptCompare !== 0) return deptCompare;
+              const c = a.dept.localeCompare(b.dept, "ar");
+              if (c !== 0) return c;
               return a.name.localeCompare(b.name, "ar");
             });
           case "salary":
@@ -2459,19 +2472,35 @@
         }
       }
 
+      function setTodayDate() {
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, "0");
+        const dd = String(now.getDate()).padStart(2, "0");
+        document.getElementById("loanDate").value = `${yyyy}-${mm}-${dd}`;
+        showToast("تم تعيين تاريخ اليوم", "success");
+      }
+
+      function setNowTime() {
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, "0");
+        const min = String(now.getMinutes()).padStart(2, "0");
+        document.getElementById("loanTime").value = `${hh}:${min}`;
+        showToast("تم تعيين الوقت الحالي", "success");
+      }
+
       function openLoanModal() {
         document.getElementById("loanForm").reset();
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, "0");
-        const dd = String(today.getDate()).padStart(2, "0");
-        const time =
-          String(today.getHours()).padStart(2, "0") +
-          ":" +
-          String(today.getMinutes()).padStart(2, "0");
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, "0");
+        const dd = String(now.getDate()).padStart(2, "0");
+        const hh = String(now.getHours()).padStart(2, "0");
+        const min = String(now.getMinutes()).padStart(2, "0");
+        const currentMonth = `${yyyy}-${mm}`;
         document.getElementById("loanDate").value = `${yyyy}-${mm}-${dd}`;
-        document.getElementById("loanTime").value = time;
-        document.getElementById("loanTargetMonth").value = `${yyyy}-${mm}`;
+        document.getElementById("loanTime").value = `${hh}:${min}`;
+        document.getElementById("loanTargetMonth").value = currentMonth;
         openModal("loanModal");
       }
 
@@ -2508,7 +2537,6 @@
           }
         });
 
-      // ✅ دالة renderLoans المحسّنة مع الفلترة باليوم
       function renderLoans() {
         const filterMonth = document.getElementById("loanFilterMonth").value;
         const filterType = document.getElementById("loanFilterType").value;
@@ -2517,18 +2545,12 @@
           document.getElementById("loanFilterDateFrom").value;
         const filterDateTo = document.getElementById("loanFilterDateTo").value;
 
-        // ✅ تطبيق الفلتر
         filteredLoans = loans.filter((l) => {
           let match = true;
-          // فلتر الشهر
           if (filterMonth && l.targetMonth !== filterMonth) match = false;
-          // فلتر النوع
           if (filterType !== "all" && l.type !== filterType) match = false;
-          // فلتر الموظف
           if (filterEmp !== "all" && l.empId !== filterEmp) match = false;
-          // ✅ فلتر التاريخ من
           if (filterDateFrom && l.date < filterDateFrom) match = false;
-          // ✅ فلتر التاريخ إلى
           if (filterDateTo && l.date > filterDateTo) match = false;
           return match;
         });
@@ -2599,7 +2621,6 @@
       function updateActiveFilterBadge(month, type, emp, dateFrom, dateTo) {
         const badge = document.getElementById("activeFilterBadge");
         const filters = [];
-
         if (dateFrom || dateTo) {
           const dateText =
             dateFrom && dateTo ? `${dateFrom} → ${dateTo}` : dateFrom || dateTo;
@@ -2607,30 +2628,25 @@
             `<span class="active-filter-badge"><i class="fas fa-calendar-day"></i> التاريخ: ${dateText}</span>`,
           );
         }
-        if (month) {
+        if (month)
           filters.push(
             `<span class="active-filter-badge"><i class="fas fa-calendar"></i> شهر: ${month}</span>`,
           );
-        }
-        if (type !== "all") {
+        if (type !== "all")
           filters.push(
             `<span class="active-filter-badge"><i class="fas fa-filter"></i> النوع: ${type}</span>`,
           );
-        }
         if (emp !== "all") {
           const empName = employees.find((e) => e.id === emp)?.name || "-";
           filters.push(
             `<span class="active-filter-badge"><i class="fas fa-user"></i> الموظف: ${empName}</span>`,
           );
         }
-
         if (filters.length > 0) {
           badge.innerHTML = `<div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
             <span style="font-size: 0.8rem; color: var(--text-muted);"><i class="fas fa-info-circle"></i> الفلاتر النشطة:</span>
             ${filters.join("")}
-            <span style="font-size: 0.8rem; color: var(--primary); font-weight: bold;">
-              (إجمالي: ${filteredLoans.length} معاملة)
-            </span>
+            <span style="font-size: 0.8rem; color: var(--primary); font-weight: bold;">(إجمالي: ${filteredLoans.length} معاملة)</span>
           </div>`;
         } else {
           badge.innerHTML = "";
@@ -2670,7 +2686,6 @@
         const perEmpBtn = document.getElementById("modePerEmpBtn");
         const globalMode = document.getElementById("globalMode");
         const employeeMode = document.getElementById("employeeMode");
-
         if (mode === "all") {
           allBtn.classList.add("active");
           perEmpBtn.classList.remove("active");
@@ -2689,7 +2704,6 @@
       function renderEmpDaysTable() {
         const tbody = document.getElementById("empDaysTableBody");
         if (!tbody) return;
-
         const filteredEmployees =
           document.getElementById("payrollFilterEmp").value === "all"
             ? employees
@@ -2697,31 +2711,16 @@
                 (e) =>
                   e.id === document.getElementById("payrollFilterEmp").value,
               );
-
         tbody.innerHTML =
           filteredEmployees
             .map((emp) => {
               const days = workDaysPerEmployee[emp.id] || 30;
-              return `
-            <tr>
-              <td>
-                <div class="emp-info">
-                  <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(emp.name)}&background=random" alt="">
-                  <div>
-                    <div class="name">${emp.name}</div>
-                    <div class="dept">${emp.position || "-"}</div>
-                  </div>
-                </div>
-              </td>
-              <td><span class="badge" style="background: rgba(212, 175, 55, 0.2); color: #b5952f;">${emp.dept}</span></td>
-              <td><strong>${Number(emp.salary || 0).toLocaleString()}</strong></td>
-              <td>
-                <input type="number" min="1" max="31" value="${days}" 
-                       onchange="updateEmployeeDays('${emp.id}', this.value)"
-                       onkeyup="updateEmployeeDays('${emp.id}', this.value)" />
-              </td>
-            </tr>
-          `;
+              return `<tr>
+            <td><div class="emp-info"><img src="https://ui-avatars.com/api/?name=${encodeURIComponent(emp.name)}&background=random" alt=""><div><div class="name">${emp.name}</div><div class="dept">${emp.position || "-"}</div></div></div></td>
+            <td><span class="badge" style="background: rgba(212, 175, 55, 0.2); color: #b5952f;">${emp.dept}</span></td>
+            <td><strong>${Number(emp.salary || 0).toLocaleString()}</strong></td>
+            <td><input type="number" min="1" max="31" value="${days}" onchange="updateEmployeeDays('${emp.id}', this.value)" onkeyup="updateEmployeeDays('${emp.id}', this.value)" /></td>
+          </tr>`;
             })
             .join("") ||
           '<tr><td colspan="4" class="text-center text-muted">لا يوجد موظفين</td></tr>';
@@ -2756,7 +2755,6 @@
         }
       }
 
-      // ✅ حساب الرواتب - الصافي يظهر بالسالب
       function calculatePayroll() {
         const month = document.getElementById("payrollMonth").value;
         const filterEmp = document.getElementById("payrollFilterEmp").value;
@@ -2767,14 +2765,12 @@
           filterEmp === "all"
             ? employees
             : employees.filter((e) => e.id === filterEmp);
-
         let hasCarryOver = false;
 
         filteredEmployees.forEach((emp) => {
           const baseSalary = Number(emp.salary || 0);
           const mealAllowance = Number(emp.mealAllowance || 0);
           const transportAllowance = Number(emp.transportAllowance || 0);
-
           const workDays = getEmployeeWorkDays(emp.id);
           const dailySalary = baseSalary / 30;
           const actualBaseSalary = Math.round(dailySalary * workDays);
@@ -2794,7 +2790,6 @@
               loans.filter((l) => l.empId === emp.id).map((l) => l.targetMonth),
             ),
           ].sort();
-
           for (const prevMonth of allMonths) {
             if (prevMonth >= month) break;
             const prevGrossSalary =
@@ -2808,17 +2803,11 @@
             const prevDeductions = prevTransactions
               .filter((l) => l.type === "خصم")
               .reduce((sum, l) => sum + Number(l.amount), 0);
-
             const monthBalance =
               carryOver + prevGrossSalary - prevLoans - prevDeductions;
-
-            if (monthBalance < 0) {
-              carryOver = Math.abs(monthBalance);
-            } else {
-              carryOver = 0;
-            }
+            if (monthBalance < 0) carryOver = Math.abs(monthBalance);
+            else carryOver = 0;
           }
-
           if (carryOver > 0) hasCarryOver = true;
 
           const currentMonthTransactions = loans.filter(
@@ -2830,46 +2819,38 @@
           const currentDeductions = currentMonthTransactions
             .filter((l) => l.type === "خصم")
             .reduce((sum, l) => sum + Number(l.amount), 0);
-
           const totalDedForMonth = currentLoans + currentDeductions + carryOver;
-          // ✅ الصافي يظهر بالسالب إذا كانت الخصومات أكثر من الراتب
           let net = grossSalary - totalDedForMonth;
-
           let newCarryOver = 0;
-          if (net < 0) {
-            newCarryOver = Math.abs(net);
-            // ✅ نترك net سالب (لا نصفره)
-          }
+          if (net < 0) newCarryOver = Math.abs(net);
 
           payrollData.push({
             empId: emp.id,
             name: emp.name,
             dept: emp.dept,
             position: emp.position || "-",
-            baseSalary: baseSalary,
-            actualBaseSalary: actualBaseSalary,
-            mealAllowance: mealAllowance,
-            actualMealAllowance: actualMealAllowance,
-            transportAllowance: transportAllowance,
-            actualTransportAllowance: actualTransportAllowance,
+            baseSalary,
+            actualBaseSalary,
+            mealAllowance,
+            actualMealAllowance,
+            transportAllowance,
+            actualTransportAllowance,
             allowances: actualAllowances,
-            grossSalary: grossSalary,
-            currentLoans: currentLoans,
-            currentDeductions: currentDeductions,
-            carryOver: carryOver,
+            grossSalary,
+            currentLoans,
+            currentDeductions,
+            carryOver,
             totalDeductions: totalDedForMonth,
-            net: net,
-            newCarryOver: newCarryOver,
-            month: month,
-            workDays: workDays,
+            net,
+            newCarryOver,
+            month,
+            workDays,
           });
         });
 
         const carryoverInfo = document.getElementById("carryoverInfo");
-        if (carryoverInfo) {
+        if (carryoverInfo)
           carryoverInfo.style.display = hasCarryOver ? "flex" : "none";
-        }
-
         payrollCurrentPage = 1;
         renderPayrollTable();
       }
@@ -2881,7 +2862,6 @@
         if (payrollCurrentPage < 1) payrollCurrentPage = 1;
         const start = (payrollCurrentPage - 1) * ITEMS_PER_PAGE;
         const pageData = payrollData.slice(start, start + ITEMS_PER_PAGE);
-
         const tbody = document.querySelector("#payrollTable tbody");
 
         if (payrollData.length === 0) {
@@ -2891,42 +2871,32 @@
           tbody.innerHTML = pageData
             .map((emp) => {
               let statusHtml = "";
-              if (emp.net < 0) {
+              if (emp.net < 0)
                 statusHtml = `<span class="payroll-carryover"><i class="fas fa-exclamation-triangle"></i> عجز: ${Math.abs(emp.net).toLocaleString()}</span>`;
-              } else if (emp.newCarryOver > 0) {
+              else if (emp.newCarryOver > 0)
                 statusHtml = `<span class="payroll-carryover"><i class="fas fa-exclamation-triangle"></i> مرحل: ${emp.newCarryOver.toLocaleString()}</span>`;
-              } else if (emp.net === 0 && emp.grossSalary > 0) {
+              else if (emp.net === 0 && emp.grossSalary > 0)
                 statusHtml = `<span class="text-muted">مخصوم بالكامل</span>`;
-              } else {
+              else
                 statusHtml = `<span class="text-success"><i class="fas fa-check-circle"></i> مستحق</span>`;
-              }
 
-              // ✅ عرض الصافي بالسالب باللون الأحمر
               const netClass =
                 emp.net < 0 ? "negative-salary" : "font-bold text-primary";
-              const netDisplay = emp.net.toLocaleString() + " ج.س";
-
-              return `
-              <tr>
-                <td><strong>${emp.name}</strong></td>
-                <td><span class="badge badge-days">${emp.workDays} يوم</span></td>
-                <td>${emp.actualBaseSalary.toLocaleString()}</td>
-                <td>${emp.allowances.toLocaleString()}</td>
-                <td>${emp.currentLoans > 0 ? '<span class="text-danger">' + emp.currentLoans.toLocaleString() + "</span>" : "0"}</td>
-                <td>${emp.currentDeductions > 0 ? '<span class="text-danger">' + emp.currentDeductions.toLocaleString() + "</span>" : "0"}</td>
-                <td>${emp.carryOver > 0 ? '<span class="payroll-carryover">-' + emp.carryOver.toLocaleString() + "</span>" : "0"}</td>
-                <td class="${netClass}" style="font-size:1rem">${netDisplay}</td>
-                <td>${statusHtml}</td>
-                <td>
-                  <button class="btn btn-sm btn-warning action-btn" onclick="openStatement('${emp.empId}', '${emp.month}')" title="كشف الحساب">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline action-btn" onclick="printPayslip('${emp.empId}', '${emp.month}')" title="طباعة قسيمة">
-                    <i class="fas fa-print"></i>
-                  </button>
-                </td>
-              </tr>
-            `;
+              return `<tr>
+              <td><strong>${emp.name}</strong></td>
+              <td><span class="badge badge-days">${emp.workDays} يوم</span></td>
+              <td>${emp.actualBaseSalary.toLocaleString()}</td>
+              <td>${emp.allowances.toLocaleString()}</td>
+              <td>${emp.currentLoans > 0 ? '<span class="text-danger">' + emp.currentLoans.toLocaleString() + "</span>" : "0"}</td>
+              <td>${emp.currentDeductions > 0 ? '<span class="text-danger">' + emp.currentDeductions.toLocaleString() + "</span>" : "0"}</td>
+              <td>${emp.carryOver > 0 ? '<span class="payroll-carryover">-' + emp.carryOver.toLocaleString() + "</span>" : "0"}</td>
+              <td class="${netClass}" style="font-size:1rem">${emp.net.toLocaleString()} ج.س</td>
+              <td>${statusHtml}</td>
+              <td>
+                <button class="btn btn-sm btn-warning action-btn" onclick="openStatement('${emp.empId}', '${emp.month}')" title="كشف الحساب"><i class="fas fa-file-invoice-dollar"></i></button>
+                <button class="btn btn-sm btn-outline action-btn" onclick="printPayslip('${emp.empId}', '${emp.month}')" title="طباعة قسيمة"><i class="fas fa-print"></i></button>
+              </td>
+            </tr>`;
             })
             .join("");
         }
@@ -2937,12 +2907,10 @@
           (s, p) => s + p.totalDeductions,
           0,
         );
-
         const grandTotalEl = document.getElementById("payrollGrandTotal");
         grandTotalEl.innerText = grandTotal.toLocaleString() + " ج.س";
         grandTotalEl.className =
           grandTotal < 0 ? "text-danger" : "text-primary";
-
         document.getElementById("payrollFilterEmpCount").innerText =
           payrollData.length;
         document.getElementById("payrollFilterGross").innerText =
@@ -2951,7 +2919,6 @@
           totalDeductions.toLocaleString() + " ج.س";
         document.getElementById("payrollFilterNet").innerText =
           grandTotal.toLocaleString() + " ج.س";
-
         renderPagination(
           "payrollPagination",
           payrollData.length,
@@ -2990,34 +2957,27 @@
           container.innerHTML = "";
           return;
         }
-
-        let html = "";
-        html += `<button class="pagination-btn" ${currentPage === 1 ? "disabled" : ""} onclick="${onPageChange}(${currentPage - 1})"><i class="fas fa-chevron-right"></i> السابق</button>`;
-
+        let html = `<button class="pagination-btn" ${currentPage === 1 ? "disabled" : ""} onclick="${onPageChange}(${currentPage - 1})"><i class="fas fa-chevron-right"></i> السابق</button>`;
         const maxVisible = 5;
         let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
         let endPage = Math.min(totalPages, startPage + maxVisible - 1);
         if (endPage - startPage < maxVisible - 1)
           startPage = Math.max(1, endPage - maxVisible + 1);
-
         if (startPage > 1) {
           html += `<button class="pagination-btn" onclick="${onPageChange}(1)">1</button>`;
           if (startPage > 2) html += `<span class="pagination-info">...</span>`;
         }
-        for (let i = startPage; i <= endPage; i++) {
+        for (let i = startPage; i <= endPage; i++)
           html += `<button class="pagination-btn ${i === currentPage ? "active" : ""}" onclick="${onPageChange}(${i})">${i}</button>`;
-        }
         if (endPage < totalPages) {
           if (endPage < totalPages - 1)
             html += `<span class="pagination-info">...</span>`;
           html += `<button class="pagination-btn" onclick="${onPageChange}(${totalPages})">${totalPages}</button>`;
         }
-
         html += `<button class="pagination-btn" ${currentPage === totalPages ? "disabled" : ""} onclick="${onPageChange}(${currentPage + 1})">التالي <i class="fas fa-chevron-left"></i></button>`;
         const start = (currentPage - 1) * ITEMS_PER_PAGE + 1;
         const end = Math.min(currentPage * ITEMS_PER_PAGE, totalItems);
         html += `<span class="pagination-info">عرض ${start}-${end} من ${totalItems}</span>`;
-
         container.innerHTML = html;
       }
 
@@ -3076,28 +3036,17 @@
         );
       }
 
-      // ✅✅✅ كشف حساب الموظف - الميزة الجديدة
+      // ✅ كشف حساب الموظف - فلترة حسب شهر الخصم
       function openStatement(empId, month) {
         const emp = employees.find((e) => e.id === empId);
         if (!emp) return;
-
         const payrollRecord = payrollData.find(
           (p) => p.empId === empId && p.month === month,
         );
         const workDays = payrollRecord ? payrollRecord.workDays : 30;
-
-        // جلب جميع معاملات الموظف مرتبة بالتاريخ
-        const empLoans = loans
-          .filter((l) => l.empId === empId)
-          .sort((a, b) => a.date.localeCompare(b.date));
-
-        // حساب الرصيد المتراكم يوم بيوم
         const baseSalary = Number(emp.salary || 0);
         const mealAllowance = Number(emp.mealAllowance || 0);
         const transportAllowance = Number(emp.transportAllowance || 0);
-        const fullGrossSalary = baseSalary + mealAllowance + transportAllowance;
-
-        // الراتب الفعلي للشهر المحدد
         const dailySalary = baseSalary / 30;
         const actualBaseSalary = Math.round(dailySalary * workDays);
         const actualMeal = Math.round((mealAllowance / 30) * workDays);
@@ -3106,158 +3055,92 @@
         );
         const actualGross = actualBaseSalary + actualMeal + actualTransport;
 
-        // بناء جدول اليومية
+        const allEmpLoans = loans
+          .filter((l) => l.empId === empId)
+          .sort((a, b) => a.date.localeCompare(b.date));
         let runningBalance = 0;
-        const dailyRows = [];
-
-        // إضافة صف الراتب في بداية الشهر
+        const allDailyRows = [];
         const monthStart = `${month}-01`;
-        dailyRows.push({
+
+        allDailyRows.push({
           date: monthStart,
           time: "00:00",
           type: "راتب",
           description: `الراتب الفعلي (${workDays} يوم)`,
+          targetMonth: month,
           credit: actualGross,
           debit: 0,
           balance: actualGross,
         });
         runningBalance = actualGross;
 
-        // إضافة المعاملات
-        empLoans.forEach((l) => {
+        allEmpLoans.forEach((l) => {
           const amount = Number(l.amount);
-          const isLoan = l.type === "سلفة";
           runningBalance -= amount;
-
-          dailyRows.push({
+          allDailyRows.push({
             date: l.date,
             time: l.time || "--:--",
             type: l.type,
-            description: l.note || (isLoan ? "سلفة" : "خصم"),
+            description: l.note || (l.type === "سلفة" ? "سلفة" : "خصم"),
+            targetMonth: l.targetMonth,
             credit: 0,
             debit: amount,
             balance: runningBalance,
           });
         });
 
-        const finalBalance = runningBalance;
-        const totalDebits = dailyRows.reduce((s, r) => s + r.debit, 0);
-        const totalCredits = dailyRows.reduce((s, r) => s + r.credit, 0);
-
         const content = document.getElementById("statementContent");
         content.innerHTML = `
           <div class="statement-header">
             <h3><i class="fas fa-user-tie"></i> ${emp.name}</h3>
             <div class="statement-info-grid">
-              <div class="statement-info-item">
-                <div class="label">القسم</div>
-                <div class="value">${emp.dept}</div>
-              </div>
-              <div class="statement-info-item">
-                <div class="label">الوظيفة</div>
-                <div class="value">${emp.position || "-"}</div>
-              </div>
-              <div class="statement-info-item">
-                <div class="label">الراتب الأساسي</div>
-                <div class="value">${baseSalary.toLocaleString()} ج.س</div>
-              </div>
-              <div class="statement-info-item">
-                <div class="label">أيام العمل</div>
-                <div class="value">${workDays} يوم</div>
-              </div>
-              <div class="statement-info-item">
-                <div class="label">الراتب الفعلي</div>
-                <div class="value">${actualGross.toLocaleString()} ج.س</div>
-              </div>
-              <div class="statement-info-item">
-                <div class="label">الشهر</div>
-                <div class="value">${month}</div>
-              </div>
+              <div class="statement-info-item"><div class="label">القسم</div><div class="value">${emp.dept}</div></div>
+              <div class="statement-info-item"><div class="label">الوظيفة</div><div class="value">${emp.position || "-"}</div></div>
+              <div class="statement-info-item"><div class="label">الراتب الأساسي</div><div class="value">${baseSalary.toLocaleString()} ج.س</div></div>
+              <div class="statement-info-item"><div class="label">أيام العمل</div><div class="value">${workDays} يوم</div></div>
+              <div class="statement-info-item"><div class="label">الراتب الفعلي</div><div class="value">${actualGross.toLocaleString()} ج.س</div></div>
+              <div class="statement-info-item"><div class="label">الشهر المحدد</div><div class="value">${month}</div></div>
             </div>
           </div>
           
-          <div class="statement-filters">
-            <label><i class="fas fa-filter"></i> فلترة بالتاريخ:</label>
-            <input type="date" id="stmtDateFrom" value="${month}-01" onchange="filterStatementTable()" />
-            <span>إلى</span>
-            <input type="date" id="stmtDateTo" value="${month}-31" onchange="filterStatementTable()" />
-            <button class="btn btn-sm btn-outline" onclick="resetStatementFilter('${month}')">
-              <i class="fas fa-undo"></i> إعادة تعيين
-            </button>
-            <button class="btn btn-sm btn-primary" onclick="printStatement()">
-              <i class="fas fa-print"></i> طباعة الكشف
-            </button>
+          <div class="stmt-filter-box">
+            <h4><i class="fas fa-filter"></i> فلترة حسب شهر الخصم</h4>
+            <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: flex-end;">
+              <div style="flex: 1; min-width: 150px;">
+                <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.3rem;">
+                  <i class="fas fa-calendar-alt"></i> من شهر:
+                </label>
+                <input type="month" id="stmtMonthFrom" onchange="applyStatementFilters()" style="width: 100%;" />
+              </div>
+              <div style="flex: 1; min-width: 150px;">
+                <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.3rem;">
+                  <i class="fas fa-calendar-alt"></i> إلى شهر:
+                </label>
+                <input type="month" id="stmtMonthTo" onchange="applyStatementFilters()" style="width: 100%;" />
+              </div>
+              <button class="btn btn-outline" onclick="resetStatementFilters()" style="height: 40px;">
+                <i class="fas fa-undo"></i> إعادة تعيين
+              </button>
+              <button class="btn btn-primary" onclick="printStatement()" style="height: 40px;">
+                <i class="fas fa-print"></i> طباعة
+              </button>
+            </div>
+            <div id="stmtFilterInfo" style="margin-top: 0.8rem; padding: 0.6rem; background: rgba(212, 175, 55, 0.1); border-radius: 6px; font-size: 0.85rem; display: none;">
+              <i class="fas fa-info-circle" style="color: var(--primary);"></i>
+              <span id="stmtFilterInfoText"></span>
+            </div>
           </div>
           
           <div id="statementTableContainer">
             <table class="statement-table" id="statementTable">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>التاريخ</th>
-                  <th>الوقت</th>
-                  <th>النوع</th>
-                  <th>البيان</th>
-                  <th>دائن (+)</th>
-                  <th>مدين (-)</th>
-                  <th>الرصيد</th>
-                </tr>
-              </thead>
-              <tbody id="statementTableBody">
-                ${dailyRows
-                  .map(
-                    (r, i) => `
-                  <tr data-date="${r.date}">
-                    <td>${i + 1}</td>
-                    <td><strong>${r.date}</strong></td>
-                    <td>${r.time}</td>
-                    <td>
-                      <span class="badge ${r.type === "سلفة" ? "badge-loan" : r.type === "خصم" ? "badge-deduction" : ""}" 
-                            style="${r.type === "راتب" ? "background: rgba(25, 135, 84, 0.2); color: #198754;" : ""}">
-                        ${r.type}
-                      </span>
-                    </td>
-                    <td>${r.description}</td>
-                    <td class="${r.credit > 0 ? "positive" : ""}">${r.credit > 0 ? r.credit.toLocaleString() : "-"}</td>
-                    <td class="${r.debit > 0 ? "negative" : ""}">${r.debit > 0 ? r.debit.toLocaleString() : "-"}</td>
-                    <td class="${r.balance < 0 ? "negative" : "positive"}"><strong>${r.balance.toLocaleString()}</strong></td>
-                  </tr>
-                `,
-                  )
-                  .join("")}
-              </tbody>
+              <thead><tr><th>#</th><th>تاريخ الإضافة</th><th>الوقت</th><th>النوع</th><th>شهر الخصم</th><th>البيان</th><th>دائن (+)</th><th>مدين (-)</th><th>الرصيد</th></tr></thead>
+              <tbody id="statementTableBody"></tbody>
             </table>
           </div>
           
-          <div class="statement-summary">
-            <div class="statement-summary-item">
-              <div class="label">إجمالي الدائن (الراتب)</div>
-              <div class="value positive">${totalCredits.toLocaleString()} ج.س</div>
-            </div>
-            <div class="statement-summary-item">
-              <div class="label">إجمالي المدين (الخصومات)</div>
-              <div class="value negative">${totalDebits.toLocaleString()} ج.س</div>
-            </div>
-            <div class="statement-summary-item">
-              <div class="label">الرصيد النهائي</div>
-              <div class="value ${finalBalance < 0 ? "negative" : "positive"}">${finalBalance.toLocaleString()} ج.س</div>
-            </div>
-            <div class="statement-summary-item">
-              <div class="label">الحالة</div>
-              <div class="value" style="font-size: 0.9rem;">
-                ${
-                  finalBalance < 0
-                    ? '<span style="color: var(--danger);">عجز (سلفيات > راتب)</span>'
-                    : finalBalance === 0
-                      ? '<span style="color: var(--text-muted);">متزن</span>'
-                      : '<span style="color: var(--success);">مستحق</span>'
-                }
-              </div>
-            </div>
-          </div>
+          <div class="statement-summary" id="statementSummary"></div>
         `;
 
-        // حفظ البيانات للطباعة
         window._currentStatement = {
           emp,
           month,
@@ -3266,85 +3149,190 @@
           baseSalary,
           mealAllowance,
           transportAllowance,
-          dailyRows,
-          finalBalance,
-          totalCredits,
-          totalDebits,
+          allDailyRows,
         };
 
+        applyStatementFilters();
         openModal("statementModal");
       }
 
-      function filterStatementTable() {
-        const dateFrom = document.getElementById("stmtDateFrom").value;
-        const dateTo = document.getElementById("stmtDateTo").value;
-        const rows = document.querySelectorAll("#statementTableBody tr");
+      // ✅ فلترة حسب شهر الخصم (targetMonth)
+      function applyStatementFilters() {
+        const stmt = window._currentStatement;
+        if (!stmt) return;
 
-        rows.forEach((row) => {
-          const rowDate = row.getAttribute("data-date");
-          if (!rowDate) return;
+        const monthFrom = document.getElementById("stmtMonthFrom").value;
+        const monthTo = document.getElementById("stmtMonthTo").value;
 
-          let show = true;
-          if (dateFrom && rowDate < dateFrom) show = false;
-          if (dateTo && rowDate > dateTo) show = false;
+        // ✅ الفلترة حسب شهر الخصم (targetMonth) وليس تاريخ الإضافة
+        let filteredRows = stmt.allDailyRows.filter((row) => {
+          const rowTargetMonth = row.targetMonth;
 
-          row.style.display = show ? "" : "none";
+          let match = true;
+
+          // فلتر من شهر
+          if (monthFrom && rowTargetMonth < monthFrom) match = false;
+
+          // فلتر إلى شهر
+          if (monthTo && rowTargetMonth > monthTo) match = false;
+
+          return match;
         });
+
+        // إعادة حساب الرصيد المتراكم للصفوف المفلترة
+        let runningBalance = 0;
+        filteredRows = filteredRows.map((row) => {
+          if (row.type === "راتب") {
+            runningBalance = row.credit;
+          } else {
+            runningBalance -= row.debit;
+          }
+          return { ...row, balance: runningBalance };
+        });
+
+        const tbody = document.getElementById("statementTableBody");
+        tbody.innerHTML =
+          filteredRows.length === 0
+            ? '<tr><td colspan="9" class="text-center text-muted" style="padding: 2rem;">لا توجد معاملات مطابقة للفلتر</td></tr>'
+            : filteredRows
+                .map((r, i) => {
+                  const isSalary = r.type === "راتب";
+                  const isDifferentMonth =
+                    r.targetMonth !== stmt.month && !isSalary;
+                  return `
+              <tr style="${isDifferentMonth ? "background: #fff9e6;" : ""}">
+                <td>${i + 1}</td>
+                <td><strong>${r.date}</strong></td>
+                <td>${r.time}</td>
+                <td>
+                  <span class="badge ${r.type === "سلفة" ? "badge-loan" : r.type === "خصم" ? "badge-deduction" : ""}" 
+                        style="${isSalary ? "background: rgba(25, 135, 84, 0.2); color: #198754;" : ""}">
+                    ${r.type}
+                  </span>
+                </td>
+                <td>
+                  <span class="stmt-info-badge ${isSalary ? "added" : "deducted"}">
+                    ${r.targetMonth}
+                  </span>
+                </td>
+                <td>${r.description}</td>
+                <td class="${r.credit > 0 ? "positive" : ""}">${r.credit > 0 ? r.credit.toLocaleString() : "-"}</td>
+                <td class="${r.debit > 0 ? "negative" : ""}">${r.debit > 0 ? r.debit.toLocaleString() : "-"}</td>
+                <td class="${r.balance < 0 ? "negative" : "positive"}"><strong>${r.balance.toLocaleString()}</strong></td>
+              </tr>
+            `;
+                })
+                .join("");
+
+        const totalCredits = filteredRows.reduce((s, r) => s + r.credit, 0);
+        const totalDebits = filteredRows.reduce((s, r) => s + r.debit, 0);
+        const finalBalance =
+          filteredRows.length > 0
+            ? filteredRows[filteredRows.length - 1].balance
+            : 0;
+
+        document.getElementById("statementSummary").innerHTML = `
+          <div class="statement-summary-item"><div class="label">عدد المعاملات</div><div class="value">${filteredRows.length}</div></div>
+          <div class="statement-summary-item"><div class="label">إجمالي الدائن (الراتب)</div><div class="value positive">${totalCredits.toLocaleString()} ج.س</div></div>
+          <div class="statement-summary-item"><div class="label">إجمالي المدين (الخصومات)</div><div class="value negative">${totalDebits.toLocaleString()} ج.س</div></div>
+          <div class="statement-summary-item"><div class="label">الرصيد النهائي</div><div class="value ${finalBalance < 0 ? "negative" : "positive"}">${finalBalance.toLocaleString()} ج.س</div></div>
+        `;
+
+        const filterInfo = document.getElementById("stmtFilterInfo");
+        const filterInfoText = document.getElementById("stmtFilterInfoText");
+        const filters = [];
+
+        if (monthFrom || monthTo) {
+          filters.push(
+            `شهر الخصم: ${monthFrom || "من البداية"} → ${monthTo || "حتى النهاية"}`,
+          );
+        }
+
+        if (filters.length > 0) {
+          filterInfo.style.display = "block";
+          filterInfoText.innerHTML = `تم تطبيق فلتر: <strong>${filters.join(" | ")}</strong> - عرض ${filteredRows.length} معاملة`;
+        } else {
+          filterInfo.style.display = "none";
+        }
       }
 
-      function resetStatementFilter(month) {
-        document.getElementById("stmtDateFrom").value = `${month}-01`;
-        document.getElementById("stmtDateTo").value = `${month}-31`;
-        filterStatementTable();
+      function resetStatementFilters() {
+        document.getElementById("stmtMonthFrom").value = "";
+        document.getElementById("stmtMonthTo").value = "";
+        applyStatementFilters();
+        showToast("تم إعادة تعيين الفلاتر", "success");
       }
 
+      // ✅ طباعة كشف الحساب مع الفلترة حسب شهر الخصم
       function printStatement() {
         const stmt = window._currentStatement;
         if (!stmt) return;
 
+        const monthFrom = document.getElementById("stmtMonthFrom").value;
+        const monthTo = document.getElementById("stmtMonthTo").value;
+
+        // ✅ الفلترة حسب شهر الخصم
+        let filteredRows = stmt.allDailyRows.filter((row) => {
+          const rowTargetMonth = row.targetMonth;
+          let match = true;
+          if (monthFrom && rowTargetMonth < monthFrom) match = false;
+          if (monthTo && rowTargetMonth > monthTo) match = false;
+          return match;
+        });
+
+        let runningBalance = 0;
+        filteredRows = filteredRows.map((row) => {
+          if (row.type === "راتب") runningBalance = row.credit;
+          else runningBalance -= row.debit;
+          return { ...row, balance: runningBalance };
+        });
+
         const {
           emp,
-          month,
           workDays,
           actualGross,
           baseSalary,
           mealAllowance,
           transportAllowance,
-          dailyRows,
-          finalBalance,
-          totalCredits,
-          totalDebits,
+          month: stmtMonth,
         } = stmt;
+        const totalCredits = filteredRows.reduce((s, r) => s + r.credit, 0);
+        const totalDebits = filteredRows.reduce((s, r) => s + r.debit, 0);
+        const finalBalance =
+          filteredRows.length > 0
+            ? filteredRows[filteredRows.length - 1].balance
+            : 0;
 
-        const dateFrom = document.getElementById("stmtDateFrom").value;
-        const dateTo = document.getElementById("stmtDateTo").value;
-
-        const filteredRows = dailyRows.filter((r) => {
-          let show = true;
-          if (dateFrom && r.date < dateFrom) show = false;
-          if (dateTo && r.date > dateTo) show = false;
-          return show;
-        });
+        const filters = [];
+        if (monthFrom || monthTo)
+          filters.push(
+            `شهر الخصم: ${monthFrom || "من البداية"} → ${monthTo || "حتى النهاية"}`,
+          );
+        const filterText =
+          filters.length > 0 ? filters.join(" | ") : "بدون فلاتر";
 
         const rowsHtml = filteredRows
-          .map(
-            (r, i) => `
-          <tr>
-            <td>${i + 1}</td>
-            <td><strong>${r.date}</strong></td>
-            <td>${r.time}</td>
-            <td>${r.type}</td>
-            <td>${r.description}</td>
-            <td style="color: ${r.credit > 0 ? "#198754" : "#000"}; font-weight: ${r.credit > 0 ? "bold" : "normal"};">${r.credit > 0 ? r.credit.toLocaleString() : "-"}</td>
-            <td style="color: ${r.debit > 0 ? "#dc3545" : "#000"}; font-weight: ${r.debit > 0 ? "bold" : "normal"};">${r.debit > 0 ? r.debit.toLocaleString() : "-"}</td>
-            <td style="color: ${r.balance < 0 ? "#dc3545" : "#198754"}; font-weight: bold;">${r.balance.toLocaleString()}</td>
-          </tr>
-        `,
-          )
+          .map((r, i) => {
+            const isDifferentMonth =
+              r.targetMonth !== stmtMonth && r.type !== "راتب";
+            return `
+            <tr style="${isDifferentMonth ? "background: #fff9e6;" : ""}">
+              <td>${i + 1}</td>
+              <td><strong>${r.date}</strong></td>
+              <td>${r.time}</td>
+              <td>${r.type}</td>
+              <td>${r.targetMonth}</td>
+              <td>${r.description}</td>
+              <td style="color: ${r.credit > 0 ? "#198754" : "#000"}; font-weight: ${r.credit > 0 ? "bold" : "normal"};">${r.credit > 0 ? r.credit.toLocaleString() : "-"}</td>
+              <td style="color: ${r.debit > 0 ? "#dc3545" : "#000"}; font-weight: ${r.debit > 0 ? "bold" : "normal"};">${r.debit > 0 ? r.debit.toLocaleString() : "-"}</td>
+              <td style="color: ${r.balance < 0 ? "#dc3545" : "#198754"}; font-weight: bold;">${r.balance.toLocaleString()}</td>
+            </tr>
+          `;
+          })
           .join("");
 
         const html = `
-          ${getPrintHeader("كشف حساب موظف", `${emp.name} - شهر ${month}`)}
+          ${getPrintHeader("كشف حساب موظف", `${emp.name} - ${filterText}`)}
           <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e0e0e0;">
             <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
               <div><strong>الموظف:</strong> ${emp.name}</div>
@@ -3355,18 +3343,22 @@
               <div><strong>الراتب الفعلي:</strong> ${actualGross.toLocaleString()} ج.س</div>
             </div>
           </div>
-          ${dateFrom || dateTo ? `<div style="background: #fff9e6; padding: 8px 12px; border-radius: 6px; margin-bottom: 15px; font-size: 10pt;"><strong>الفترة:</strong> ${dateFrom || "من البداية"} → ${dateTo || "حتى النهاية"}</div>` : ""}
+          <div style="background: #fff9e6; padding: 8px 12px; border-radius: 6px; margin-bottom: 15px; font-size: 10pt; border: 1px solid #d4af37;">
+            <strong><i class="fas fa-filter"></i> الفلاتر المطبقة:</strong> ${filterText}
+            <br>
+            <strong>عدد المعاملات:</strong> ${filteredRows.length}
+          </div>
           <table class="payroll-summary-table">
             <thead>
-              <tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>النوع</th><th>البيان</th><th>دائن (+)</th><th>مدين (-)</th><th>الرصيد</th></tr>
+              <tr><th>#</th><th>تاريخ الإضافة</th><th>الوقت</th><th>النوع</th><th>شهر الخصم</th><th>البيان</th><th>دائن (+)</th><th>مدين (-)</th><th>الرصيد</th></tr>
             </thead>
             <tbody>${rowsHtml}</tbody>
           </table>
           <div class="summary-box" style="margin-top: 20px;">
+            <div class="summary-item"><div class="label">عدد المعاملات</div><div class="value">${filteredRows.length}</div></div>
             <div class="summary-item"><div class="label">إجمالي الدائن</div><div class="value" style="color: #198754;">${totalCredits.toLocaleString()}</div></div>
             <div class="summary-item"><div class="label">إجمالي المدين</div><div class="value" style="color: #dc3545;">${totalDebits.toLocaleString()}</div></div>
             <div class="summary-item"><div class="label">الرصيد النهائي</div><div class="value" style="color: ${finalBalance < 0 ? "#dc3545" : "#198754"};">${finalBalance.toLocaleString()}</div></div>
-            <div class="summary-item"><div class="label">الحالة</div><div class="value" style="font-size: 11pt;">${finalBalance < 0 ? "عجز" : finalBalance === 0 ? "متزن" : "مستحق"}</div></div>
           </div>
           <div class="doc-footer">
             <div class="sign-box"><div class="sign-line"></div><p>الموظف</p></div>
@@ -3376,7 +3368,7 @@
           ${getPrintFooter()}
         `;
 
-        printContent(html, `كشف حساب ${emp.name} - ${month}`);
+        printContent(html, `كشف حساب ${emp.name}`);
       }
 
       function exportEmployeesToExcel() {
@@ -3431,7 +3423,6 @@
           showToast("لا توجد سلفيات مطابقة للفلتر", "error");
           return;
         }
-
         const excelData = filteredLoans.map((l, i) => {
           const emp = employees.find((e) => e.id === l.empId);
           return {
@@ -3446,7 +3437,6 @@
             الملاحظات: l.note || "-",
           };
         });
-
         const ws = XLSX.utils.json_to_sheet(excelData);
         ws["!cols"] = [
           { wch: 5 },
@@ -3461,9 +3451,10 @@
         ];
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "السلفيات والخصومات");
-
-        const fileName = `السلفيات_والخصومات_${new Date().toISOString().slice(0, 10)}.xlsx`;
-        XLSX.writeFile(wb, fileName);
+        XLSX.writeFile(
+          wb,
+          `السلفيات_والخصومات_${new Date().toISOString().slice(0, 10)}.xlsx`,
+        );
         showToast(`تم تصدير ${filteredLoans.length} معاملة`, "success");
       }
 
@@ -3514,12 +3505,10 @@
         ];
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, `كشف الرواتب ${month}`);
-
         const modeInfo =
           workDaysMode === "all"
             ? `نفس الأيام للكل (${document.getElementById("workDaysInput").value} يوم)`
             : "أيام مختلفة لكل موظف";
-
         const infoData = [
           { الحقل: "اسم المطعم", القيمة: RESTAURANT_NAME },
           { الحقل: "الشهر", القيمة: month },
@@ -3549,7 +3538,6 @@
         const wsInfo = XLSX.utils.json_to_sheet(infoData);
         wsInfo["!cols"] = [{ wch: 25 }, { wch: 40 }];
         XLSX.utils.book_append_sheet(wb, wsInfo, "معلومات");
-
         XLSX.writeFile(wb, `كشف_الرواتب_${month}.xlsx`);
         showToast("تم تصدير كشف الرواتب", "success");
       }
@@ -3748,14 +3736,12 @@
           showToast("لا توجد سلفيات مطابقة للفلتر", "error");
           return;
         }
-
         const filterMonth = document.getElementById("loanFilterMonth").value;
         const filterType = document.getElementById("loanFilterType").value;
         const filterEmp = document.getElementById("loanFilterEmp").value;
         const filterDateFrom =
           document.getElementById("loanFilterDateFrom").value;
         const filterDateTo = document.getElementById("loanFilterDateTo").value;
-
         let filterDesc = [];
         if (filterDateFrom || filterDateTo)
           filterDesc.push(
@@ -3770,54 +3756,33 @@
         }
         const filterText =
           filterDesc.length > 0 ? filterDesc.join(" | ") : "بدون فلاتر";
-
         const header = getPrintHeader(
           "كشف السلفيات والخصومات",
           `إجمالي: ${filteredLoans.length} معاملة (حسب الفلتر)`,
         );
         const footer = getPrintFooter();
-
         const totalLoans = filteredLoans
           .filter((l) => l.type === "سلفة")
           .reduce((s, l) => s + Number(l.amount), 0);
         const totalDeductions = filteredLoans
           .filter((l) => l.type === "خصم")
           .reduce((s, l) => s + Number(l.amount), 0);
-
         const rows = filteredLoans
           .map(
             (l, i) =>
-              `<tr>
-            <td>${i + 1}</td>
-            <td style="text-align:right;">${l.empName}</td>
-            <td>${l.type}</td>
-            <td>${Number(l.amount).toLocaleString()}</td>
-            <td>${l.date}</td>
-            <td>${l.targetMonth || "-"}</td>
-          </tr>`,
+              `<tr><td>${i + 1}</td><td style="text-align:right;">${l.empName}</td><td>${l.type}</td><td>${Number(l.amount).toLocaleString()}</td><td>${l.date}</td><td>${l.targetMonth || "-"}</td></tr>`,
           )
           .join("");
-
         const html = `${header}
-          <div class="filter-info-print">
-            <strong><i class="fas fa-filter"></i> الفلاتر المطبقة:</strong> ${filterText}
-            <br>
-            <strong>عدد المعاملات:</strong> ${filteredLoans.length} | 
-            <strong>إجمالي السلفيات:</strong> ${totalLoans.toLocaleString()} ج.س | 
-            <strong>إجمالي الخصومات:</strong> ${totalDeductions.toLocaleString()} ج.س
-          </div>
+          <div class="filter-info-print"><strong><i class="fas fa-filter"></i> الفلاتر المطبقة:</strong> ${filterText}<br><strong>عدد المعاملات:</strong> ${filteredLoans.length} | <strong>إجمالي السلفيات:</strong> ${totalLoans.toLocaleString()} ج.س | <strong>إجمالي الخصومات:</strong> ${totalDeductions.toLocaleString()} ج.س</div>
           <div class="summary-box">
             <div class="summary-item"><div class="label">عدد المعاملات</div><div class="value">${filteredLoans.length}</div></div>
             <div class="summary-item"><div class="label">إجمالي السلفيات</div><div class="value">${totalLoans.toLocaleString()}</div></div>
             <div class="summary-item"><div class="label">إجمالي الخصومات</div><div class="value">${totalDeductions.toLocaleString()}</div></div>
             <div class="summary-item"><div class="label">الإجمالي الكلي</div><div class="value">${(totalLoans + totalDeductions).toLocaleString()}</div></div>
           </div>
-          <table class="payroll-summary-table">
-            <thead><tr><th>#</th><th>الموظف</th><th>النوع</th><th>المبلغ</th><th>التاريخ</th><th>الشهر</th></tr></thead>
-            <tbody>${rows}</tbody>
-          </table>
+          <table class="payroll-summary-table"><thead><tr><th>#</th><th>الموظف</th><th>النوع</th><th>المبلغ</th><th>التاريخ</th><th>الشهر</th></tr></thead><tbody>${rows}</tbody></table>
           ${footer}`;
-
         printContent(html, "كشف السلفيات");
       }
 
@@ -3893,10 +3858,8 @@
         const carryOver = payrollRecord ? payrollRecord.carryOver : 0;
         const totalDedForMonth = currentLoans + currentDeductions + carryOver;
         let net = grossSalary - totalDedForMonth;
-
         const header = getPrintHeader("قسيمة راتب شهرية", `الفترة: ${month}`);
         const footer = getPrintFooter();
-
         const html = `
           ${header}
           <div class="work-days-info"><i class="fas fa-calendar-day"></i> أيام العمل الفعلية: <strong>${workDays} يوم</strong> من أصل 30 يوم</div>
