@@ -952,6 +952,11 @@
         color: #0dcaf0;
         font-weight: bold;
       }
+      .badge-carryover {
+        background: rgba(220, 53, 69, 0.15);
+        color: var(--danger);
+        font-weight: bold;
+      }
       .payroll-carryover {
         background: rgba(220, 53, 69, 0.1);
         padding: 0.3rem 0.6rem;
@@ -1193,6 +1198,10 @@
         background: rgba(220, 53, 69, 0.2);
         color: var(--danger);
       }
+      .stmt-info-badge.carryover {
+        background: rgba(220, 53, 69, 0.15);
+        color: var(--danger);
+      }
       .active-filter-badge {
         display: inline-flex;
         align-items: center;
@@ -1295,6 +1304,29 @@
       }
       #connectionStatus.show {
         display: block;
+      }
+
+      /* ✅ Add Button for Desktop */
+      .add-loan-btn-desktop {
+        background: var(--primary);
+        color: #151515;
+        padding: 0.8rem 1.5rem;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        font-family: var(--font);
+        font-weight: 700;
+        font-size: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        transition: all 0.3s;
+      }
+      .add-loan-btn-desktop:hover {
+        background: var(--primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
       }
 
       /* ✅ Work Days Input in Table */
@@ -1511,6 +1543,10 @@
           width: 60px;
           font-size: 0.85rem;
         }
+        .add-loan-btn-desktop {
+          width: 100%;
+          justify-content: center;
+        }
       }
       @media (max-width: 380px) {
         .stats-grid {
@@ -1536,7 +1572,7 @@
             class="splash-logo"
             onerror="
               this.parentElement.innerHTML =
-                '<div style=&quot;font-size:80px;&quot;></div>'
+                '<div style=&quot;font-size:80px;&quot;>🔥</div>'
             "
           />
         </div>
@@ -1544,7 +1580,7 @@
         <p class="splash-tagline">نظام إدارة الموارد البشرية</p>
         <div class="splash-version">Version 2.2.1</div>
         <div class="splash-developer">
-          Developed by: <strong>Ammar Konna</strong>
+          Developed by: <strong>Ammar Kana</strong>
         </div>
         <div class="splash-loader"><div class="splash-loader-bar"></div></div>
       </div>
@@ -1851,6 +1887,19 @@
         </section>
 
         <section id="loans" class="view-section hidden">
+          <!-- ✅ زر إضافة سلفة للكمبيوتر -->
+          <div
+            style="
+              display: flex;
+              justify-content: flex-end;
+              margin-bottom: 1rem;
+            "
+          >
+            <button class="add-loan-btn-desktop" onclick="openLoanModal()">
+              <i class="fas fa-plus-circle"></i> إضافة سلفة/خصم جديد
+            </button>
+          </div>
+
           <div class="card mb-4 filter-bar">
             <div
               class="filter-toggle"
@@ -1931,9 +1980,6 @@
               </button>
               <button class="btn btn-outline" onclick="clearLoanFilters()">
                 <i class="fas fa-times"></i> مسح الفلتر
-              </button>
-              <button class="btn btn-info" onclick="forceRefreshLoans()">
-                <i class="fas fa-sync-alt"></i> تحديث من السيرفر
               </button>
             </div>
           </div>
@@ -2608,26 +2654,6 @@
         if (confirm("هل أنت متأكد من تسجيل الخروج؟")) auth.signOut();
       }
 
-      // ✅ جلب السلفيات من السيرفر مباشرة (تجاوز الكاش)
-      async function refreshLoansFromServer() {
-        if (!currentUser) return;
-        try {
-          const loanSnap = await db
-            .collection("users")
-            .doc(currentUser.uid)
-            .collection("loans")
-            .orderBy("date", "desc")
-            .get({ source: "server" }); // 🔥 مهم جداً: جلب من السيرفر
-
-          loans = loanSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-          console.log("[Loans] Refreshed from server. Total:", loans.length);
-          return true;
-        } catch (err) {
-          console.warn("[Loans] Cannot refresh from server:", err);
-          return false;
-        }
-      }
-
       async function loadAllData() {
         if (!currentUser) return;
         setLoading(true);
@@ -2642,24 +2668,12 @@
             ...doc.data(),
           }));
 
-          // ✅ محاولة جلب البيانات من السيرفر أولاً
-          let loanSnap;
-          try {
-            loanSnap = await db
-              .collection("users")
-              .doc(currentUser.uid)
-              .collection("loans")
-              .orderBy("date", "desc")
-              .get({ source: "server" });
-          } catch (err) {
-            console.warn("[Loans] Offline mode - using cache");
-            loanSnap = await db
-              .collection("users")
-              .doc(currentUser.uid)
-              .collection("loans")
-              .orderBy("date", "desc")
-              .get({ source: "cache" });
-          }
+          const loanSnap = await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("loans")
+            .orderBy("date", "desc")
+            .get();
           loans = loanSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
           populateEmployeeSelects();
@@ -3330,60 +3344,19 @@
         renderLoans();
         showToast("تم مسح جميع الفلاتر", "success");
       }
-
-      // ✅ حذف السلفة نهائياً من Firestore
       async function deleteLoan(id) {
-        if (!confirm("هل أنت متأكد من حذف هذه السلفة نهائياً؟")) return;
-
-        const loanToDelete = loans.find((l) => l.id === id);
-        if (!loanToDelete) {
-          showToast("السلفة غير موجودة", "error");
-          return;
-        }
-
+        if (!confirm("حذف هذه السجل؟")) return;
         try {
-          // 1️⃣ حذف من Firestore نهائياً
           await db
             .collection("users")
             .doc(currentUser.uid)
             .collection("loans")
             .doc(id)
             .delete();
-
-          // 2️⃣ حذف من المصفوفة المحلية فوراً
-          loans = loans.filter((l) => l.id !== id);
-
-          // 3️⃣ إعادة تحميل البيانات من السيرفر
-          await refreshLoansFromServer();
-
-          // 4️⃣ إعادة رسم كل شيء
-          renderLoans();
-          calculatePayroll();
-          updateDashboard();
-
-          showToast("✅ تم الحذف نهائياً من النظام وقاعدة البيانات", "success");
+          await loadAllData();
+          showToast("تم الحذف بنجاح");
         } catch (err) {
-          showToast("خطأ في الحذف: " + err.message, "error");
-        }
-      }
-
-      // ✅ زر تحديث من السيرفر
-      async function forceRefreshLoans() {
-        showToast("⏳ جاري التحديث من السيرفر...", "success");
-        setLoading(true);
-        try {
-          await refreshLoansFromServer();
-          renderLoans();
-          calculatePayroll();
-          updateDashboard();
-          showToast(
-            "✅ تم التحديث - السلفيات المحذوفة لن تظهر الآن",
-            "success",
-          );
-        } catch (err) {
-          showToast("خطأ في التحديث: " + err.message, "error");
-        } finally {
-          setLoading(false);
+          showToast(err.message, "error");
         }
       }
 
@@ -3719,6 +3692,7 @@
         else navigate("employees");
       }
 
+      // ✅ كشف حساب الموظف - مع المبالغ المرحلة بالسالب
       function openStatement(empId, month) {
         const emp = employees.find((e) => e.id === empId);
         if (!emp) return;
@@ -3736,23 +3710,70 @@
           (transportAllowance / 30) * workDays,
         );
         const actualGross = actualBaseSalary + actualMeal + actualTransport;
+
+        // ✅ حساب المبالغ المرحلة من الأشهر السابقة
+        let carryOver = 0;
+        const allMonths = [
+          ...new Set(
+            loans.filter((l) => l.empId === empId).map((l) => l.targetMonth),
+          ),
+        ].sort();
+        for (const prevMonth of allMonths) {
+          if (prevMonth >= month) break;
+          const prevGrossSalary =
+            baseSalary + mealAllowance + transportAllowance;
+          const prevTransactions = loans.filter(
+            (l) => l.empId === empId && l.targetMonth === prevMonth,
+          );
+          const prevLoans = prevTransactions
+            .filter((l) => l.type === "سلفة")
+            .reduce((sum, l) => sum + Number(l.amount), 0);
+          const prevDeductions = prevTransactions
+            .filter((l) => l.type === "خصم")
+            .reduce((sum, l) => sum + Number(l.amount), 0);
+          const monthBalance =
+            carryOver + prevGrossSalary - prevLoans - prevDeductions;
+          if (monthBalance < 0) carryOver = Math.abs(monthBalance);
+          else carryOver = 0;
+        }
+
         const allEmpLoans = loans
           .filter((l) => l.empId === empId)
           .sort((a, b) => a.date.localeCompare(b.date));
         let runningBalance = 0;
         const allDailyRows = [];
         const monthStart = `${month}-01`;
+
+        // ✅ إضافة المبالغ المرحلة أولاً (بالسالب)
+        if (carryOver > 0) {
+          runningBalance = -carryOver;
+          allDailyRows.push({
+            date: monthStart,
+            time: "00:00",
+            type: "مترحلات",
+            description: `مبالغ مرحّلة من أشهر سابقة`,
+            targetMonth: month,
+            credit: 0,
+            debit: carryOver,
+            balance: runningBalance,
+            isCarryOver: true,
+          });
+        }
+
+        // ✅ إضافة الراتب
+        runningBalance += actualGross;
         allDailyRows.push({
           date: monthStart,
-          time: "00:00",
+          time: "00:01",
           type: "راتب",
           description: `الراتب الفعلي (${workDays} يوم)`,
           targetMonth: month,
           credit: actualGross,
           debit: 0,
-          balance: actualGross,
+          balance: runningBalance,
         });
-        runningBalance = actualGross;
+
+        // ✅ إضافة السلفيات والخصومات
         allEmpLoans.forEach((l) => {
           const amount = Number(l.amount);
           runningBalance -= amount;
@@ -3767,6 +3788,7 @@
             balance: runningBalance,
           });
         });
+
         const content = document.getElementById("statementContent");
         content.innerHTML = `
     <div class="statement-header">
@@ -3778,6 +3800,7 @@
         <div class="statement-info-item"><div class="label">أيام العمل</div><div class="value">${workDays} يوم</div></div>
         <div class="statement-info-item"><div class="label">الراتب الفعلي</div><div class="value">${actualGross.toLocaleString()} ج.س</div></div>
         <div class="statement-info-item"><div class="label">الشهر المحدد</div><div class="value">${month}</div></div>
+        ${carryOver > 0 ? `<div class="statement-info-item" style="border-color: var(--danger);"><div class="label">مبالغ مرحّلة</div><div class="value" style="color: var(--danger);">-${carryOver.toLocaleString()} ج.س</div></div>` : ""}
       </div>
     </div>
     <div class="stmt-filter-box">
@@ -3816,6 +3839,7 @@
           mealAllowance,
           transportAllowance,
           allDailyRows,
+          carryOver,
         };
         applyStatementFilters();
         openModal("statementModal");
@@ -3833,12 +3857,20 @@
           if (monthTo && rowTargetMonth > monthTo) match = false;
           return match;
         });
+
+        // ✅ إعادة حساب الرصيد
         let runningBalance = 0;
         filteredRows = filteredRows.map((row) => {
-          if (row.type === "راتب") runningBalance = row.credit;
-          else runningBalance -= row.debit;
+          if (row.type === "راتب") {
+            runningBalance += row.credit;
+          } else if (row.isCarryOver) {
+            runningBalance = -row.debit;
+          } else {
+            runningBalance -= row.debit;
+          }
           return { ...row, balance: runningBalance };
         });
+
         const tbody = document.getElementById("statementTableBody");
         tbody.innerHTML =
           filteredRows.length === 0
@@ -3846,14 +3878,20 @@
             : filteredRows
                 .map((r, i) => {
                   const isSalary = r.type === "راتب";
+                  const isCarryOver = r.isCarryOver;
                   const isDifferentMonth =
-                    r.targetMonth !== stmt.month && !isSalary;
-                  return `<tr style="${isDifferentMonth ? "background: #fff9e6;" : ""}">
+                    r.targetMonth !== stmt.month && !isSalary && !isCarryOver;
+                  const rowStyle = isDifferentMonth
+                    ? "background: #fff9e6;"
+                    : isCarryOver
+                      ? "background: #ffebee;"
+                      : "";
+                  return `<tr style="${rowStyle}">
         <td>${i + 1}</td>
         <td><strong>${r.date}</strong></td>
         <td>${r.time}</td>
-        <td><span class="badge ${r.type === "سلفة" ? "badge-loan" : r.type === "خصم" ? "badge-deduction" : ""}" style="${isSalary ? "background: rgba(25, 135, 84, 0.2); color: #198754;" : ""}">${r.type}</span></td>
-        <td><span class="stmt-info-badge ${isSalary ? "added" : "deducted"}">${r.targetMonth}</span></td>
+        <td><span class="badge ${r.type === "سلفة" ? "badge-loan" : r.type === "خصم" ? "badge-deduction" : isCarryOver ? "badge-carryover" : ""}" style="${isSalary ? "background: rgba(25, 135, 84, 0.2); color: #198754;" : ""}">${r.type}</span></td>
+        <td><span class="stmt-info-badge ${isSalary ? "added" : isCarryOver ? "carryover" : "deducted"}">${r.targetMonth}</span></td>
         <td>${r.description}</td>
         <td class="${r.credit > 0 ? "positive" : ""}">${r.credit > 0 ? r.credit.toLocaleString() : "-"}</td>
         <td class="${r.debit > 0 ? "negative" : ""}">${r.debit > 0 ? r.debit.toLocaleString() : "-"}</td>
@@ -3861,6 +3899,7 @@
       </tr>`;
                 })
                 .join("");
+
         const totalCredits = filteredRows.reduce((s, r) => s + r.credit, 0);
         const totalDebits = filteredRows.reduce((s, r) => s + r.debit, 0);
         const finalBalance =
@@ -3907,12 +3946,19 @@
           if (monthTo && rowTargetMonth > monthTo) match = false;
           return match;
         });
+
         let runningBalance = 0;
         filteredRows = filteredRows.map((row) => {
-          if (row.type === "راتب") runningBalance = row.credit;
-          else runningBalance -= row.debit;
+          if (row.type === "راتب") {
+            runningBalance += row.credit;
+          } else if (row.isCarryOver) {
+            runningBalance = -row.debit;
+          } else {
+            runningBalance -= row.debit;
+          }
           return { ...row, balance: runningBalance };
         });
+
         const {
           emp,
           workDays,
@@ -3921,6 +3967,7 @@
           mealAllowance,
           transportAllowance,
           month: stmtMonth,
+          carryOver,
         } = stmt;
         const totalCredits = filteredRows.reduce((s, r) => s + r.credit, 0);
         const totalDebits = filteredRows.reduce((s, r) => s + r.debit, 0);
@@ -3938,8 +3985,15 @@
         const rowsHtml = filteredRows
           .map((r, i) => {
             const isDifferentMonth =
-              r.targetMonth !== stmtMonth && r.type !== "راتب";
-            return `<tr style="${isDifferentMonth ? "background: #fff9e6;" : ""}">
+              r.targetMonth !== stmtMonth &&
+              r.type !== "راتب" &&
+              !r.isCarryOver;
+            const rowStyle = isDifferentMonth
+              ? "background: #fff9e6;"
+              : r.isCarryOver
+                ? "background: #ffebee;"
+                : "";
+            return `<tr style="${rowStyle}">
       <td>${i + 1}</td>
       <td><strong>${r.date}</strong></td>
       <td>${r.time}</td>
@@ -3962,6 +4016,7 @@
         <div><strong>الراتب الأساسي:</strong> ${baseSalary.toLocaleString()} ج.س</div>
         <div><strong>أيام العمل:</strong> ${workDays} يوم</div>
         <div><strong>الراتب الفعلي:</strong> ${actualGross.toLocaleString()} ج.س</div>
+        ${carryOver > 0 ? `<div style="color: #dc3545; font-weight: bold;"><strong>مبالغ مرحّلة:</strong> -${carryOver.toLocaleString()} ج.س</div>` : ""}
       </div>
     </div>
     <div style="background: #fff9e6; padding: 8px 12px; border-radius: 6px; margin-bottom: 15px; font-size: 10pt; border: 1px solid #d4af37;">
@@ -4551,7 +4606,7 @@ body { font-family: 'Tajawal', sans-serif; background: white; color: #000; direc
             !window.MSStream
           ) {
             showToast(
-              ' على iPhone: اضغط زر المشاركة ⬆️ ثم "إضافة إلى الشاشة الرئيسية"',
+              '📱 على iPhone: اضغط زر المشاركة ⬆️ ثم "إضافة إلى الشاشة الرئيسية"',
               "success",
             );
           } else {
@@ -4568,7 +4623,7 @@ body { font-family: 'Tajawal', sans-serif; background: white; color: #000; direc
           deferredPrompt = null;
           installBanner.classList.remove("show");
           if (choice.outcome === "accepted")
-            showToast("تم تثبيت التطبيق بنجاح! ", "success");
+            showToast("تم تثبيت التطبيق بنجاح! 🎉", "success");
         });
       }
       window.addEventListener("appinstalled", () => {
