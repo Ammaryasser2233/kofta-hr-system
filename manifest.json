@@ -10,11 +10,7 @@
   "background_color": "#151515",
   "lang": "ar",
   "dir": "rtl",
-  "categories": [
-    "business",
-    "productivity",
-    "finance"
-  ],
+  "categories": ["business", "productivity", "finance"],
   "icons": [
     {
       "src": "icon-192.png",
@@ -27,6 +23,34 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "نظام إدارة الموارد البشرية"
+    },
+    {
+      "src": "screenshot-desktop.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "نظام إدارة الموارد البشرية"
     }
   ]
 }
