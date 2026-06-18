@@ -415,7 +415,7 @@
           var(--primary)
         );
         border-radius: 2px;
-        animation: splashLoad 2.5s ease forwards;
+        animation: splashLoad 5s ease forwards;
         box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
       }
       @keyframes splashLoad {
@@ -1050,128 +1050,6 @@
         font-size: 0.85rem;
         font-weight: 700;
       }
-      .mode-toggle {
-        display: inline-flex;
-        background: var(--bg-body);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 4px;
-        gap: 4px;
-      }
-      .mode-toggle-btn {
-        padding: 0.6rem 1rem;
-        border: none;
-        background: transparent;
-        color: var(--text-muted);
-        border-radius: 8px;
-        cursor: pointer;
-        font-family: var(--font);
-        font-weight: 600;
-        font-size: 0.85rem;
-        transition: all 0.3s;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        min-height: 40px;
-      }
-      .mode-toggle-btn.active {
-        background: var(--primary);
-        color: #151515;
-        box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
-      }
-      .global-mode {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-      .global-mode input {
-        max-width: 120px;
-        font-weight: bold;
-        font-size: 1.1rem;
-        text-align: center;
-        border-color: var(--primary);
-        background: white;
-      }
-      .employee-mode {
-        display: none;
-      }
-      .employee-mode.show {
-        display: block;
-      }
-      .global-mode.hide {
-        display: none;
-      }
-      .emp-days-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 0.5rem;
-        background: white;
-        border-radius: 10px;
-        overflow: hidden;
-      }
-      .emp-days-table th {
-        background: var(--primary);
-        color: #151515;
-        padding: 0.8rem;
-        font-size: 0.85rem;
-      }
-      .emp-days-table td {
-        padding: 0.7rem;
-        border-bottom: 1px solid var(--border);
-        font-size: 0.85rem;
-      }
-      .emp-days-table input {
-        max-width: 80px;
-        padding: 0.5rem;
-        text-align: center;
-        font-weight: bold;
-        border-color: var(--primary);
-      }
-      .emp-days-actions {
-        display: flex;
-        gap: 0.5rem;
-        margin-top: 0.8rem;
-        flex-wrap: wrap;
-      }
-      .emp-days-actions .btn {
-        flex: 1;
-        min-width: 120px;
-      }
-      .sort-buttons {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-        flex-wrap: wrap;
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px dashed var(--border);
-      }
-      .sort-btn {
-        padding: 0.6rem 1rem;
-        border: 1px solid var(--border);
-        background: var(--bg-card);
-        color: var(--text-muted);
-        border-radius: 10px;
-        cursor: pointer;
-        font-family: var(--font);
-        font-weight: 600;
-        font-size: 0.85rem;
-        transition: all 0.3s;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        min-height: 44px;
-      }
-      .sort-btn:hover {
-        border-color: var(--primary);
-        color: var(--primary);
-      }
-      .sort-btn.active {
-        background: var(--primary);
-        color: #151515;
-        border-color: var(--primary);
-      }
       .carryover-info {
         background: rgba(220, 53, 69, 0.1);
         border: 1px solid var(--danger);
@@ -1405,7 +1283,24 @@
         display: block;
       }
 
-      /* ========== MOBILE RESPONSIVE - IMPROVED ========== */
+      /* ✅ Work Days Input in Table */
+      .work-days-input {
+        width: 70px;
+        padding: 0.4rem;
+        text-align: center;
+        font-weight: bold;
+        border: 2px solid var(--primary);
+        border-radius: 8px;
+        background: white;
+        color: #151515;
+        font-size: 0.9rem;
+      }
+      .work-days-input:focus {
+        outline: none;
+        border-color: var(--primary-hover);
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+      }
+
       @media (max-width: 768px) {
         .sidebar {
           transform: translateX(100%);
@@ -1537,15 +1432,6 @@
         #dashboardCharts .card {
           min-width: 100%;
         }
-        .sort-buttons {
-          flex-direction: column;
-          align-items: stretch;
-          gap: 0.4rem;
-        }
-        .sort-btn {
-          width: 100%;
-          justify-content: center;
-        }
         .pagination-btn {
           padding: 0.6rem 0.8rem;
           min-width: 38px;
@@ -1577,43 +1463,6 @@
         .work-days-box .box-title {
           font-size: 1rem;
         }
-        .mode-toggle {
-          width: 100%;
-        }
-        .mode-toggle-btn {
-          flex: 1;
-          justify-content: center;
-          font-size: 0.8rem;
-          padding: 0.5rem;
-        }
-        .global-mode {
-          flex-direction: column;
-          align-items: stretch;
-          gap: 0.6rem;
-        }
-        .global-mode input {
-          max-width: 100%;
-          width: 100%;
-        }
-        .emp-days-table {
-          font-size: 0.8rem;
-        }
-        .emp-days-table th,
-        .emp-days-table td {
-          padding: 0.5rem 0.3rem;
-        }
-        .emp-days-table input {
-          max-width: 60px;
-          padding: 0.4rem;
-          font-size: 0.85rem;
-        }
-        .emp-days-actions {
-          flex-direction: column;
-        }
-        .emp-days-actions .btn {
-          width: 100%;
-          min-width: 100%;
-        }
         .statement-info-grid {
           grid-template-columns: repeat(2, 1fr);
         }
@@ -1643,6 +1492,10 @@
         }
         .splash-developer {
           font-size: 0.75rem;
+        }
+        .work-days-input {
+          width: 60px;
+          font-size: 0.85rem;
         }
       }
       @media (max-width: 380px) {
@@ -1950,44 +1803,6 @@
                 </div>
               </div>
             </div>
-            <div class="sort-buttons">
-              <span
-                style="
-                  font-weight: 700;
-                  color: var(--text-main);
-                  font-size: 0.9rem;
-                "
-                ><i class="fas fa-sort"></i> ترتيب حسب:</span
-              >
-              <button
-                class="sort-btn active"
-                id="sortByNameBtn"
-                onclick="setEmployeeSort('name')"
-              >
-                <i class="fas fa-font"></i> الاسم (أ → ي)
-              </button>
-              <button
-                class="sort-btn"
-                id="sortByDeptBtn"
-                onclick="setEmployeeSort('dept')"
-              >
-                <i class="fas fa-building"></i> القسم
-              </button>
-              <button
-                class="sort-btn"
-                id="sortBySalaryBtn"
-                onclick="setEmployeeSort('salary')"
-              >
-                <i class="fas fa-money-bill-wave"></i> الراتب
-              </button>
-              <button
-                class="sort-btn"
-                id="sortByNameDescBtn"
-                onclick="setEmployeeSort('name-desc')"
-              >
-                <i class="fas fa-font"></i> الاسم (ي → أ)
-              </button>
-            </div>
             <div class="export-buttons">
               <button class="btn btn-info" onclick="printAllEmployees()">
                 <i class="fas fa-print"></i> طباعة
@@ -2160,89 +1975,17 @@
                     <span id="currentMonthText">-</span></span
                   >
                 </div>
-                <div class="mode-toggle">
-                  <button
-                    class="mode-toggle-btn active"
-                    id="modeAllBtn"
-                    onclick="setWorkDaysMode('all')"
-                  >
-                    <i class="fas fa-users"></i> للكل
-                  </button>
-                  <button
-                    class="mode-toggle-btn"
-                    id="modePerEmpBtn"
-                    onclick="setWorkDaysMode('per-employee')"
-                  >
-                    <i class="fas fa-user-clock"></i> حسب الموظف
-                  </button>
-                </div>
               </div>
-              <div class="global-mode" id="globalMode">
-                <label style="font-weight: 700; color: var(--text-main)"
-                  >عدد الأيام:</label
-                >
-                <input
-                  type="number"
-                  id="workDaysInput"
-                  value="30"
-                  min="1"
-                  max="31"
-                  onchange="onGlobalWorkDaysChange()"
-                  onkeyup="onGlobalWorkDaysChange()"
-                />
-                <div class="info">
-                  <i class="fas fa-info-circle"></i> نفس عدد الأيام لجميع
-                  الموظفين. الافتراضي = <strong>30 يوم</strong>.
-                </div>
-              </div>
-              <div class="employee-mode" id="employeeMode">
-                <div
-                  style="
-                    color: var(--text-muted);
-                    font-size: 0.85rem;
-                    margin-bottom: 0.8rem;
-                  "
-                >
-                  <i class="fas fa-info-circle"></i> حدد عدد أيام العمل الفعلية
-                  لكل موظف على حدة.
-                </div>
-                <div
-                  style="
-                    max-height: 300px;
-                    overflow-y: auto;
-                    border: 1px solid var(--border);
-                    border-radius: 10px;
-                  "
-                >
-                  <table class="emp-days-table" id="empDaysTable">
-                    <thead>
-                      <tr>
-                        <th style="width: 40%">الموظف</th>
-                        <th style="width: 20%">القسم</th>
-                        <th style="width: 20%">الراتب</th>
-                        <th style="width: 20%">أيام العمل</th>
-                      </tr>
-                    </thead>
-                    <tbody id="empDaysTableBody"></tbody>
-                  </table>
-                </div>
-                <div class="emp-days-actions">
-                  <button
-                    class="btn btn-outline"
-                    onclick="setAllEmployeesDays(30)"
-                  >
-                    <i class="fas fa-calendar-check"></i> 30 يوم للكل
-                  </button>
-                  <button
-                    class="btn btn-outline"
-                    onclick="setAllEmployeesDays(20)"
-                  >
-                    <i class="fas fa-calendar-check"></i> 20 يوم للكل
-                  </button>
-                  <button class="btn btn-primary" onclick="calculatePayroll()">
-                    <i class="fas fa-calculator"></i> حساب الرواتب
-                  </button>
-                </div>
+              <div
+                style="
+                  color: var(--text-muted);
+                  font-size: 0.85rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                <i class="fas fa-info-circle"></i> حدد عدد أيام العمل الفعلية
+                لكل موظف بشكل منفصل. الأيام تثبت لكل شهر ولا تتغير عند الانتقال
+                لشهر جديد.
               </div>
             </div>
             <div
@@ -2713,11 +2456,9 @@
       let payrollCurrentPage = 1;
       let empSearchQuery = "";
       let employeeSortBy = "name";
-      let workDaysMode = "all";
 
       // ✅ أيام العمل محفوظة لكل شهر بشكل منفصل
       let workDaysPerEmployee = {}; // { "2026-06": { "empId": 30, ... } }
-      let workDaysGlobal = {}; // { "2026-06": 30 }
 
       let filteredLoans = [];
       let currentSection = "dashboard";
@@ -2731,7 +2472,7 @@
         setTimeout(() => {
           const splash = document.getElementById("splashScreen");
           if (splash) splash.classList.add("hide");
-        }, 2500);
+        }, 5000);
       });
 
       // ========== LOCAL STORAGE FOR WORK DAYS ==========
@@ -2741,11 +2482,6 @@
             "kofta_workDaysPerEmployee",
             JSON.stringify(workDaysPerEmployee),
           );
-          localStorage.setItem(
-            "kofta_workDaysGlobal",
-            JSON.stringify(workDaysGlobal),
-          );
-          localStorage.setItem("kofta_workDaysMode", workDaysMode);
         } catch (e) {
           console.warn("Cannot save to localStorage", e);
         }
@@ -2753,11 +2489,7 @@
       function loadWorkDaysFromStorage() {
         try {
           const p = localStorage.getItem("kofta_workDaysPerEmployee");
-          const g = localStorage.getItem("kofta_workDaysGlobal");
-          const m = localStorage.getItem("kofta_workDaysMode");
           if (p) workDaysPerEmployee = JSON.parse(p);
-          if (g) workDaysGlobal = JSON.parse(g);
-          if (m) workDaysMode = m;
         } catch (e) {
           console.warn("Cannot load from localStorage", e);
         }
@@ -2881,12 +2613,9 @@
           document.getElementById("loanTime").value = time;
           document.getElementById("loanTargetMonth").value = currentMonth;
 
-          // ✅ تحميل أيام العمل المحفوظة للشهر الحالي
-          loadMonthWorkDays(currentMonth);
-
+          updateCurrentMonthBadge(currentMonth);
           renderEmployees();
           renderLoans();
-          renderEmpDaysTable();
           calculatePayroll();
           setLoading(false);
           showToast("تم تحميل البيانات بنجاح");
@@ -2894,17 +2623,6 @@
           setLoading(false);
           showToast("خطأ في تحميل البيانات: " + error.message, "error");
         }
-      }
-
-      // ✅ دالة تحميل أيام العمل المحفوظة للشهر
-      function loadMonthWorkDays(month) {
-        const globalDays = workDaysGlobal[month];
-        if (globalDays !== undefined) {
-          document.getElementById("workDaysInput").value = globalDays;
-        } else {
-          document.getElementById("workDaysInput").value = 30;
-        }
-        updateCurrentMonthBadge(month);
       }
 
       function updateCurrentMonthBadge(month) {
@@ -2929,12 +2647,10 @@
         }
       }
 
-      // ✅ عند تغيير الشهر في الرواتب - تحميل الأيام المحفوظة
       function onPayrollMonthChange() {
         const month = document.getElementById("payrollMonth").value;
         if (!month) return;
-        loadMonthWorkDays(month);
-        renderEmpDaysTable();
+        updateCurrentMonthBadge(month);
         calculatePayroll();
       }
 
@@ -3385,7 +3101,7 @@
           }
         });
 
-      // ✅ ترتيب السلفيات: الأحدث أولاً (حسب التاريخ ثم الوقت)
+      // ✅ ترتيب السلفيات: الأحدث أولاً
       function renderLoans() {
         const filterMonth = document.getElementById("loanFilterMonth").value;
         const filterType = document.getElementById("loanFilterType").value;
@@ -3552,112 +3268,21 @@
         }
       }
 
-      function setWorkDaysMode(mode) {
-        workDaysMode = mode;
-        const allBtn = document.getElementById("modeAllBtn");
-        const perEmpBtn = document.getElementById("modePerEmpBtn");
-        const globalMode = document.getElementById("globalMode");
-        const employeeMode = document.getElementById("employeeMode");
-        if (mode === "all") {
-          allBtn.classList.add("active");
-          perEmpBtn.classList.remove("active");
-          globalMode.classList.remove("hide");
-          employeeMode.classList.remove("show");
-        } else {
-          perEmpBtn.classList.add("active");
-          allBtn.classList.remove("active");
-          globalMode.classList.add("hide");
-          employeeMode.classList.add("show");
-          renderEmpDaysTable();
-        }
-        saveWorkDaysToStorage();
-        calculatePayroll();
+      // ✅ جلب أيام العمل من الشهر المحدد (الافتراضي 30)
+      function getEmployeeWorkDays(empId, month) {
+        return (
+          (workDaysPerEmployee[month] && workDaysPerEmployee[month][empId]) ||
+          30
+        );
       }
 
-      function renderEmpDaysTable() {
-        const tbody = document.getElementById("empDaysTableBody");
-        if (!tbody) return;
-        const month = document.getElementById("payrollMonth").value;
-        const filteredEmployees =
-          document.getElementById("payrollFilterEmp").value === "all"
-            ? employees
-            : employees.filter(
-                (e) =>
-                  e.id === document.getElementById("payrollFilterEmp").value,
-              );
-        tbody.innerHTML =
-          filteredEmployees
-            .map((emp) => {
-              // ✅ قراءة الأيام المحفوظة لهذا الشهر
-              const days =
-                (workDaysPerEmployee[month] &&
-                  workDaysPerEmployee[month][emp.id]) ||
-                30;
-              return `<tr>
-      <td><div class="emp-info"><img src="https://ui-avatars.com/api/?name=${encodeURIComponent(emp.name)}&background=random" alt=""><div><div class="name">${emp.name}</div><div class="dept">${emp.position || "-"}</div></div></div></td>
-      <td><span class="badge" style="background: rgba(212, 175, 55, 0.2); color: #b5952f;">${emp.dept}</span></td>
-      <td><strong>${Number(emp.salary || 0).toLocaleString()}</strong></td>
-      <td><input type="number" min="1" max="31" value="${days}" onchange="updateEmployeeDays('${emp.id}', this.value)" onkeyup="updateEmployeeDays('${emp.id}', this.value)" /></td>
-    </tr>`;
-            })
-            .join("") ||
-          '<tr><td colspan="4" class="text-center text-muted">لا يوجد موظفين</td></tr>';
-      }
-
-      // ✅ حفظ أيام الموظف للشهر الحالي فقط
-      function updateEmployeeDays(empId, days) {
-        const month = document.getElementById("payrollMonth").value;
+      // ✅ تحديث أيام العمل لموظف معين في شهر معين
+      function updateEmployeeDays(empId, days, month) {
         const d = Math.max(1, Math.min(31, Number(days) || 30));
         if (!workDaysPerEmployee[month]) workDaysPerEmployee[month] = {};
         workDaysPerEmployee[month][empId] = d;
         saveWorkDaysToStorage();
         calculatePayroll();
-      }
-
-      // ✅ تعيين أيام لكل الموظفين للشهر الحالي
-      function setAllEmployeesDays(days) {
-        const month = document.getElementById("payrollMonth").value;
-        const d = Math.max(1, Math.min(31, Number(days) || 30));
-        if (workDaysMode === "all") {
-          workDaysGlobal[month] = d;
-          document.getElementById("workDaysInput").value = d;
-        } else {
-          if (!workDaysPerEmployee[month]) workDaysPerEmployee[month] = {};
-          employees.forEach((emp) => {
-            workDaysPerEmployee[month][emp.id] = d;
-          });
-        }
-        saveWorkDaysToStorage();
-        renderEmpDaysTable();
-        calculatePayroll();
-        showToast(`تم تعيين ${d} يوم لجميع الموظفين (شهر ${month})`, "success");
-      }
-
-      // ✅ عند تغيير الأيام في الوضع العام - حفظها للشهر الحالي
-      function onGlobalWorkDaysChange() {
-        const month = document.getElementById("payrollMonth").value;
-        const d = Math.max(
-          1,
-          Math.min(
-            31,
-            Number(document.getElementById("workDaysInput").value) || 30,
-          ),
-        );
-        workDaysGlobal[month] = d;
-        saveWorkDaysToStorage();
-        calculatePayroll();
-      }
-
-      // ✅ جلب أيام العمل من الشهر المحدد
-      function getEmployeeWorkDays(empId, month) {
-        if (workDaysMode === "all") {
-          return workDaysGlobal[month] || 30;
-        } else {
-          return (
-            (workDaysPerEmployee[month] && workDaysPerEmployee[month][empId]) ||
-            30
-          );
-        }
       }
 
       function calculatePayroll() {
@@ -3765,6 +3390,7 @@
       }
 
       function renderPayrollTable() {
+        const month = document.getElementById("payrollMonth").value;
         const totalPages = Math.ceil(payrollData.length / ITEMS_PER_PAGE);
         if (payrollCurrentPage > totalPages && totalPages > 0)
           payrollCurrentPage = totalPages;
@@ -3791,7 +3417,7 @@
                 emp.net < 0 ? "negative-salary" : "font-bold text-primary";
               return `<tr>
         <td><strong>${emp.name}</strong></td>
-        <td><span class="badge badge-days">${emp.workDays} يوم</span></td>
+        <td><input type="number" class="work-days-input" min="1" max="31" value="${emp.workDays}" onchange="updateEmployeeDays('${emp.empId}', this.value, '${month}')" onkeyup="updateEmployeeDays('${emp.empId}', this.value, '${month}')" /></td>
         <td>${emp.actualBaseSalary.toLocaleString()}</td>
         <td>${emp.allowances.toLocaleString()}</td>
         <td>${emp.currentLoans > 0 ? '<span class="text-danger">' + emp.currentLoans.toLocaleString() + "</span>" : "0"}</td>
@@ -3826,7 +3452,7 @@
         </div>
         ${statusHtml}
       </div>
-      <div class="mobile-card-row"><span class="label">أيام العمل</span><span class="value">${emp.workDays} يوم</span></div>
+      <div class="mobile-card-row"><span class="label">أيام العمل</span><span class="value"><input type="number" class="work-days-input" min="1" max="31" value="${emp.workDays}" onchange="updateEmployeeDays('${emp.empId}', this.value, '${month}')" onkeyup="updateEmployeeDays('${emp.empId}', this.value, '${month}')" /></span></div>
       <div class="mobile-card-row"><span class="label">الراتب الفعلي</span><span class="value">${emp.actualBaseSalary.toLocaleString()}</span></div>
       <div class="mobile-card-row"><span class="label">البدلات</span><span class="value">${emp.allowances.toLocaleString()}</span></div>
       <div class="mobile-card-row"><span class="label">الخصومات</span><span class="value text-danger">${emp.totalDeductions.toLocaleString()}</span></div>
@@ -4016,7 +3642,7 @@
             time: l.time || "--:--",
             type: l.type,
             description: l.note || (l.type === "سلفة" ? "سلفة" : "خصم"),
-            targetMonth: l.targetMonth,
+            targetMonth: l.targetMonth || "غير محدد",
             credit: 0,
             debit: amount,
             balance: runningBalance,
@@ -4377,14 +4003,10 @@
         ];
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, `كشف الرواتب ${month}`);
-        const modeInfo =
-          workDaysMode === "all"
-            ? `نفس الأيام للكل (${document.getElementById("workDaysInput").value} يوم)`
-            : "أيام مختلفة لكل موظف";
         const infoData = [
           { الحقل: "اسم المطعم", القيمة: RESTAURANT_NAME },
           { الحقل: "الشهر", القيمة: month },
-          { الحقل: "وضع أيام العمل", القيمة: modeInfo },
+          { الحقل: "وضع أيام العمل", القيمة: "أيام مختلفة لكل موظف" },
           { الحقل: "عدد الموظفين", القيمة: payrollData.length },
           {
             الحقل: "إجمالي الاستحقاقات",
@@ -4666,17 +4288,13 @@ body { font-family: 'Tajawal', sans-serif; background: white; color: #000; direc
         const header = getPrintHeader("كشف الرواتب الشامل", `شهر: ${month}`);
         const footer = getPrintFooter();
         const totalNet = payrollData.reduce((s, p) => s + p.net, 0);
-        const modeBadge =
-          workDaysMode === "all"
-            ? `<span class="mode-badge"><i class="fas fa-users"></i> للكل: ${document.getElementById("workDaysInput").value} يوم</span>`
-            : `<span class="mode-badge"><i class="fas fa-user-clock"></i> حسب الموظف</span>`;
         const rows = payrollData
           .map(
             (p, i) =>
               `<tr><td>${i + 1}</td><td style="text-align:right; font-weight:bold;">${p.name}</td><td><strong>${p.workDays}</strong> يوم</td><td>${p.grossSalary.toLocaleString()}</td><td style="color:#dc3545;">${p.totalDeductions.toLocaleString()}</td><td style="color:${p.net < 0 ? "#dc3545" : "#d4af37"}; font-weight:bold;">${p.net.toLocaleString()}</td></tr>`,
           )
           .join("");
-        const html = `${header}<div class="work-days-info"><i class="fas fa-calendar-day"></i> وضع الحساب: ${modeBadge}</div><table class="payroll-summary-table"><thead><tr><th>#</th><th>الموظف</th><th>أيام العمل</th><th>الإجمالي</th><th>الخصومات</th><th>الصافي</th></tr></thead><tbody>${rows}<tr class="total-row"><td colspan="3">الإجمالي الكلي</td><td>${payrollData.reduce((s, p) => s + p.grossSalary, 0).toLocaleString()}</td><td>${payrollData.reduce((s, p) => s + p.totalDeductions, 0).toLocaleString()}</td><td>${totalNet.toLocaleString()}</td></tr></tbody></table>${footer}`;
+        const html = `${header}<div class="work-days-info"><i class="fas fa-calendar-day"></i> وضع الحساب: <span class="mode-badge"><i class="fas fa-user-clock"></i> حسب الموظف</span></div><table class="payroll-summary-table"><thead><tr><th>#</th><th>الموظف</th><th>أيام العمل</th><th>الإجمالي</th><th>الخصومات</th><th>الصافي</th></tr></thead><tbody>${rows}<tr class="total-row"><td colspan="3">الإجمالي الكلي</td><td>${payrollData.reduce((s, p) => s + p.grossSalary, 0).toLocaleString()}</td><td>${payrollData.reduce((s, p) => s + p.totalDeductions, 0).toLocaleString()}</td><td>${totalNet.toLocaleString()}</td></tr></tbody></table>${footer}`;
         printContent(html, `كشف الرواتب - ${month}`);
       }
 
