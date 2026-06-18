@@ -26,6 +26,20 @@
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23151515' rx='80'/%3E%3Ctext x='50%25' y='55%25' font-family='Arial' font-size='280' font-weight='bold' fill='%23d4af37' text-anchor='middle' dominant-baseline='middle'%3E🔥%3C/text%3E%3C/svg%3E"
     />
     <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="icon-192.png"
+      onerror="this.remove()"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="icon-512.png"
+      onerror="this.remove()"
+    />
+    <link
       rel="apple-touch-icon"
       sizes="180x180"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23151515' rx='80'/%3E%3Ctext x='50%25' y='55%25' font-family='Arial' font-size='280' font-weight='bold' fill='%23d4af37' text-anchor='middle' dominant-baseline='middle'%3E🔥%3C/text%3E%3C/svg%3E"
@@ -1522,7 +1536,7 @@
             class="splash-logo"
             onerror="
               this.parentElement.innerHTML =
-                '<div style=&quot;font-size:80px;&quot;>🔥</div>'
+                '<div style=&quot;font-size:80px;&quot;></div>'
             "
           />
         </div>
@@ -1530,7 +1544,7 @@
         <p class="splash-tagline">نظام إدارة الموارد البشرية</p>
         <div class="splash-version">Version 2.2.1</div>
         <div class="splash-developer">
-          Developed by: <strong>Ammar Kana</strong>
+          Developed by: <strong>Ammar Konna</strong>
         </div>
         <div class="splash-loader"><div class="splash-loader-bar"></div></div>
       </div>
@@ -1917,6 +1931,9 @@
               </button>
               <button class="btn btn-outline" onclick="clearLoanFilters()">
                 <i class="fas fa-times"></i> مسح الفلتر
+              </button>
+              <button class="btn btn-info" onclick="forceRefreshLoans()">
+                <i class="fas fa-sync-alt"></i> تحديث من السيرفر
               </button>
             </div>
           </div>
@@ -2457,7 +2474,7 @@
       let empSearchQuery = "";
       let employeeSortBy = "name";
 
-      // ✅ أيام العمل محفوظة لكل شهر بشكل منفصل
+      // ✅ أيام العمل محفوظة لكل شهر بشكل منفصل في Firestore
       let workDaysPerEmployee = {}; // { "2026-06": { "empId": 30, ... } }
 
       let filteredLoans = [];
@@ -2472,29 +2489,52 @@
         setTimeout(() => {
           const splash = document.getElementById("splashScreen");
           if (splash) splash.classList.add("hide");
-        }, 5000);
+        }, 5000); // 5 ثواني
       });
 
-      // ========== LOCAL STORAGE FOR WORK DAYS ==========
-      function saveWorkDaysToStorage() {
+      // ========== FIRESTORE WORK DAYS ==========
+      async function saveWorkDaysToFirestore() {
+        if (!currentUser) return;
         try {
-          localStorage.setItem(
-            "kofta_workDaysPerEmployee",
-            JSON.stringify(workDaysPerEmployee),
-          );
+          const month =
+            document.getElementById("payrollMonth").value ||
+            new Date().toISOString().slice(0, 7);
+          await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("workDays")
+            .doc(month)
+            .set({
+              month: month,
+              days: workDaysPerEmployee[month] || {},
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+          console.log("[WorkDays] Saved to Firestore for month:", month);
         } catch (e) {
-          console.warn("Cannot save to localStorage", e);
+          console.warn("[WorkDays] Cannot save to Firestore:", e);
         }
       }
-      function loadWorkDaysFromStorage() {
+
+      async function loadWorkDaysFromFirestore(month) {
+        if (!currentUser) return;
         try {
-          const p = localStorage.getItem("kofta_workDaysPerEmployee");
-          if (p) workDaysPerEmployee = JSON.parse(p);
+          const doc = await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("workDays")
+            .doc(month)
+            .get();
+          if (doc.exists) {
+            workDaysPerEmployee[month] = doc.data().days || {};
+            console.log("[WorkDays] Loaded from Firestore for month:", month);
+          } else {
+            workDaysPerEmployee[month] = {};
+          }
         } catch (e) {
-          console.warn("Cannot load from localStorage", e);
+          console.warn("[WorkDays] Cannot load from Firestore:", e);
+          workDaysPerEmployee[month] = {};
         }
       }
-      loadWorkDaysFromStorage();
 
       if (window.location.protocol === "file:") {
         document.getElementById("fileWarning").classList.add("show");
@@ -2568,6 +2608,26 @@
         if (confirm("هل أنت متأكد من تسجيل الخروج؟")) auth.signOut();
       }
 
+      // ✅ جلب السلفيات من السيرفر مباشرة (تجاوز الكاش)
+      async function refreshLoansFromServer() {
+        if (!currentUser) return;
+        try {
+          const loanSnap = await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("loans")
+            .orderBy("date", "desc")
+            .get({ source: "server" }); // 🔥 مهم جداً: جلب من السيرفر
+
+          loans = loanSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+          console.log("[Loans] Refreshed from server. Total:", loans.length);
+          return true;
+        } catch (err) {
+          console.warn("[Loans] Cannot refresh from server:", err);
+          return false;
+        }
+      }
+
       async function loadAllData() {
         if (!currentUser) return;
         setLoading(true);
@@ -2582,12 +2642,24 @@
             ...doc.data(),
           }));
 
-          const loanSnap = await db
-            .collection("users")
-            .doc(currentUser.uid)
-            .collection("loans")
-            .orderBy("date", "desc")
-            .get();
+          // ✅ محاولة جلب البيانات من السيرفر أولاً
+          let loanSnap;
+          try {
+            loanSnap = await db
+              .collection("users")
+              .doc(currentUser.uid)
+              .collection("loans")
+              .orderBy("date", "desc")
+              .get({ source: "server" });
+          } catch (err) {
+            console.warn("[Loans] Offline mode - using cache");
+            loanSnap = await db
+              .collection("users")
+              .doc(currentUser.uid)
+              .collection("loans")
+              .orderBy("date", "desc")
+              .get({ source: "cache" });
+          }
           loans = loanSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
           populateEmployeeSelects();
@@ -2612,6 +2684,9 @@
           document.getElementById("loanDate").value = todayStr;
           document.getElementById("loanTime").value = time;
           document.getElementById("loanTargetMonth").value = currentMonth;
+
+          // ✅ تحميل أيام العمل من Firestore
+          await loadWorkDaysFromFirestore(currentMonth);
 
           updateCurrentMonthBadge(currentMonth);
           renderEmployees();
@@ -2647,9 +2722,10 @@
         }
       }
 
-      function onPayrollMonthChange() {
+      async function onPayrollMonthChange() {
         const month = document.getElementById("payrollMonth").value;
         if (!month) return;
+        await loadWorkDaysFromFirestore(month);
         updateCurrentMonthBadge(month);
         calculatePayroll();
       }
@@ -3028,9 +3104,11 @@
           }
           // حذف أيام العمل الخاصة بالموظف من جميع الأشهر
           Object.keys(workDaysPerEmployee).forEach((month) => {
-            delete workDaysPerEmployee[month][id];
+            if (workDaysPerEmployee[month]) {
+              delete workDaysPerEmployee[month][id];
+            }
           });
-          saveWorkDaysToStorage();
+          await saveWorkDaysToFirestore();
           await loadAllData();
           showToast(`تم حذف الموظف "${emp.name}" بنجاح`);
         } catch (err) {
@@ -3252,19 +3330,60 @@
         renderLoans();
         showToast("تم مسح جميع الفلاتر", "success");
       }
+
+      // ✅ حذف السلفة نهائياً من Firestore
       async function deleteLoan(id) {
-        if (!confirm("حذف هذه السجل؟")) return;
+        if (!confirm("هل أنت متأكد من حذف هذه السلفة نهائياً؟")) return;
+
+        const loanToDelete = loans.find((l) => l.id === id);
+        if (!loanToDelete) {
+          showToast("السلفة غير موجودة", "error");
+          return;
+        }
+
         try {
+          // 1️⃣ حذف من Firestore نهائياً
           await db
             .collection("users")
             .doc(currentUser.uid)
             .collection("loans")
             .doc(id)
             .delete();
-          await loadAllData();
-          showToast("تم الحذف بنجاح");
+
+          // 2️⃣ حذف من المصفوفة المحلية فوراً
+          loans = loans.filter((l) => l.id !== id);
+
+          // 3️⃣ إعادة تحميل البيانات من السيرفر
+          await refreshLoansFromServer();
+
+          // 4️⃣ إعادة رسم كل شيء
+          renderLoans();
+          calculatePayroll();
+          updateDashboard();
+
+          showToast("✅ تم الحذف نهائياً من النظام وقاعدة البيانات", "success");
         } catch (err) {
-          showToast(err.message, "error");
+          showToast("خطأ في الحذف: " + err.message, "error");
+        }
+      }
+
+      // ✅ زر تحديث من السيرفر
+      async function forceRefreshLoans() {
+        showToast("⏳ جاري التحديث من السيرفر...", "success");
+        setLoading(true);
+        try {
+          await refreshLoansFromServer();
+          renderLoans();
+          calculatePayroll();
+          updateDashboard();
+          showToast(
+            "✅ تم التحديث - السلفيات المحذوفة لن تظهر الآن",
+            "success",
+          );
+        } catch (err) {
+          showToast("خطأ في التحديث: " + err.message, "error");
+        } finally {
+          setLoading(false);
         }
       }
 
@@ -3277,11 +3396,11 @@
       }
 
       // ✅ تحديث أيام العمل لموظف معين في شهر معين
-      function updateEmployeeDays(empId, days, month) {
+      async function updateEmployeeDays(empId, days, month) {
         const d = Math.max(1, Math.min(31, Number(days) || 30));
         if (!workDaysPerEmployee[month]) workDaysPerEmployee[month] = {};
         workDaysPerEmployee[month][empId] = d;
-        saveWorkDaysToStorage();
+        await saveWorkDaysToFirestore();
         calculatePayroll();
       }
 
@@ -4432,7 +4551,7 @@ body { font-family: 'Tajawal', sans-serif; background: white; color: #000; direc
             !window.MSStream
           ) {
             showToast(
-              '📱 على iPhone: اضغط زر المشاركة ⬆️ ثم "إضافة إلى الشاشة الرئيسية"',
+              ' على iPhone: اضغط زر المشاركة ⬆️ ثم "إضافة إلى الشاشة الرئيسية"',
               "success",
             );
           } else {
@@ -4449,7 +4568,7 @@ body { font-family: 'Tajawal', sans-serif; background: white; color: #000; direc
           deferredPrompt = null;
           installBanner.classList.remove("show");
           if (choice.outcome === "accepted")
-            showToast("تم تثبيت التطبيق بنجاح! 🎉", "success");
+            showToast("تم تثبيت التطبيق بنجاح! ", "success");
         });
       }
       window.addEventListener("appinstalled", () => {
