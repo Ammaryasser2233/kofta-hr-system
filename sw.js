@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kofta-v2';
+const CACHE_NAME = 'kofta-v2.2.1';
 const OFFLINE_URL = './index.html';
 
 const ASSETS_TO_CACHE = [
@@ -6,6 +6,10 @@ const ASSETS_TO_CACHE = [
   './index.html',
   './manifest.json',
   './sw.js',
+  './icon-192.png',
+  './icon-512.png',
+  './icon-192-maskable.png',
+  './icon-512-maskable.png',
   'https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js',
@@ -20,7 +24,10 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       console.log('[SW] Cache opened');
-      return cache.addAll(ASSETS_TO_CACHE);
+      return cache.addAll(ASSETS_TO_CACHE).catch((err) => {
+        console.warn('[SW] Some assets failed to cache:', err);
+        return Promise.resolve();
+      });
     })
   );
   self.skipWaiting();
@@ -45,24 +52,30 @@ self.addEventListener('activate', (event) => {
 
 // ✅ اعتراض الطلبات
 self.addEventListener('fetch', (event) => {
+  // تجاهل طلبات Firebase
   if (event.request.url.includes('firestore.googleapis.com') ||
       event.request.url.includes('identitytoolkit.googleapis.com') ||
       event.request.url.includes('securetoken.googleapis.com')) {
     return;
   }
 
+  // تجاهل الطلبات غير GET
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        const responseClone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          if (response.status === 200) {
+        // إذا كان الرد صحيح، احفظه في الكاش
+        if (response.status === 200) {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, responseClone);
-          }
-        });
+          });
+        }
         return response;
       })
       .catch(() => {
+        // إذا فشل الاتصال، حاول من الكاش
         return caches.match(event.request).then((cachedResponse) => {
           return cachedResponse || caches.match(OFFLINE_URL);
         });
