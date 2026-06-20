@@ -275,7 +275,6 @@
         border-color: var(--primary);
         box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
       }
-      /* SPLASH SCREEN */
       .splash-screen {
         position: fixed;
         top: 0;
@@ -1723,6 +1722,13 @@
           padding: 0.7rem 0.9rem;
           font-size: 0.85rem;
         }
+        #expDashContent .flex.gap-4.flex-wrap {
+          flex-direction: column !important;
+        }
+        #expDashContent .flex.gap-4.flex-wrap .card {
+          min-width: 100% !important;
+          width: 100% !important;
+        }
       }
       @media (max-width: 380px) {
         .stats-grid {
@@ -1738,7 +1744,6 @@
     </style>
   </head>
   <body>
-    <!-- SPLASH SCREEN -->
     <div class="splash-screen" id="splashScreen">
       <div class="splash-content">
         <div class="splash-logo-wrap">
@@ -1748,7 +1753,7 @@
             class="splash-logo"
             onerror="
               this.parentElement.innerHTML =
-                '<div style=&quot;font-size:80px&quot;></div>'
+                '<div style=&quot;font-size:80px&quot;>🔥</div>'
             "
           />
         </div>
@@ -1756,7 +1761,7 @@
         <p class="splash-tagline">نظام إدارة الموارد البشرية</p>
         <div class="splash-version">Version 2.2.3</div>
         <div class="splash-developer">
-          Developed by: <strong>Ammar Kana</strong>
+          Developed by: <strong>Ammar Konna</strong>
         </div>
         <div class="splash-loader"><div class="splash-loader-bar"></div></div>
       </div>
@@ -1998,6 +2003,9 @@
                   onkeyup="handleEmployeeSearch()"
                 />
               </div>
+              <button class="add-btn" onclick="openAddEmployeeModal()">
+                <i class="fas fa-plus-circle"></i> إضافة موظف
+              </button>
             </div>
             <div class="export-buttons">
               <button class="btn btn-info" onclick="printAllEmployees()">
@@ -2188,8 +2196,7 @@
                 "
               >
                 <i class="fas fa-info-circle"></i> حدد عدد أيام العمل الفعلية
-                لكل موظف بشكل منفصل. الأيام تثبت لكل شهر ولا تتغير عند الانتقال
-                لشهر جديد.
+                لكل موظف بشكل منفصل.
               </div>
             </div>
             <div
@@ -2254,8 +2261,8 @@
               class="flex justify-between mt-4 font-bold text-primary"
               style="font-size: 1.2rem"
             >
-              <span>الإجمالي الكلي للصافي:</span>
-              <span id="payrollGrandTotal">0 ج.س</span>
+              <span>الإجمالي الكلي للصافي:</span
+              ><span id="payrollGrandTotal">0 ج.س</span>
             </div>
           </div>
           <div class="pagination" id="payrollPagination"></div>
@@ -2292,8 +2299,8 @@
             </div>
             <div class="card mb-4 filter-bar">
               <div class="filter-toggle" onclick="toggleFilter('expFilter')">
-                <span><i class="fas fa-filter"></i> فلاتر</span>
-                <i class="fas fa-chevron-down" id="expFilterIcon"></i>
+                <span><i class="fas fa-filter"></i> فلاتر</span
+                ><i class="fas fa-chevron-down" id="expFilterIcon"></i>
               </div>
               <div class="filter-content show" id="expFilter">
                 <div class="flex gap-4 items-center flex-wrap">
@@ -2402,8 +2409,8 @@
             </div>
             <div class="card mb-4 filter-bar">
               <div class="filter-toggle" onclick="toggleFilter('debtFilter')">
-                <span><i class="fas fa-filter"></i> فلاتر</span>
-                <i class="fas fa-chevron-down" id="debtFilterIcon"></i>
+                <span><i class="fas fa-filter"></i> فلاتر</span
+                ><i class="fas fa-chevron-down" id="debtFilterIcon"></i>
               </div>
               <div class="filter-content show" id="debtFilter">
                 <div class="flex gap-4 items-center flex-wrap">
@@ -2524,7 +2531,6 @@
         </section>
       </main>
     </div>
-    <!-- Modals -->
     <div class="modal-overlay" id="employeeModal">
       <div class="modal">
         <div class="flex justify-between items-center mb-4">
@@ -2795,7 +2801,8 @@
                 margin-bottom: 0.5rem;
               "
               ><i class="fas fa-calendar-check"></i> يخصم من شهر</label
-            ><input type="month" id="loanTargetMonth" required />
+            >
+            <input type="month" id="loanTargetMonth" required />
           </div>
           <div class="mb-4">
             <label
@@ -3659,7 +3666,6 @@
           },
         });
       }
-      // EMPLOYEES
       document
         .getElementById("employeeForm")
         .addEventListener("submit", async (e) => {
@@ -3722,7 +3728,6 @@
         if (empPage < 1) empPage = 1;
         const start = (empPage - 1) * ITEMS_PER_PAGE;
         const pg = f.slice(start, start + ITEMS_PER_PAGE);
-        // Grid View
         document.getElementById("employeesGrid").innerHTML =
           pg.length > 0
             ? pg
@@ -3736,7 +3741,6 @@
                 ? "⚠️ لا يوجد موظفين مسجلين. أضف موظف جديد!"
                 : "لا توجد نتائج مطابقة للبحث") +
               "</p>";
-        // Table View
         document.querySelector("#employeesTable tbody").innerHTML =
           pg.length > 0
             ? pg
@@ -3750,7 +3754,6 @@
                 ? "⚠️ لا يوجد موظفين مسجلين"
                 : "لا توجد نتائج") +
               "</td></tr>";
-        // Mobile Cards
         document.getElementById("employeesMobileCards").innerHTML =
           pg.length > 0
             ? pg
@@ -3824,7 +3827,6 @@
           showToast(err.message, "error");
         }
       }
-      // LOANS
       function openLoanModal() {
         document.getElementById("loanForm").reset();
         const n = new Date();
@@ -3968,7 +3970,6 @@
         renderLoans();
         showToast("تم مسح الفلاتر", "success");
       }
-      // PAYROLL
       function getWD(id, m) {
         return (workDaysPerEmployee[m] && workDaysPerEmployee[m][id]) || 30;
       }
@@ -4134,7 +4135,6 @@
         payrollPage = p;
         renderPayrollTable();
       }
-      // EXPENSES
       function renderExpenses() {
         const fd = document.getElementById("expDateFrom").value,
           ftd = document.getElementById("expDateTo").value,
@@ -4280,7 +4280,6 @@
           showToast(e.message, "error");
         }
       }
-      // DEBTS
       function renderDebts() {
         const ft = document.getElementById("debtTypeFilter").value,
           fs = document.getElementById("debtStatusFilter").value;
@@ -4452,7 +4451,6 @@
           showToast(e.message, "error");
         }
       }
-      // PAY DEBT
       function openPayDebtModal(id) {
         const d = debts.find((x) => x.id === id);
         if (!d) return;
@@ -4534,7 +4532,6 @@
             setSubmitting("payDebtSubmitBtn", false);
           }
         });
-      // DEBT STATEMENT
       function openDebtStatement(id) {
         const d = debts.find((x) => x.id === id);
         if (!d) return;
@@ -4562,37 +4559,8 @@
                     `<tr class="payment-row"><td>${i + 1}</td><td><strong>${p.date}</strong></td><td>${p.time || "--:--"}</td><td>${Number(p.amount).toLocaleString()} ج.س</td><td>${p.note || "-"}</td></tr>`,
                 )
                 .join("");
-        document.getElementById("debtStatementContent").innerHTML = `
-<div class="debt-stmt-header">
-<h3><i class="fas fa-file-invoice-dollar"></i> كشف الدين - ${d.party}</h3>
-<div class="debt-stmt-info">
-<div class="debt-stmt-info-item"><div class="label">النوع</div><div class="value">${d.type === "us" ? "علينا" : "لنا"}</div></div>
-<div class="debt-stmt-info-item"><div class="label">المبلغ الكلي</div><div class="value">${Number(d.amount).toLocaleString()} ج.س</div></div>
-<div class="debt-stmt-info-item"><div class="label">المدفوع</div><div class="value" style="color:#198754">${totalPaid.toLocaleString()} ج.س</div></div>
-<div class="debt-stmt-info-item"><div class="label">المتبقي</div><div class="value" style="color:#dc3545">${remaining.toLocaleString()} ج.س</div></div>
-<div class="debt-stmt-info-item"><div class="label">تاريخ الإنشاء</div><div class="value">${d.date}</div></div>
-<div class="debt-stmt-info-item"><div class="label">الاستحقاق</div><div class="value">${d.dueDate || "-"}</div></div>
-<div class="debt-stmt-info-item"><div class="label">الحالة</div><div class="value" style="color:${statusColor}">${statusText}</div></div>
-<div class="debt-stmt-info-item"><div class="label">عدد الدفعيات</div><div class="value">${payments.length}</div></div>
-</div>
-</div>
-<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem">
-<h4 style="color:var(--primary);margin-bottom:1rem"><i class="fas fa-history"></i> سجل الدفعيات</h4>
-<table class="debt-stmt-table">
-<thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>المبلغ</th><th>ملاحظات</th></tr></thead>
-<tbody>${paymentsHtml}</tbody>
-</table>
-</div>
-<div class="debt-stmt-summary">
-<div class="debt-stmt-summary-item"><div class="label">المبلغ الكلي</div><div class="value">${Number(d.amount).toLocaleString()} ج.س</div></div>
-<div class="debt-stmt-summary-item"><div class="label">إجمالي المدفوع</div><div class="value" style="color:#198754">${totalPaid.toLocaleString()} ج.س</div></div>
-<div class="debt-stmt-summary-item"><div class="label">المتبقي</div><div class="value" style="color:#dc3545">${remaining.toLocaleString()} ج.س</div></div>
-<div class="debt-stmt-summary-item"><div class="label">عدد الدفعيات</div><div class="value">${payments.length}</div></div>
-</div>
-<div style="display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap">
-<button class="btn btn-primary" onclick="printDebtStatement('${d.id}')"><i class="fas fa-print"></i> طباعة الكشف</button>
-<button class="btn btn-outline" onclick="closeModal('debtStatementModal')"><i class="fas fa-times"></i> إغلاق</button>
-</div>`;
+        document.getElementById("debtStatementContent").innerHTML =
+          `<div class="debt-stmt-header"><h3><i class="fas fa-file-invoice-dollar"></i> كشف الدين - ${d.party}</h3><div class="debt-stmt-info"><div class="debt-stmt-info-item"><div class="label">النوع</div><div class="value">${d.type === "us" ? "علينا" : "لنا"}</div></div><div class="debt-stmt-info-item"><div class="label">المبلغ الكلي</div><div class="value">${Number(d.amount).toLocaleString()} ج.س</div></div><div class="debt-stmt-info-item"><div class="label">المدفوع</div><div class="value" style="color:#198754">${totalPaid.toLocaleString()} ج.س</div></div><div class="debt-stmt-info-item"><div class="label">المتبقي</div><div class="value" style="color:#dc3545">${remaining.toLocaleString()} ج.س</div></div><div class="debt-stmt-info-item"><div class="label">تاريخ الإنشاء</div><div class="value">${d.date}</div></div><div class="debt-stmt-info-item"><div class="label">الاستحقاق</div><div class="value">${d.dueDate || "-"}</div></div><div class="debt-stmt-info-item"><div class="label">الحالة</div><div class="value" style="color:${statusColor}">${statusText}</div></div><div class="debt-stmt-info-item"><div class="label">عدد الدفعيات</div><div class="value">${payments.length}</div></div></div></div><div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem"><h4 style="color:var(--primary);margin-bottom:1rem"><i class="fas fa-history"></i> سجل الدفعيات</h4><table class="debt-stmt-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>المبلغ</th><th>ملاحظات</th></tr></thead><tbody>${paymentsHtml}</tbody></table></div><div class="debt-stmt-summary"><div class="debt-stmt-summary-item"><div class="label">المبلغ الكلي</div><div class="value">${Number(d.amount).toLocaleString()} ج.س</div></div><div class="debt-stmt-summary-item"><div class="label">إجمالي المدفوع</div><div class="value" style="color:#198754">${totalPaid.toLocaleString()} ج.س</div></div><div class="debt-stmt-summary-item"><div class="label">المتبقي</div><div class="value" style="color:#dc3545">${remaining.toLocaleString()} ج.س</div></div><div class="debt-stmt-summary-item"><div class="label">عدد الدفعيات</div><div class="value">${payments.length}</div></div></div><div style="display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap"><button class="btn btn-primary" onclick="printDebtStatement('${d.id}')"><i class="fas fa-print"></i> طباعة الكشف</button><button class="btn btn-outline" onclick="closeModal('debtStatementModal')"><i class="fas fa-times"></i> إغلاق</button></div>`;
         openModal("debtStatementModal");
       }
       function printDebtStatement(id) {
@@ -4617,35 +4585,7 @@
                 )
                 .join("");
         printContent(
-          `${getPrintHeader("كشف دين", `${d.party} - #${id.slice(-6).toUpperCase()}`)}
-<div style="background:#f9f9f9;padding:15px;border-radius:8px;margin-bottom:20px;border:1px solid #e0e0e0">
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-<div><strong>النوع:</strong> ${d.type === "us" ? "دين علينا" : "دين لنا"}</div>
-<div><strong>الجهة:</strong> ${d.party}</div>
-<div><strong>المبلغ الكلي:</strong> ${Number(d.amount).toLocaleString()} ج.س</div>
-<div><strong>المدفوع:</strong> ${totalPaid.toLocaleString()} ج.س</div>
-<div><strong>المتبقي:</strong> ${remaining.toLocaleString()} ج.س</div>
-<div><strong>الحالة:</strong> ${statusText}</div>
-<div><strong>تاريخ الإنشاء:</strong> ${d.date}</div>
-<div><strong>الاستحقاق:</strong> ${d.dueDate || "-"}</div>
-${d.note ? `<div style="grid-column:1/-1"><strong>ملاحظات:</strong> ${d.note}</div>` : ""}
-</div>
-</div>
-<div style="margin-bottom:20px">
-<h3 style="color:#d4af37;margin-bottom:10px;border-bottom:2px solid #d4af37;padding-bottom:5px">سجل الدفعيات</h3>
-<table class="payroll-summary-table">
-<thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>المبلغ</th><th>ملاحظات</th></tr></thead>
-<tbody>${paymentsHtml}</tbody>
-</table>
-</div>
-<div class="summary-box">
-<div class="summary-item"><div class="label">المبلغ الكلي</div><div class="value">${Number(d.amount).toLocaleString()}</div></div>
-<div class="summary-item"><div class="label">إجمالي المدفوع</div><div class="value" style="color:#198754">${totalPaid.toLocaleString()}</div></div>
-<div class="summary-item"><div class="label">المتبقي</div><div class="value" style="color:#dc3545">${remaining.toLocaleString()}</div></div>
-<div class="summary-item"><div class="label">عدد الدفعيات</div><div class="value">${payments.length}</div></div>
-</div>
-${getSignatures()}
-${getPrintFooter()}`,
+          `${getPrintHeader("كشف دين", `${d.party} - #${id.slice(-6).toUpperCase()}`)}<div class="summary-box"><div class="summary-item"><div class="label">المبلغ الكلي</div><div class="value">${Number(d.amount).toLocaleString()}</div></div><div class="summary-item"><div class="label">إجمالي المدفوع</div><div class="value" style="color:#198754">${totalPaid.toLocaleString()}</div></div><div class="summary-item"><div class="label">المتبقي</div><div class="value" style="color:#dc3545">${remaining.toLocaleString()}</div></div><div class="summary-item"><div class="label">عدد الدفعيات</div><div class="value">${payments.length}</div></div></div><div style="background:#f9f9f9;padding:15px;border-radius:8px;margin-bottom:20px;border:1px solid #e0e0e0"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><strong>النوع:</strong> ${d.type === "us" ? "دين علينا" : "دين لنا"}</div><div><strong>الجهة:</strong> ${d.party}</div><div><strong>المبلغ الكلي:</strong> ${Number(d.amount).toLocaleString()} ج.س</div><div><strong>المدفوع:</strong> ${totalPaid.toLocaleString()} ج.س</div><div><strong>المتبقي:</strong> ${remaining.toLocaleString()} ج.س</div><div><strong>الحالة:</strong> ${statusText}</div><div><strong>تاريخ الإنشاء:</strong> ${d.date}</div><div><strong>الاستحقاق:</strong> ${d.dueDate || "-"}</div>${d.note ? `<div style="grid-column:1/-1"><strong>ملاحظات:</strong> ${d.note}</div>` : ""}</div></div><div style="margin-bottom:20px"><h3 style="color:#d4af37;margin-bottom:10px;border-bottom:2px solid #d4af37;padding-bottom:5px">سجل الدفعيات</h3><table class="payroll-summary-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>المبلغ</th><th>ملاحظات</th></tr></thead><tbody>${paymentsHtml}</tbody></table></div>${getSignatures()}${getPrintFooter()}`,
           "كشف دين " + d.party,
         );
       }
@@ -4747,7 +4687,6 @@ ${getPrintFooter()}`,
           else if (currentExpTab === "debts") openDebtModal("us");
         } else navigate("employees");
       }
-      // STATEMENT
       function openStatement(empId, month) {
         const emp = employees.find((e) => e.id === empId);
         if (!emp) return;
@@ -4825,30 +4764,8 @@ ${getPrintFooter()}`,
           else rb -= r.db;
           r.bal = rb;
         });
-        document.getElementById("statementContent").innerHTML = `
-<div class="statement-header">
-<h3><i class="fas fa-user-tie"></i> ${emp.name}</h3>
-<div class="statement-info-grid">
-<div class="statement-info-item"><div class="label">القسم</div><div class="value">${emp.dept}</div></div>
-<div class="statement-info-item"><div class="label">الوظيفة</div><div class="value">${emp.position || "-"}</div></div>
-<div class="statement-info-item"><div class="label">الراتب الأساسي</div><div class="value">${bs.toLocaleString()} ج.س</div></div>
-<div class="statement-info-item"><div class="label">الراتب المستحق</div><div class="value" id="stmtActualSalary">${actualSalary.toLocaleString()} ج.س</div></div>
-<div class="statement-info-item"><div class="label">الفترة المحددة</div><div class="value" id="stmtPeriod">${month}</div></div>
-<div class="statement-info-item"><div class="label">عدد الأشهر</div><div class="value" id="stmtMonthsCount">${allMonths.length} شهر</div></div>
-</div>
-</div>
-<div class="stmt-filter-box">
-<h4><i class="fas fa-filter"></i> فلترة حسب شهر الخصم</h4>
-<div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:flex-end">
-<div style="flex:1;min-width:150px"><label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem"><i class="fas fa-calendar-alt"></i> من:</label><input type="month" id="stmtMF" onchange="applyStmtFilters()" style="width:100%"></div>
-<div style="flex:1;min-width:150px"><label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem"><i class="fas fa-calendar-alt"></i> إلى:</label><input type="month" id="stmtMT" onchange="applyStmtFilters()" style="width:100%"></div>
-<button class="btn btn-outline" onclick="resetStmtFilters()" style="height:40px"><i class="fas fa-undo"></i> إعادة</button>
-<button class="btn btn-primary" onclick="printStatement()" style="height:40px"><i class="fas fa-print"></i> طباعة</button>
-</div>
-</div>
-<table class="statement-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>النوع</th><th>شهر الخصم</th><th>البيان</th><th>دائن (+)</th><th>مدين (-)</th><th>الرصيد</th></tr></thead><tbody id="stmtTB"></tbody></table>
-<div class="statement-summary" id="stmtSM"></div>
-`;
+        document.getElementById("statementContent").innerHTML =
+          `<div class="statement-header"><h3><i class="fas fa-user-tie"></i> ${emp.name}</h3><div class="statement-info-grid"><div class="statement-info-item"><div class="label">القسم</div><div class="value">${emp.dept}</div></div><div class="statement-info-item"><div class="label">الوظيفة</div><div class="value">${emp.position || "-"}</div></div><div class="statement-info-item"><div class="label">الراتب الأساسي</div><div class="value">${bs.toLocaleString()} ج.س</div></div><div class="statement-info-item"><div class="label">الراتب المستحق</div><div class="value" id="stmtActualSalary">${actualSalary.toLocaleString()} ج.س</div></div><div class="statement-info-item"><div class="label">الفترة المحددة</div><div class="value" id="stmtPeriod">${month}</div></div><div class="statement-info-item"><div class="label">عدد الأشهر</div><div class="value" id="stmtMonthsCount">${allMonths.length} شهر</div></div></div></div><div class="stmt-filter-box"><h4><i class="fas fa-filter"></i> فلترة حسب شهر الخصم</h4><div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:flex-end"><div style="flex:1;min-width:150px"><label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem"><i class="fas fa-calendar-alt"></i> من:</label><input type="month" id="stmtMF" onchange="applyStmtFilters()" style="width:100%"></div><div style="flex:1;min-width:150px"><label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem"><i class="fas fa-calendar-alt"></i> إلى:</label><input type="month" id="stmtMT" onchange="applyStmtFilters()" style="width:100%"></div><button class="btn btn-outline" onclick="resetStmtFilters()" style="height:40px"><i class="fas fa-undo"></i> إعادة</button><button class="btn btn-primary" onclick="printStatement()" style="height:40px"><i class="fas fa-print"></i> طباعة</button></div></div><table class="statement-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>النوع</th><th>شهر الخصم</th><th>البيان</th><th>دائن (+)</th><th>مدين (-)</th><th>الرصيد</th></tr></thead><tbody id="stmtTB"></tbody></table><div class="statement-summary" id="stmtSM"></div>`;
         window._stmt = {
           emp,
           month,
@@ -4957,29 +4874,10 @@ ${getPrintFooter()}`,
           })
           .join("");
         printContent(
-          `${getPrintHeader("كشف حساب", `${s.emp.name} - ${ftxt}`)}
-<div style="background:#f9f9f9;padding:15px;border-radius:8px;margin-bottom:20px;border:1px solid #e0e0e0">
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-<div><strong>الموظف:</strong> ${s.emp.name}</div>
-<div><strong>القسم:</strong> ${s.emp.dept}</div>
-<div><strong>الراتب الكامل:</strong> ${s.fullSalary.toLocaleString()} ج.س</div>
-<div><strong>عدد الأشهر:</strong> ${s.allMonths.length}</div>
-<div><strong>الفترة:</strong> ${s.allMonths[0]} → ${s.allMonths[s.allMonths.length - 1]}</div>
-</div>
-</div>
-<table class="payroll-summary-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>النوع</th><th>الشهر</th><th>البيان</th><th>دائن</th><th>مدين</th><th>الرصيد</th></tr></thead><tbody>${rh}</tbody></table>
-<div class="summary-box">
-<div class="summary-item"><div class="label">المعاملات</div><div class="value">${fr.length}</div></div>
-<div class="summary-item"><div class="label">الدائن</div><div class="value" style="color:#198754">${tc.toLocaleString()}</div></div>
-<div class="summary-item"><div class="label">المدين</div><div class="value" style="color:#dc3545">${td.toLocaleString()}</div></div>
-<div class="summary-item"><div class="label">الرصيد</div><div class="value" style="color:${fb < 0 ? "#dc3545" : "#198754"}">${fb.toLocaleString()}</div></div>
-</div>
-${getSignatures()}
-${getPrintFooter()}`,
+          `${getPrintHeader("كشف حساب", `${s.emp.name} - ${ftxt}`)}<div class="summary-box"><div class="summary-item"><div class="label">المعاملات</div><div class="value">${fr.length}</div></div><div class="summary-item"><div class="label">الدائن</div><div class="value" style="color:#198754">${tc.toLocaleString()}</div></div><div class="summary-item"><div class="label">المدين</div><div class="value" style="color:#dc3545">${td.toLocaleString()}</div></div><div class="summary-item"><div class="label">الرصيد</div><div class="value" style="color:${fb < 0 ? "#dc3545" : "#198754"}">${fb.toLocaleString()}</div></div></div><div style="background:#f9f9f9;padding:15px;border-radius:8px;margin-bottom:20px;border:1px solid #e0e0e0"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px"><div><strong>الموظف:</strong> ${s.emp.name}</div><div><strong>القسم:</strong> ${s.emp.dept}</div><div><strong>الراتب الكامل:</strong> ${s.fullSalary.toLocaleString()} ج.س</div><div><strong>عدد الأشهر:</strong> ${s.allMonths.length}</div><div><strong>الفترة:</strong> ${s.allMonths[0]} → ${s.allMonths[s.allMonths.length - 1]}</div></div></div><table class="payroll-summary-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>النوع</th><th>الشهر</th><th>البيان</th><th>دائن</th><th>مدين</th><th>الرصيد</th></tr></thead><tbody>${rh}</tbody></table>${getSignatures()}${getPrintFooter()}`,
           `كشف ${s.emp.name}`,
         );
       }
-      // PRINT & EXPORT
       function exportEmployeesToExcel() {
         if (!employees.length) return showToast("لا بيانات", "error");
         const ws = XLSX.utils.json_to_sheet(
@@ -5162,26 +5060,16 @@ ${getPrintFooter()}`,
           showToast("يرجى السماح بالنوافذ المنبثقة", "error");
           return;
         }
-        const cssStyles = `*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Tajawal',sans-serif;background:white;color:#000;direction:rtl;-webkit-print-color-adjust:exact;print-color-adjust:exact}@page{margin:15mm 10mm;size:A4}.print-container{max-width:210mm;margin:0 auto;padding:5mm}.print-actions{position:fixed;top:15px;left:15px;right:15px;display:flex;gap:10px;z-index:1000;justify-content:center;flex-wrap:wrap}.btn-print,.btn-close{padding:12px 24px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:16px;font-family:'Tajawal',sans-serif;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:all 0.3s}.btn-print{background:#d4af37;color:#151515}.btn-print:hover{background:#b5952f;transform:translateY(-2px)}.btn-close{background:#dc3545;color:white}.btn-close:hover{background:#c82333;transform:translateY(-2px)}.payroll-summary-table{width:100%;border-collapse:collapse;margin-top:20px;font-size:10pt}.payroll-summary-table th,.payroll-summary-table td{border:1px solid #000;padding:8px 6px;text-align:center}.payroll-summary-table th{background-color:#d4af37!important;font-weight:bold}.summary-box{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:20px 0}.summary-item{background:#f9f9f9;border:2px solid #d4af37;border-radius:8px;padding:15px;text-align:center}.summary-item .label{font-size:9pt;color:#666;margin-bottom:5px}.summary-item .value{font-size:16pt;font-weight:bold;color:#d4af37}.doc-table{width:100%;border-collapse:collapse;margin-top:15px}.doc-table th,.doc-table td{border:1px solid #000;padding:10px;text-align:center}.doc-table th{background-color:#f0f0f0!important;font-weight:bold}.work-days-info{background:#fff9e6;border:2px solid #d4af37;border-radius:8px;padding:10px 15px;margin:15px 0;text-align:center;font-weight:bold}.signatures-box{margin-top:30px;padding-top:15px;border-top:2px dashed #d4af37}.signatures-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;text-align:center;width:100%}.signature-item{padding:8px}.signature-item .sig-title{font-weight:bold;color:#151515;font-size:10pt;margin-bottom:35px}.signature-item .sig-line{height:2px;background:#151515;margin:0 15px;margin-bottom:6px}.signature-item .sig-name{font-size:9pt;color:#666}.signature-item .sig-date{font-size:8pt;color:#999;margin-top:3px}@media(max-width:768px){.print-actions{top:10px;left:10px;right:10px}.btn-print,.btn-close{padding:10px 16px;font-size:14px;flex:1;min-width:120px;justify-content:center}.print-container{padding:80px 5px 5px 5px}.summary-box{grid-template-columns:repeat(2,1fr)}.signatures-grid{grid-template-columns:repeat(3,1fr);gap:8px}.signature-item{padding:5px}.signature-item .sig-title{font-size:8pt;margin-bottom:25px}.signature-item .sig-name{font-size:7pt}.signature-item .sig-date{font-size:6pt}}@media print{.print-actions{display:none!important}.print-container{padding:5mm!important}@page{size:A4;margin:10mm}}`;
+        const cssStyles = `*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Tajawal',sans-serif;background:white;color:#000;direction:rtl;-webkit-print-color-adjust:exact;print-color-adjust:exact}@page{margin:15mm 10mm;size:A4}.print-container{max-width:210mm;margin:0 auto;padding:5mm}.print-actions{position:fixed;top:15px;left:15px;right:15px;display:flex;gap:10px;z-index:1000;justify-content:center;flex-wrap:wrap}.btn-print,.btn-close{padding:12px 24px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:16px;font-family:'Tajawal',sans-serif;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:all 0.3s}.btn-print{background:#d4af37;color:#151515}.btn-print:hover{background:#b5952f;transform:translateY(-2px)}.btn-close{background:#dc3545;color:white}.btn-close:hover{background:#c82333;transform:translateY(-2px)}.payroll-summary-table{width:100%;border-collapse:collapse;margin-top:20px;font-size:10pt}.payroll-summary-table th,.payroll-summary-table td{border:1px solid #000;padding:8px 6px;text-align:center}.payroll-summary-table th{background-color:#d4af37!important;font-weight:bold}.summary-box{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:20px 0}.summary-item{background:#f9f9f9;border:2px solid #d4af37;border-radius:8px;padding:15px;text-align:center}.summary-item .label{font-size:9pt;color:#666;margin-bottom:5px}.summary-item .value{font-size:16pt;font-weight:bold;color:#d4af37}.doc-table{width:100%;border-collapse:collapse;margin-top:15px}.doc-table th,.doc-table td{border:1px solid #000;padding:10px;text-align:center}.doc-table th{background-color:#f0f0f0!important;font-weight:bold}.work-days-info{background:#fff9e6;border:2px solid #d4af37;border-radius:8px;padding:10px 15px;margin:15px 0;text-align:center;font-weight:bold}.signatures-box{margin-top:30px;padding-top:15px;border-top:2px dashed #d4af37}.signatures-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;text-align:center;width:100%}.signature-item{padding:8px}.signature-item .sig-title{font-weight:bold;color:#151515;font-size:10pt;margin-bottom:35px}.signature-item .sig-line{height:2px;background:#151515;margin:0 15px;margin-bottom:6px}.signature-item .sig-name{font-size:9pt;color:#666}.signature-item .sig-date{font-size:8pt;color:#999;margin-top:3px}@media(max-width:768px){.print-actions{top:10px;left:10px;right:10px}.btn-print,.btn-close{padding:10px 16px;font-size:14px;flex:1;min-width:120px;justify-content:center}.print-container{padding:80px 5px 5px 5px}.summary-box{grid-template-columns:repeat(2,1fr)}.signatures-grid{grid-template-columns:repeat(3,1fr)!important;gap:8px}.signature-item{padding:5px}.signature-item .sig-title{font-size:8pt;margin-bottom:25px}.signature-item .sig-name{font-size:7pt}.signature-item .sig-date{font-size:6pt}}@media print{.print-actions{display:none!important}.print-container{padding:5mm!important}}`;
         const fullHtml =
           "<!DOCTYPE html><html lang='ar' dir='rtl'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>" +
           title +
-          "</title>" +
-          "<link href='https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap' rel='stylesheet'>" +
-          "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>" +
-          "<style>" +
+          "</title><link href='https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap' rel='stylesheet'><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'><style>" +
           cssStyles +
-          "</style></head><body>" +
-          "<div class='print-actions'>" +
-          "<button class='btn-print' onclick='window.print()'><i class='fas fa-print'></i> طباعة</button>" +
-          "<button class='btn-close' onclick='window.close()'><i class='fas fa-times'></i> إغلاق</button>" +
-          "</div>" +
-          "<div class='print-container'>" +
+          "</style></head><body><div class='print-actions'><button class='btn-print' onclick='window.print()'><i class='fas fa-print'></i> طباعة</button><button class='btn-close' onclick='window.close()'><i class='fas fa-times'></i> إغلاق</button></div><div class='print-container'>" +
           htmlContent +
-          "</div>" +
-          "<script>document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { window.close(); } });</" +
-          "script>" +
-          "</body></html>";
+          "</div><script>document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { window.close(); } });</" +
+          "script></body></html>";
         printWindow.document.open();
         printWindow.document.write(fullHtml);
         printWindow.document.close();
@@ -5200,29 +5088,7 @@ ${getPrintFooter()}`,
       }
       function getSignatures() {
         const today = new Date().toLocaleDateString("ar-EG");
-        return `<div class="signatures-box">
-<div style="text-align:center;margin-bottom:12px;font-weight:bold;color:#d4af37;font-size:11pt"><i class="fas fa-signature"></i> التواقيع</div>
-<div class="signatures-grid">
-<div class="signature-item">
-<div class="sig-title">المدير / المسؤول</div>
-<div class="sig-line"></div>
-<div class="sig-name">الاسم: ...........................</div>
-<div class="sig-date">التاريخ: ${today}</div>
-</div>
-<div class="signature-item">
-<div class="sig-title">المحاسب</div>
-<div class="sig-line"></div>
-<div class="sig-name">الاسم: ...........................</div>
-<div class="sig-date">التاريخ: ${today}</div>
-</div>
-<div class="signature-item">
-<div class="sig-title">المستلم</div>
-<div class="sig-line"></div>
-<div class="sig-name">الاسم: ...........................</div>
-<div class="sig-date">التاريخ: ${today}</div>
-</div>
-</div>
-</div>`;
+        return `<div class="signatures-box"><div style="text-align:center;margin-bottom:12px;font-weight:bold;color:#d4af37;font-size:11pt"><i class="fas fa-signature"></i> التواقيع</div><div class="signatures-grid"><div class="signature-item"><div class="sig-title">المدير / المسؤول</div><div class="sig-line"></div><div class="sig-name">الاسم: ...........................</div><div class="sig-date">التاريخ: ${today}</div></div><div class="signature-item"><div class="sig-title">المحاسب</div><div class="sig-line"></div><div class="sig-name">الاسم: ...........................</div><div class="sig-date">التاريخ: ${today}</div></div><div class="signature-item"><div class="sig-title">المستلم</div><div class="sig-line"></div><div class="sig-name">الاسم: ...........................</div><div class="sig-date">التاريخ: ${today}</div></div></div></div>`;
       }
       function printAllEmployees() {
         if (!employees.length) return showToast("لا بيانات", "error");
@@ -5233,16 +5099,29 @@ ${getPrintFooter()}`,
       }
       function printAllLoans() {
         if (!filteredLoans.length) return showToast("لا بيانات", "error");
+        const totalLoans = filteredLoans
+          .filter((l) => l.type === "سلفة")
+          .reduce((s, l) => s + Number(l.amount), 0);
+        const totalDeductions = filteredLoans
+          .filter((l) => l.type === "خصم")
+          .reduce((s, l) => s + Number(l.amount), 0);
+        const grandTotal = totalLoans + totalDeductions;
         printContent(
-          `${getPrintHeader("كشف السلفيات", `عدد: ${filteredLoans.length}`)}<table class="payroll-summary-table"><thead><tr><th>#</th><th>الموظف</th><th>النوع</th><th>المبلغ</th><th>التاريخ</th><th>الشهر</th></tr></thead><tbody>${filteredLoans.map((l, i) => `<tr><td>${i + 1}</td><td>${l.empName}</td><td>${l.type}</td><td>${Number(l.amount).toLocaleString()}</td><td>${l.date}</td><td>${l.targetMonth || "-"}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
+          `${getPrintHeader("كشف السلفيات", `عدد: ${filteredLoans.length}`)}<div class="summary-box"><div class="summary-item"><div class="label">عدد المعاملات</div><div class="value">${filteredLoans.length}</div></div><div class="summary-item"><div class="label">إجمالي السلفيات</div><div class="value" style="color:#d4af37">${totalLoans.toLocaleString()} ج.س</div></div><div class="summary-item"><div class="label">إجمالي الخصومات</div><div class="value" style="color:#dc3545">${totalDeductions.toLocaleString()} ج.س</div></div><div class="summary-item"><div class="label">الإجمالي الكلي</div><div class="value">${grandTotal.toLocaleString()} ج.س</div></div></div><table class="payroll-summary-table"><thead><tr><th>#</th><th>الموظف</th><th>النوع</th><th>المبلغ</th><th>التاريخ</th><th>الشهر</th></tr></thead><tbody>${filteredLoans.map((l, i) => `<tr><td>${i + 1}</td><td>${l.empName}</td><td>${l.type}</td><td>${Number(l.amount).toLocaleString()}</td><td>${l.date}</td><td>${l.targetMonth || "-"}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
           "السلفيات",
         );
       }
       function printAllPayroll() {
         if (!payrollData.length) return showToast("لا بيانات", "error");
         const m = payrollData[0].month;
+        const totalGross = payrollData.reduce((s, p) => s + p.grossSalary, 0);
+        const totalDeductions = payrollData.reduce(
+          (s, p) => s + p.totalDeductions,
+          0,
+        );
+        const totalNet = payrollData.reduce((s, p) => s + p.net, 0);
         printContent(
-          `${getPrintHeader("كشف الرواتب", `شهر: ${m}`)}<table class="payroll-summary-table"><thead><tr><th>#</th><th>الموظف</th><th>الأيام</th><th>الإجمالي</th><th>الخصومات</th><th>الصافي</th></tr></thead><tbody>${payrollData.map((p, i) => `<tr><td>${i + 1}</td><td>${p.name}</td><td>${p.workDays}</td><td>${p.grossSalary.toLocaleString()}</td><td style="color:#dc3545">${p.totalDeductions.toLocaleString()}</td><td style="color:${p.net < 0 ? "#dc3545" : "#d4af37"}">${p.net.toLocaleString()}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
+          `${getPrintHeader("كشف الرواتب", `شهر: ${m}`)}<div class="summary-box"><div class="summary-item"><div class="label">عدد الموظفين</div><div class="value">${payrollData.length}</div></div><div class="summary-item"><div class="label">إجمالي الاستحقاقات</div><div class="value">${totalGross.toLocaleString()} ج.س</div></div><div class="summary-item"><div class="label">إجمالي الخصومات</div><div class="value" style="color:#dc3545">${totalDeductions.toLocaleString()} ج.س</div></div><div class="summary-item"><div class="label">صافي المستحقات</div><div class="value" style="color:${totalNet < 0 ? "#dc3545" : "#d4af37"}">${totalNet.toLocaleString()} ج.س</div></div></div><table class="payroll-summary-table"><thead><tr><th>#</th><th>الموظف</th><th>الأيام</th><th>الإجمالي</th><th>الخصومات</th><th>الصافي</th></tr></thead><tbody>${payrollData.map((p, i) => `<tr><td>${i + 1}</td><td>${p.name}</td><td>${p.workDays}</td><td>${p.grossSalary.toLocaleString()}</td><td style="color:#dc3545">${p.totalDeductions.toLocaleString()}</td><td style="color:${p.net < 0 ? "#dc3545" : "#d4af37"}">${p.net.toLocaleString()}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
           "الرواتب",
         );
       }
@@ -5253,7 +5132,7 @@ ${getPrintFooter()}`,
           0,
         );
         printContent(
-          `${getPrintHeader("كشف المصروفات", `عدد: ${filteredExpenses.length} | الإجمالي: ${total.toLocaleString()} ج.س`)}<table class="payroll-summary-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>التصنيف</th><th>الوصف</th><th>المبلغ</th><th>ملاحظات</th></tr></thead><tbody>${filteredExpenses.map((e, i) => `<tr><td>${i + 1}</td><td>${e.date}</td><td>${e.time || "-"}</td><td>${e.category}</td><td>${e.description || "-"}</td><td>${Number(e.amount).toLocaleString()}</td><td>${e.note || "-"}</td></tr>`).join("")}</tbody></table><div class="summary-box"><div class="summary-item"><div class="label">عدد المصروفات</div><div class="value">${filteredExpenses.length}</div></div><div class="summary-item"><div class="label">الإجمالي</div><div class="value">${total.toLocaleString()} ج.س</div></div></div>${getSignatures()}${getPrintFooter()}`,
+          `${getPrintHeader("كشف المصروفات", `عدد: ${filteredExpenses.length} | الإجمالي: ${total.toLocaleString()} ج.س`)}<div class="summary-box"><div class="summary-item"><div class="label">عدد المصروفات</div><div class="value">${filteredExpenses.length}</div></div><div class="summary-item"><div class="label">الإجمالي</div><div class="value">${total.toLocaleString()} ج.س</div></div></div><table class="payroll-summary-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>التصنيف</th><th>الوصف</th><th>المبلغ</th><th>ملاحظات</th></tr></thead><tbody>${filteredExpenses.map((e, i) => `<tr><td>${i + 1}</td><td>${e.date}</td><td>${e.time || "-"}</td><td>${e.category}</td><td>${e.description || "-"}</td><td>${Number(e.amount).toLocaleString()}</td><td>${e.note || "-"}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
           "المصروفات",
         );
       }
@@ -5274,7 +5153,7 @@ ${getPrintFooter()}`,
           .filter((d) => d.type === "them")
           .reduce((s, d) => s + Number(d.remaining || 0), 0);
         printContent(
-          `${getPrintHeader("كشف الديون", `علينا: ${usT.toLocaleString()} | لنا: ${thT.toLocaleString()}`)}<table class="payroll-summary-table"><thead><tr><th>#</th><th>النوع</th><th>الجهة</th><th>المبلغ</th><th>المدفوع</th><th>المتبقي</th><th>التاريخ</th><th>الاستحقاق</th><th>الحالة</th></tr></thead><tbody>${filteredDebts.map((d, i) => `<tr><td>${i + 1}</td><td>${d.type === "us" ? "علينا" : "لنا"}</td><td>${d.party}</td><td>${Number(d.amount).toLocaleString()}</td><td>${Number(d.paid || 0).toLocaleString()}</td><td>${Number(d.remaining || 0).toLocaleString()}</td><td>${d.date}</td><td>${d.dueDate || "-"}</td><td>${d.status === "paid" ? "مدفوع" : d.status === "partial" ? "جزئي" : "معلق"}</td></tr>`).join("")}</tbody></table><div class="summary-box"><div class="summary-item"><div class="label">ديون علينا</div><div class="value" style="color:#dc3545">${usT.toLocaleString()}</div></div><div class="summary-item"><div class="label">ديون لنا</div><div class="value" style="color:#198754">${thT.toLocaleString()}</div></div><div class="summary-item"><div class="label">الصافي</div><div class="value">${(thT - usT).toLocaleString()}</div></div><div class="summary-item"><div class="label">عدد الديون</div><div class="value">${filteredDebts.length}</div></div></div>${getSignatures()}${getPrintFooter()}`,
+          `${getPrintHeader("كشف الديون", `علينا: ${usT.toLocaleString()} | لنا: ${thT.toLocaleString()}`)}<div class="summary-box"><div class="summary-item"><div class="label">ديون علينا</div><div class="value" style="color:#dc3545">${usT.toLocaleString()}</div></div><div class="summary-item"><div class="label">ديون لنا</div><div class="value" style="color:#198754">${thT.toLocaleString()}</div></div><div class="summary-item"><div class="label">الصافي</div><div class="value">${(thT - usT).toLocaleString()}</div></div><div class="summary-item"><div class="label">عدد الديون</div><div class="value">${filteredDebts.length}</div></div></div><table class="payroll-summary-table"><thead><tr><th>#</th><th>النوع</th><th>الجهة</th><th>المبلغ</th><th>المدفوع</th><th>المتبقي</th><th>التاريخ</th><th>الاستحقاق</th><th>الحالة</th></tr></thead><tbody>${filteredDebts.map((d, i) => `<tr><td>${i + 1}</td><td>${d.type === "us" ? "علينا" : "لنا"}</td><td>${d.party}</td><td>${Number(d.amount).toLocaleString()}</td><td>${Number(d.paid || 0).toLocaleString()}</td><td>${Number(d.remaining || 0).toLocaleString()}</td><td>${d.date}</td><td>${d.dueDate || "-"}</td><td>${d.status === "paid" ? "مدفوع" : d.status === "partial" ? "جزئي" : "معلق"}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
           "الديون",
         );
       }
@@ -5330,7 +5209,6 @@ ${getPrintFooter()}`,
           "سند",
         );
       }
-      // PWA
       if ("serviceWorker" in navigator)
         window.addEventListener("load", () =>
           navigator.serviceWorker
@@ -5356,7 +5234,7 @@ ${getPrintFooter()}`,
         deferredPrompt.userChoice.then((c) => {
           deferredPrompt = null;
           installBanner.classList.remove("show");
-          if (c.outcome === "accepted") showToast("تم التثبيت 🎉", "success");
+          if (c.outcome === "accepted") showToast("تم التثبيت ", "success");
         });
       }
       window.addEventListener("appinstalled", () => {
@@ -5382,7 +5260,7 @@ ${getPrintFooter()}`,
         setTimeout(
           () =>
             showToast(
-              "💡 لتثبيت التطبيق: اضغط مشاركة ⬆️ ثم إضافة للشاشة",
+              "💡 لتثبيت التطبيق: اضغط مشاركة ️ ثم إضافة للشاشة",
               "success",
             ),
           2000,
