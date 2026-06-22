@@ -697,6 +697,9 @@
       tr:last-child td {
         border-bottom: none;
       }
+      tr:hover td {
+        background: rgba(212, 175, 55, 0.05);
+      }
       .mobile-cards {
         display: none;
       }
@@ -747,30 +750,6 @@
         border-radius: 50%;
         object-fit: cover;
         border: 2px solid var(--primary);
-      }
-      .employee-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 1rem;
-      }
-      .emp-card {
-        text-align: center;
-        position: relative;
-      }
-      .emp-card img {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 0.8rem;
-        border: 3px solid var(--primary);
-        border-radius: 50%;
-        object-fit: cover;
-      }
-      .emp-card .actions {
-        margin-top: 0.8rem;
-        display: flex;
-        justify-content: center;
-        gap: 0.5rem;
-        flex-wrap: wrap;
       }
       .pagination {
         display: flex;
@@ -1559,33 +1538,32 @@
           padding: 0.8rem;
           border-radius: 10px;
         }
+        /* الجدول يظهر دائماً في الموبايل مع تمرير أفقي */
         .table-container {
-          display: none;
+          display: block !important;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          border-radius: 10px;
+          border: 1px solid var(--border);
         }
-        .mobile-cards {
-          display: block;
+        table {
+          min-width: 800px;
         }
-        .mobile-card {
-          padding: 0.9rem;
-          margin-bottom: 0.7rem;
+        th,
+        td {
+          padding: 0.7rem 0.5rem;
+          font-size: 0.8rem;
+          white-space: nowrap;
         }
-        .mobile-card-header {
-          margin-bottom: 0.6rem;
-          padding-bottom: 0.6rem;
+        .avatar {
+          width: 32px !important;
+          height: 32px !important;
         }
-        .mobile-card-row {
-          padding: 0.4rem 0;
-          font-size: 0.85rem;
-        }
-        .mobile-card-actions {
-          gap: 0.4rem;
-          margin-top: 0.6rem;
-          padding-top: 0.6rem;
-        }
-        .mobile-card-actions .btn {
+        .btn-sm {
+          padding: 0.4rem 0.6rem;
           font-size: 0.75rem;
-          padding: 0.5rem 0.3rem;
-          min-height: 38px;
+          min-height: 32px;
+          min-width: 32px;
         }
         .modal {
           width: 100%;
@@ -1625,14 +1603,6 @@
         }
         .export-buttons .btn {
           min-width: 100%;
-        }
-        .employee-grid {
-          grid-template-columns: 1fr;
-          gap: 0.8rem;
-        }
-        .emp-card img {
-          width: 70px;
-          height: 70px;
         }
         #dashboardCharts {
           flex-direction: column;
@@ -1759,7 +1729,7 @@
         </div>
         <h1 class="splash-title">كفتة على الفحم</h1>
         <p class="splash-tagline">نظام إدارة الموارد البشرية</p>
-        <div class="splash-version">Version 2.2.3</div>
+        <div class="splash-version">Version 2.2.4</div>
         <div class="splash-developer">
           Developed by: <strong>Ammar Konna</strong>
         </div>
@@ -2019,23 +1989,24 @@
               </button>
             </div>
           </div>
-          <div id="employeesGrid" class="employee-grid"></div>
-          <div id="employeesTableContainer" class="card hidden">
+          <div class="card">
             <div class="table-container">
               <table id="employeesTable">
                 <thead>
                   <tr>
+                    <th>#</th>
                     <th>الموظف</th>
                     <th>القسم</th>
                     <th>الوظيفة</th>
+                    <th>الهاتف</th>
                     <th>الراتب الأساسي</th>
+                    <th>تاريخ التعيين</th>
                     <th>الإجراءات</th>
                   </tr>
                 </thead>
                 <tbody></tbody>
               </table>
             </div>
-            <div class="mobile-cards" id="employeesMobileCards"></div>
           </div>
           <div class="pagination" id="employeesPagination"></div>
         </section>
@@ -3728,45 +3699,45 @@
         if (empPage < 1) empPage = 1;
         const start = (empPage - 1) * ITEMS_PER_PAGE;
         const pg = f.slice(start, start + ITEMS_PER_PAGE);
-        document.getElementById("employeesGrid").innerHTML =
-          pg.length > 0
-            ? pg
-                .map(
-                  (e) =>
-                    `<div class="card emp-card"><img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.name)}&background=random"><h3 class="font-bold text-primary">${e.name}</h3><p class="text-muted">${e.position || "-"}</p><p class="text-sm">${e.dept}</p><div class="actions"><button class="btn btn-sm btn-outline" onclick="editEmployee('${e.id}')"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-primary" onclick="printEmployeeCard('${e.id}')"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')"><i class="fas fa-trash"></i></button></div></div>`,
-                )
-                .join("")
-            : '<p class="text-center text-muted" style="padding:2rem;grid-column:1/-1">' +
-              (employees.length === 0
-                ? "⚠️ لا يوجد موظفين مسجلين. أضف موظف جديد!"
-                : "لا توجد نتائج مطابقة للبحث") +
-              "</p>";
+
         document.querySelector("#employeesTable tbody").innerHTML =
           pg.length > 0
             ? pg
                 .map(
-                  (e) =>
-                    `<tr><td><div class="flex items-center gap-2"><img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.name)}&background=random" class="avatar"><span>${e.name}</span></div></td><td>${e.dept}</td><td>${e.position || "-"}</td><td>${Number(e.salary).toLocaleString()}</td><td><button class="btn btn-sm btn-outline" onclick="editEmployee('${e.id}')"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')"><i class="fas fa-trash"></i></button></td></tr>`,
+                  (e, idx) =>
+                    `<tr>
+                <td><strong>${start + idx + 1}</strong></td>
+                <td>
+                  <div class="flex items-center gap-2">
+                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.name)}&background=D4AF37&color=151515&bold=true" class="avatar" style="width:36px;height:36px">
+                    <div>
+                      <div style="font-weight:700">${e.name}</div>
+                      <small class="text-muted">${e.nationalId || "-"}</small>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge" style="background:rgba(212,175,55,0.2);color:#b5952f">${e.dept}</span></td>
+                <td>${e.position || "-"}</td>
+                <td>${e.phone || "-"}</td>
+                <td><strong class="text-primary">${Number(e.salary).toLocaleString()} ج.س</strong></td>
+                <td>${e.joinDate || "-"}</td>
+                <td>
+                  <div class="flex gap-1" style="flex-wrap:wrap">
+                    <button class="btn btn-sm btn-outline" onclick="editEmployee('${e.id}')" title="تعديل"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-sm btn-primary" onclick="printEmployeeCard('${e.id}')" title="طباعة البطاقة"><i class="fas fa-print"></i></button>
+                    <button class="btn btn-sm btn-warning" onclick="openStatement('${e.id}','${new Date().toISOString().slice(0, 7)}')" title="كشف الحساب"><i class="fas fa-file-invoice-dollar"></i></button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')" title="حذف"><i class="fas fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>`,
                 )
                 .join("")
-            : '<tr><td colspan="5" class="text-center text-muted" style="padding:2rem">' +
+            : '<tr><td colspan="8" class="text-center text-muted" style="padding:2rem">' +
               (employees.length === 0
-                ? "⚠️ لا يوجد موظفين مسجلين"
-                : "لا توجد نتائج") +
+                ? "⚠️ لا يوجد موظفين مسجلين. أضف موظف جديد!"
+                : "لا توجد نتائج مطابقة للبحث") +
               "</td></tr>";
-        document.getElementById("employeesMobileCards").innerHTML =
-          pg.length > 0
-            ? pg
-                .map(
-                  (e) =>
-                    `<div class="mobile-card"><div class="mobile-card-header"><div><strong>${e.name}</strong><br><small class="text-muted">${e.position || "-"}</small></div><span class="badge" style="background:rgba(212,175,55,0.2);color:#b5952f">${e.dept}</span></div><div class="mobile-card-row"><span class="label">الراتب</span><span class="value">${Number(e.salary).toLocaleString()} ج.س</span></div><div class="mobile-card-actions"><button class="btn btn-sm btn-outline" onclick="editEmployee('${e.id}')"><i class="fas fa-edit"></i> تعديل</button><button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')"><i class="fas fa-trash"></i> حذف</button></div></div>`,
-                )
-                .join("")
-            : '<p class="text-center text-muted" style="padding:2rem">' +
-              (employees.length === 0
-                ? "⚠️ لا يوجد موظفين مسجلين"
-                : "لا توجد نتائج") +
-              "</p>";
+
         renderPagination(
           "employeesPagination",
           f.length,
@@ -4889,13 +4860,13 @@
             الراتب: e.salary,
           })),
         );
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "الموظفين");
         XLSX.writeFile(
-          XLSX.utils.book_new(
-            XLSX.utils.book_append_sheet(XLSX.utils.book_new(), ws, "الموظفين"),
-          ),
+          wb,
           `موظفين_${new Date().toISOString().slice(0, 10)}.xlsx`,
         );
-        showToast("تم التصدير");
+        showToast("✅ تم التصدير");
       }
       function exportLoansToExcel() {
         if (!filteredLoans.length) return showToast("لا بيانات", "error");
@@ -4909,13 +4880,13 @@
             الشهر: l.targetMonth,
           })),
         );
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "السلفيات");
         XLSX.writeFile(
-          XLSX.utils.book_new(
-            XLSX.utils.book_append_sheet(XLSX.utils.book_new(), ws, "السلفيات"),
-          ),
+          wb,
           `سلفيات_${new Date().toISOString().slice(0, 10)}.xlsx`,
         );
-        showToast("تم التصدير");
+        showToast("✅ تم التصدير");
       }
       function exportPayrollToExcel() {
         if (!payrollData.length) return showToast("لا بيانات", "error");
@@ -4933,17 +4904,10 @@
             الصافي: p.net,
           })),
         );
-        XLSX.writeFile(
-          XLSX.utils.book_new(
-            XLSX.utils.book_append_sheet(
-              XLSX.utils.book_new(),
-              ws,
-              `رواتب_${m}`,
-            ),
-          ),
-          `رواتب_${m}.xlsx`,
-        );
-        showToast("تم التصدير");
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, `رواتب_${m}`);
+        XLSX.writeFile(wb, `رواتب_${m}.xlsx`);
+        showToast("✅ تم التصدير");
       }
       function exportExpensesToExcel() {
         if (!filteredExpenses.length) return showToast("لا بيانات", "error");
@@ -4958,17 +4922,13 @@
             ملاحظات: e.note || "-",
           })),
         );
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "المصروفات");
         XLSX.writeFile(
-          XLSX.utils.book_new(
-            XLSX.utils.book_append_sheet(
-              XLSX.utils.book_new(),
-              ws,
-              "المصروفات",
-            ),
-          ),
+          wb,
           `مصروفات_${new Date().toISOString().slice(0, 10)}.xlsx`,
         );
-        showToast("تم تصدير المصروفات");
+        showToast("✅ تم تصدير المصروفات");
       }
       function exportDebtsToExcel() {
         if (!filteredDebts.length) return showToast("لا بيانات", "error");
@@ -4985,13 +4945,13 @@
             الحالة: d.status,
           })),
         );
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "الديون");
         XLSX.writeFile(
-          XLSX.utils.book_new(
-            XLSX.utils.book_append_sheet(XLSX.utils.book_new(), ws, "الديون"),
-          ),
+          wb,
           `ديون_${new Date().toISOString().slice(0, 10)}.xlsx`,
         );
-        showToast("تم تصدير الديون");
+        showToast("✅ تم تصدير الديون");
       }
       function exportAllDataToExcel() {
         const wb = XLSX.utils.book_new();
