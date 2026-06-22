@@ -672,6 +672,7 @@ color: var(--primary);
 overflow-x: auto;
 border-radius: 10px;
 border: 1px solid var(--border);
+-webkit-overflow-scrolling: touch;
 }
 table {
 width: 100%;
@@ -1488,263 +1489,309 @@ color: var(--primary);
 .payment-row {
 background: #f0f9ff;
 }
+
+/* ============================================================
+   تحسينات الهواتف - تجعل كل الشاشات طويلة ومتوافقة
+   ============================================================ */
 @media (max-width: 768px) {
-.sidebar {
-transform: translateX(100%);
-}
-.sidebar.open {
-transform: translateX(0);
-}
-.sidebar-overlay.show {
-display: block;
-}
-.main-content {
-margin-right: 0;
-padding: 0.8rem;
-padding-bottom: calc(var(--bottom-nav-height) + 1rem);
-}
-.mobile-menu-btn {
-display: flex;
-}
-.bottom-nav {
-display: block;
-}
-.fab {
-display: flex;
-}
-.header {
-margin-bottom: 1rem;
-}
-.page-title {
-font-size: 1.2rem;
-}
-.stats-grid {
-grid-template-columns: repeat(2, 1fr) !important;
-gap: 0.6rem !important;
-}
-.stat-card {
-padding: 0.8rem;
-}
-.stat-value {
-font-size: 1.3rem;
-}
-.stat-label {
-font-size: 0.7rem;
-}
-.stat-icon {
-font-size: 1.5rem;
-}
-.card {
-padding: 0.8rem;
-border-radius: 10px;
-}
-.table-container {
-display: block !important;
-overflow-x: auto;
--webkit-overflow-scrolling: touch;
-border-radius: 10px;
-border: 1px solid var(--border);
-}
-table {
-min-width: 600px;
-}
-th, td {
-padding: 0.5rem 0.4rem;
-font-size: 0.75rem;
-white-space: normal;
-word-break: break-word;
-}
-th {
-font-size: 0.7rem;
-padding: 0.6rem 0.4rem;
-}
-.avatar {
-width: 28px !important;
-height: 28px !important;
-}
-.btn-sm {
-padding: 0.3rem 0.4rem;
-font-size: 0.7rem;
-min-height: 28px;
-min-width: 28px;
-border-radius: 6px;
-}
-.btn-sm i {
-font-size: 0.7rem;
-}
-.badge {
-padding: 0.2rem 0.5rem;
-font-size: 0.7rem;
-}
-td .flex.gap-1 {
-flex-direction: row;
-flex-wrap: wrap;
-gap: 3px !important;
-}
-td .flex.gap-1 .btn-sm {
-flex: 0 0 auto;
-}
-.mobile-cards {
-display: none;
-}
-.modal {
-width: 100%;
-height: 100%;
-max-width: 100%;
-max-height: 100%;
-border-radius: 0;
-padding: 1rem;
-}
-.filter-bar {
-padding: 0.8rem;
-}
-.filter-bar .flex {
-flex-direction: column;
-align-items: stretch !important;
-}
-.filter-bar input,
-.filter-bar select {
-max-width: 100% !important;
-}
-.filter-summary {
-padding: 0.8rem;
-gap: 0.5rem;
-}
-.filter-summary .stat {
-min-width: 45%;
-}
-.filter-summary .stat-value {
-font-size: 1.1rem;
-}
-.filter-summary .stat-label {
-font-size: 0.7rem;
-}
-.export-buttons {
-flex-direction: column;
-gap: 0.4rem;
-}
-.export-buttons .btn {
-min-width: 100%;
-}
-#dashboardCharts {
-flex-direction: column;
-}
-#dashboardCharts .card {
-min-width: 100%;
-}
-.pagination-btn {
-padding: 0.5rem 0.6rem;
-min-width: 34px;
-min-height: 34px;
-font-size: 0.75rem;
-}
-.pagination-info {
-font-size: 0.7rem;
-margin: 0 0.3rem;
-}
-.toast-container {
-bottom: calc(var(--bottom-nav-height) + 10px);
-left: 10px;
-right: 10px;
-}
-.toast {
-width: 100%;
-font-size: 0.85rem;
-padding: 0.8rem 1rem;
-}
-.work-days-box {
-padding: 0.8rem;
-}
-.work-days-box .box-header {
-flex-direction: column;
-align-items: stretch;
-gap: 0.6rem;
-}
-.work-days-box .box-title {
-font-size: 1rem;
-}
-.statement-info-grid {
-grid-template-columns: repeat(2, 1fr);
-}
-.statement-summary {
-grid-template-columns: repeat(2, 1fr);
-}
-.modal form > div[style*="grid-template-columns: 1fr 1fr"] {
-grid-template-columns: 1fr !important;
-}
-.splash-logo-wrap {
-width: 110px;
-height: 110px;
-}
-.splash-logo {
-width: 80px;
-height: 80px;
-}
-.splash-title {
-font-size: 1.6rem;
-}
-.splash-tagline {
-font-size: 0.85rem;
-}
-.splash-version {
-font-size: 0.8rem;
-padding: 0.4rem 1rem;
-}
-.splash-developer {
-font-size: 0.75rem;
-}
-.work-days-input {
-width: 50px;
-font-size: 0.8rem;
-padding: 0.3rem;
-}
-.add-btn {
-width: 100%;
-justify-content: center;
-font-size: 0.9rem;
-padding: 0.7rem 1rem;
-}
-.expense-category-grid {
-grid-template-columns: repeat(2, 1fr);
-}
-.debt-stmt-info {
-grid-template-columns: repeat(2, 1fr);
-}
-.debt-stmt-summary {
-grid-template-columns: repeat(2, 1fr);
-}
-.expense-tab {
-padding: 0.6rem 0.7rem;
-font-size: 0.8rem;
-}
-.expense-tab i {
-font-size: 0.8rem;
-}
-#expDashContent .flex.gap-4.flex-wrap {
-flex-direction: column !important;
-}
-#expDashContent .flex.gap-4.flex-wrap .card {
-min-width: 100% !important;
-width: 100% !important;
-}
-.debt-stmt-table th,
-.debt-stmt-table td,
-.statement-table th,
-.statement-table td {
-padding: 0.4rem 0.3rem;
-font-size: 0.7rem;
-}
-}
+  /* إخفاء الجدول في الهواتف وإظهار البطاقات */
+  .table-container {
+    display: none !important;
+  }
+  .mobile-cards {
+    display: block !important;
+  }
+
+  /* تعديل الهوامش والحشوات */
+  .main-content {
+    margin-right: 0;
+    padding: 0.8rem;
+    padding-bottom: calc(var(--bottom-nav-height) + 1rem);
+  }
+  .sidebar {
+    transform: translateX(100%);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .sidebar-overlay.show {
+    display: block;
+  }
+  .bottom-nav {
+    display: block;
+  }
+  .fab {
+    display: flex;
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  /* حجم الخط الأساسي للهواتف */
+  body {
+    font-size: 16px;
+  }
+  .page-title {
+    font-size: 1.3rem;
+  }
+  .stat-value {
+    font-size: 1.4rem;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+  }
+  .stat-icon {
+    font-size: 1.6rem;
+  }
+
+  /* شبكة الإحصائيات */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.6rem !important;
+  }
+  .stat-card {
+    padding: 0.8rem;
+  }
+
+  /* البطاقات */
+  .card {
+    padding: 0.8rem;
+    border-radius: 10px;
+  }
+
+  /* الفلاتر */
+  .filter-bar {
+    padding: 0.8rem;
+  }
+  .filter-bar .flex.gap-4.items-center.flex-wrap {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  .filter-bar input,
+  .filter-bar select {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .filter-bar .add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ملخص الفلتر */
+  .filter-summary {
+    padding: 0.8rem;
+    gap: 0.5rem;
+  }
+  .filter-summary .stat {
+    min-width: 45%;
+  }
+  .filter-summary .stat-value {
+    font-size: 1.1rem;
+  }
+  .filter-summary .stat-label {
+    font-size: 0.7rem;
+  }
+
+  /* الأزرار */
+  .btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .btn-sm {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.8rem;
+    min-height: 36px;
+    min-width: 36px;
+  }
+  .add-btn {
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* أزرار التصدير */
+  .export-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .export-buttons .btn {
+    min-width: 100%;
+    justify-content: center;
+  }
+
+  /* النماذج */
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    padding: 1rem;
+    max-height: 100vh;
+    height: 100%;
+  }
+  .modal form > div[style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  .modal form .flex.gap-4 {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  /* شاشة الرواتب - أيام العمل */
+  .work-days-box .box-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+  }
+  .work-days-input {
+    width: 60px;
+    font-size: 0.85rem;
+  }
+  .work-days-box .box-title {
+    font-size: 1rem;
+  }
+
+  /* كشف الحساب */
+  .statement-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .statement-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .stmt-filter-box .flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .stmt-filter-box .flex .btn {
+    width: 100%;
+  }
+
+  /* المصروفات - الأقسام */
+  .expense-category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .expense-tab {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+    min-height: 40px;
+  }
+
+  /* الديون */
+  .debt-stmt-info {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .debt-stmt-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* ترقيم الصفحات */
+  .pagination-btn {
+    padding: 0.4rem 0.7rem;
+    min-width: 36px;
+    min-height: 36px;
+    font-size: 0.8rem;
+  }
+  .pagination-info {
+    font-size: 0.75rem;
+    margin: 0 0.3rem;
+  }
+
+  /* الرسائل */
+  .toast-container {
+    bottom: calc(var(--bottom-nav-height) + 10px);
+    left: 10px;
+    right: 10px;
+  }
+  .toast {
+    width: 100%;
+    font-size: 0.85rem;
+    padding: 0.8rem 1rem;
+  }
+
+  /* شاشة البداية */
+  .splash-logo-wrap {
+    width: 110px;
+    height: 110px;
+  }
+  .splash-logo {
+    width: 80px;
+    height: 80px;
+  }
+  .splash-title {
+    font-size: 1.6rem;
+  }
+  .splash-tagline {
+    font-size: 0.85rem;
+  }
+  .splash-version {
+    font-size: 0.8rem;
+    padding: 0.4rem 1rem;
+  }
+  .splash-developer {
+    font-size: 0.75rem;
+  }
+
+  /* تحسين البطاقات المتحركة */
+  .mobile-card {
+    padding: 0.8rem;
+  }
+  .mobile-card-header {
+    font-size: 0.9rem;
+  }
+  .mobile-card-row {
+    font-size: 0.85rem;
+  }
+  .mobile-card-actions .btn {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    min-height: 36px;
+  }
+
+  /* لوحة التحكم - الرسوم البيانية */
+  #dashboardCharts {
+    flex-direction: column;
+  }
+  #dashboardCharts .card {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  /* شاشة المصروفات - تبويب لوحة التحكم */
+  #expDashContent .flex.gap-4.flex-wrap {
+    flex-direction: column !important;
+  }
+  #expDashContent .flex.gap-4.flex-wrap .card {
+    min-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* سلة التنبيهات */
+  #installBanner {
+    bottom: calc(var(--bottom-nav-height) + 10px);
+    right: 10px;
+    left: 10px;
+    width: auto;
+    justify-content: center;
+    font-size: 0.85rem;
+    padding: 12px 16px;
+  }
+}
+
 @media (max-width: 380px) {
-.stats-grid {
-grid-template-columns: 1fr;
-}
-.stat-value {
-font-size: 1.6rem;
-}
-.filter-summary .stat {
-min-width: 100%;
-}
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .stat-value {
+    font-size: 1.6rem;
+  }
+  .filter-summary .stat {
+    min-width: 100%;
+  }
+  .modal {
+    padding: 0.8rem;
+  }
 }
 </style>
 </head>
@@ -1764,7 +1811,7 @@ this.parentElement.innerHTML =
 </div>
 <h1 class="splash-title">كفتة على الفحم</h1>
 <p class="splash-tagline">نظام إدارة الموارد البشرية</p>
-<div class="splash-version">Version 2.2.5</div>
+<div class="splash-version">Version 2.2.4</div>
 <div class="splash-developer">
 Developed by: <strong>Ammar Konna</strong>
 </div>
@@ -2025,6 +2072,7 @@ onclick="exportEmployeesToExcel()"
 </div>
 </div>
 <div class="card">
+<!-- الجدول مخفي في الهواتف -->
 <div class="table-container">
 <table id="employeesTable">
 <thead>
@@ -2042,6 +2090,8 @@ onclick="exportEmployeesToExcel()"
 <tbody></tbody>
 </table>
 </div>
+<!-- البطاقات تظهر في الهواتف -->
+<div class="mobile-cards" id="employeesMobileCards"></div>
 </div>
 <div class="pagination" id="employeesPagination"></div>
 </section>
@@ -2380,17 +2430,19 @@ onclick="exportExpensesToExcel()"
 <table id="expTable">
 <thead>
 <tr>
-<th>#</th>
 <th>التاريخ</th>
+<th>الوقت</th>
 <th>التصنيف</th>
 <th>الوصف</th>
 <th>المبلغ</th>
+<th>ملاحظات</th>
 <th>إجراءات</th>
 </tr>
 </thead>
 <tbody></tbody>
 </table>
 </div>
+<div class="mobile-cards" id="expMobileCards"></div>
 </div>
 <div class="pagination" id="expPagination"></div>
 </div>
@@ -2472,13 +2524,13 @@ flex-wrap: wrap;
 <table id="debtTable">
 <thead>
 <tr>
-<th>#</th>
 <th>النوع</th>
 <th>الجهة</th>
 <th>المبلغ</th>
 <th>المدفوع</th>
 <th>المتبقي</th>
 <th>التاريخ</th>
+<th>الاستحقاق</th>
 <th>الحالة</th>
 <th>إجراءات</th>
 </tr>
@@ -2486,6 +2538,7 @@ flex-wrap: wrap;
 <tbody></tbody>
 </table>
 </div>
+<div class="mobile-cards" id="debtMobileCards"></div>
 </div>
 <div class="pagination" id="debtPagination"></div>
 </div>
@@ -3732,6 +3785,7 @@ function renderEmployees() {
   const start = (empPage - 1) * ITEMS_PER_PAGE;
   const pg = f.slice(start, start + ITEMS_PER_PAGE);
 
+  // جدول
   document.querySelector("#employeesTable tbody").innerHTML =
     pg.length > 0
       ? pg
@@ -3769,6 +3823,32 @@ function renderEmployees() {
           ? "⚠️ لا يوجد موظفين مسجلين. أضف موظف جديد!"
           : "لا توجد نتائج مطابقة للبحث") +
         "</td></tr>";
+
+  // بطاقات الهاتف
+  document.getElementById("employeesMobileCards").innerHTML =
+    pg.length === 0
+      ? '<p class="text-center text-muted" style="padding:2rem">لا يوجد موظفين</p>'
+      : pg
+          .map(
+            (e, idx) =>
+              `<div class="mobile-card">
+                <div class="mobile-card-header">
+                  <div>
+                    <strong>${e.name}</strong>
+                    <br><small class="text-muted">${e.dept} - ${e.position || "-"}</small>
+                  </div>
+                  <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.name)}&background=D4AF37&color=151515&bold=true" class="avatar" style="width:32px;height:32px">
+                </div>
+                <div class="mobile-card-row"><span class="label">الهاتف</span><span class="value">${e.phone || "-"}</span></div>
+                <div class="mobile-card-row"><span class="label">الراتب</span><span class="value text-primary">${Number(e.salary).toLocaleString()} ج.س</span></div>
+                <div class="mobile-card-actions">
+                  <button class="btn btn-sm btn-outline" onclick="editEmployee('${e.id}')"><i class="fas fa-edit"></i> تعديل</button>
+                  <button class="btn btn-sm btn-warning" onclick="openStatement('${e.id}','${new Date().toISOString().slice(0,7)}')"><i class="fas fa-file-invoice-dollar"></i> كشف</button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')"><i class="fas fa-trash"></i> حذف</button>
+                </div>
+              </div>`,
+          )
+          .join("");
 
   renderPagination(
     "employeesPagination",
@@ -3916,6 +3996,7 @@ const pg = filteredLoans.slice(
 (loanPage - 1) * ITEMS_PER_PAGE,
 loanPage * ITEMS_PER_PAGE,
 );
+// جدول
 document.querySelector("#loansTable tbody").innerHTML =
 pg.length === 0
 ? '<tr><td colspan="8" class="text-center text-muted">لا توجد معاملات</td></tr>'
@@ -3925,6 +4006,7 @@ pg.length === 0
 `<tr><td>${l.empName}</td><td><span class="badge ${l.type === "سلفة" ? "badge-loan" : "badge-deduction"}">${l.type}</span></td><td>${Number(l.amount).toLocaleString()}</td><td>${l.date}</td><td>${l.time || "--:--"}</td><td><strong>${l.targetMonth || "-"}</strong></td><td>${l.note || "-"}</td><td><button class="btn btn-sm btn-outline" onclick="printLoanVoucher('${l.id}')"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-danger" onclick="deleteLoan('${l.id}')"><i class="fas fa-trash"></i></button></td></tr>`,
 )
 .join("");
+// بطاقات الهاتف
 document.getElementById("loansMobileCards").innerHTML =
 pg.length === 0
 ? '<p class="text-center text-muted" style="padding:2rem">لا توجد معاملات</p>'
@@ -4083,6 +4165,7 @@ const pg = payrollData.slice(
 (payrollPage - 1) * ITEMS_PER_PAGE,
 payrollPage * ITEMS_PER_PAGE,
 );
+// جدول
 document.querySelector("#payrollTable tbody").innerHTML =
 payrollData.length === 0
 ? '<tr><td colspan="10" class="text-center text-muted">لا يوجد موظفين</td></tr>'
@@ -4100,6 +4183,7 @@ e.net < 0 ? "negative-salary" : "font-bold text-primary";
 return `<tr><td><strong>${e.name}</strong></td><td><input type="number" class="work-days-input" min="1" max="31" value="${e.workDays}" onchange="updateEmployeeDays('${e.empId}',this.value,'${month}')"/></td><td>${e.actualBaseSalary.toLocaleString()}</td><td>${e.allowances.toLocaleString()}</td><td>${e.currentLoans > 0 ? '<span class="text-danger">' + e.currentLoans.toLocaleString() + "</span>" : "0"}</td><td>${e.currentDeductions > 0 ? '<span class="text-danger">' + e.currentDeductions.toLocaleString() + "</span>" : "0"}</td><td>${e.carryOver > 0 ? '<span class="payroll-carryover">-' + e.carryOver.toLocaleString() + "</span>" : "0"}</td><td class="${nc}">${e.net.toLocaleString()} ج.س</td><td>${st}</td><td><button class="btn btn-sm btn-warning" onclick="openStatement('${e.empId}','${e.month}')"><i class="fas fa-file-invoice-dollar"></i></button><button class="btn btn-sm btn-outline" onclick="printPayslip('${e.empId}','${e.month}')"><i class="fas fa-print"></i></button></td></tr>`;
 })
 .join("");
+// بطاقات الهاتف
 document.getElementById("payrollMobileCards").innerHTML = pg
 .map((e) => {
 let st = "";
@@ -4139,65 +4223,66 @@ payrollPage = p;
 renderPayrollTable();
 }
 function renderExpenses() {
-  const fd = document.getElementById("expDateFrom").value,
-    ftd = document.getElementById("expDateTo").value,
-    fc = document.getElementById("expCatFilter").value;
-  filteredExpenses = expenses.filter((e) => {
-    let m = true;
-    if (fd && e.date < fd) m = false;
-    if (ftd && e.date > ftd) m = false;
-    if (fc !== "all" && e.category !== fc) m = false;
-    return m;
-  });
-  const today = new Date().toISOString().slice(0, 10),
-    cm = new Date().toISOString().slice(0, 7);
-  const tTotal = expenses
-    .filter((e) => e.date === today)
-    .reduce((s, e) => s + Number(e.amount), 0);
-  const mTotal = expenses
-    .filter((e) => e.date && e.date.startsWith(cm))
-    .reduce((s, e) => s + Number(e.amount), 0);
-  document.getElementById("expCount").innerText = filteredExpenses.length;
-  document.getElementById("expTotal").innerText =
-    filteredExpenses
-      .reduce((s, e) => s + Number(e.amount), 0)
-      .toLocaleString() + " ج.س";
-  document.getElementById("expToday").innerText =
-    tTotal.toLocaleString() + " ج.س";
-  document.getElementById("expMonth").innerText =
-    mTotal.toLocaleString() + " ج.س";
-  const tp = Math.ceil(filteredExpenses.length / ITEMS_PER_PAGE);
-  if (expPage > tp && tp > 0) expPage = tp;
-  if (expPage < 1) expPage = 1;
-  const start = (expPage - 1) * ITEMS_PER_PAGE;
-  const pg = filteredExpenses.slice(start, start + ITEMS_PER_PAGE);
-
-  document.querySelector("#expTable tbody").innerHTML =
-    pg.length === 0
-      ? '<tr><td colspan="6" class="text-center text-muted">لا توجد مصروفات</td></tr>'
-      : pg
-          .map(
-            (e, idx) =>
-              `<tr>
-                <td><strong>${start + idx + 1}</strong></td>
-                <td>
-                  <div style="font-weight:600">${e.date}</div>
-                  <small class="text-muted">${e.time || ""}</small>
-                </td>
-                <td><span class="badge badge-expense">${e.category}</span></td>
-                <td>${e.description || "-"}</td>
-                <td><strong class="text-warning">${Number(e.amount).toLocaleString()}</strong></td>
-                <td>
-                  <div class="flex gap-1" style="flex-wrap:wrap">
-                    <button class="btn btn-sm btn-info" onclick="printExpenseSingle('${e.id}')" title="طباعة"><i class="fas fa-print"></i></button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteExpense('${e.id}')" title="حذف"><i class="fas fa-trash"></i></button>
-                  </div>
-                </td>
-              </tr>`,
-          )
-          .join("");
-
-  renderPagination("expPagination", filteredExpenses.length, expPage, "goExpPage");
+const fd = document.getElementById("expDateFrom").value,
+ftd = document.getElementById("expDateTo").value,
+fc = document.getElementById("expCatFilter").value;
+filteredExpenses = expenses.filter((e) => {
+let m = true;
+if (fd && e.date < fd) m = false;
+if (ftd && e.date > ftd) m = false;
+if (fc !== "all" && e.category !== fc) m = false;
+return m;
+});
+const today = new Date().toISOString().slice(0, 10),
+cm = new Date().toISOString().slice(0, 7);
+const tTotal = expenses
+.filter((e) => e.date === today)
+.reduce((s, e) => s + Number(e.amount), 0);
+const mTotal = expenses
+.filter((e) => e.date && e.date.startsWith(cm))
+.reduce((s, e) => s + Number(e.amount), 0);
+document.getElementById("expCount").innerText = filteredExpenses.length;
+document.getElementById("expTotal").innerText =
+filteredExpenses
+.reduce((s, e) => s + Number(e.amount), 0)
+.toLocaleString() + " ج.س";
+document.getElementById("expToday").innerText =
+tTotal.toLocaleString() + " ج.س";
+document.getElementById("expMonth").innerText =
+mTotal.toLocaleString() + " ج.س";
+const tp = Math.ceil(filteredExpenses.length / ITEMS_PER_PAGE);
+if (expPage > tp && tp > 0) expPage = tp;
+if (expPage < 1) expPage = 1;
+const pg = filteredExpenses.slice(
+(expPage - 1) * ITEMS_PER_PAGE,
+expPage * ITEMS_PER_PAGE,
+);
+// جدول
+document.querySelector("#expTable tbody").innerHTML =
+pg.length === 0
+? '<tr><td colspan="7" class="text-center text-muted">لا توجد مصروفات</td></tr>'
+: pg
+.map(
+(e) =>
+`<tr><td>${e.date}</td><td>${e.time || "--:--"}</td><td><span class="badge badge-expense">${e.category}</span></td><td>${e.description || "-"}</td><td>${Number(e.amount).toLocaleString()}</td><td>${e.note || "-"}</td><td><button class="btn btn-sm btn-info" onclick="printExpenseSingle('${e.id}')"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-danger" onclick="deleteExpense('${e.id}')"><i class="fas fa-trash"></i></button></td></tr>`,
+)
+.join("");
+// بطاقات الهاتف
+document.getElementById("expMobileCards").innerHTML =
+pg.length === 0
+? '<p class="text-center text-muted" style="padding:2rem">لا توجد مصروفات</p>'
+: pg
+.map(
+(e) =>
+`<div class="mobile-card"><div class="mobile-card-header"><div><strong>${e.category}</strong><br><small class="text-muted">${e.date} ${e.time || ""}</small></div><span class="text-warning font-bold">${Number(e.amount).toLocaleString()} ج.س</span></div><div class="mobile-card-row"><span class="label">الوصف</span><span class="value">${e.description || "-"}</span></div><div class="mobile-card-actions"><button class="btn btn-sm btn-info" onclick="printExpenseSingle('${e.id}')"><i class="fas fa-print"></i> طباعة</button><button class="btn btn-sm btn-danger" onclick="deleteExpense('${e.id}')"><i class="fas fa-trash"></i> حذف</button></div></div>`,
+)
+.join("");
+renderPagination(
+"expPagination",
+filteredExpenses.length,
+expPage,
+"goExpPage",
+);
 }
 function goExpPage(p) {
 expPage = p;
@@ -4285,75 +4370,84 @@ showToast(e.message, "error");
 }
 }
 function renderDebts() {
-  const ft = document.getElementById("debtTypeFilter").value,
-    fs = document.getElementById("debtStatusFilter").value;
-  filteredDebts = debts.filter((d) => {
-    let m = true;
-    if (ft !== "all" && d.type !== ft) m = false;
-    if (fs !== "all" && d.status !== fs) m = false;
-    return m;
-  });
-  const usT = debts
-    .filter((d) => d.type === "us")
-    .reduce((s, d) => s + Number(d.remaining || 0), 0);
-  const thT = debts
-    .filter((d) => d.type === "them")
-    .reduce((s, d) => s + Number(d.remaining || 0), 0);
-  document.getElementById("debtCount").innerText = filteredDebts.length;
-  document.getElementById("debtUsTotal").innerText =
-    usT.toLocaleString() + " ج.س";
-  document.getElementById("debtThemTotal").innerText =
-    thT.toLocaleString() + " ج.س";
-  document.getElementById("debtNet").innerText =
-    (thT - usT).toLocaleString() + " ج.س";
-  const tp = Math.ceil(filteredDebts.length / ITEMS_PER_PAGE);
-  if (debtPage > tp && tp > 0) debtPage = tp;
-  if (debtPage < 1) debtPage = 1;
-  const start = (debtPage - 1) * ITEMS_PER_PAGE;
-  const pg = filteredDebts.slice(start, start + ITEMS_PER_PAGE);
-
-  document.querySelector("#debtTable tbody").innerHTML =
-    pg.length === 0
-      ? '<tr><td colspan="9" class="text-center text-muted">لا توجد ديون</td></tr>'
-      : pg
-          .map((d, idx) => {
-            const sc =
-              d.status === "paid"
-                ? "debt-status-paid"
-                : d.status === "partial"
-                ? "debt-status-partial"
-                : "debt-status-pending";
-            const st =
-              d.status === "paid"
-                ? "مدفوع"
-                : d.status === "partial"
-                ? "جزئي"
-                : "معلق";
-            const canPay = d.status !== "paid";
-            return `<tr>
-              <td><strong>${start + idx + 1}</strong></td>
-              <td><span class="badge ${d.type === "us" ? "badge-debt-us" : "badge-debt-them"}">${d.type === "us" ? "علينا" : "لنا"}</span></td>
-              <td><strong>${d.party}</strong></td>
-              <td>${Number(d.amount).toLocaleString()}</td>
-              <td style="color:var(--success)">${Number(d.paid || 0).toLocaleString()}</td>
-              <td style="color:var(--danger);font-weight:bold">${Number(d.remaining || 0).toLocaleString()}</td>
-              <td>
-                <div style="font-size:0.75rem">${d.date}</div>
-                ${d.dueDate ? `<small class="text-muted">${d.dueDate}</small>` : ""}
-              </td>
-              <td><span class="${sc}">${st}</span></td>
-              <td>
-                <div class="flex gap-1" style="flex-wrap:wrap">
-                  ${canPay ? `<button class="btn btn-sm btn-success" onclick="openPayDebtModal('${d.id}')" title="دفعة"><i class="fas fa-money-bill"></i></button>` : ""}
-                  <button class="btn btn-sm btn-warning" onclick="openDebtStatement('${d.id}')" title="كشف"><i class="fas fa-file-invoice"></i></button>
-                  <button class="btn btn-sm btn-danger" onclick="deleteDebt('${d.id}')" title="حذف"><i class="fas fa-trash"></i></button>
-                </div>
-              </td>
-            </tr>`;
-          })
-          .join("");
-
-  renderPagination("debtPagination", filteredDebts.length, debtPage, "goDebtPage");
+const ft = document.getElementById("debtTypeFilter").value,
+fs = document.getElementById("debtStatusFilter").value;
+filteredDebts = debts.filter((d) => {
+let m = true;
+if (ft !== "all" && d.type !== ft) m = false;
+if (fs !== "all" && d.status !== fs) m = false;
+return m;
+});
+const usT = debts
+.filter((d) => d.type === "us")
+.reduce((s, d) => s + Number(d.remaining || 0), 0);
+const thT = debts
+.filter((d) => d.type === "them")
+.reduce((s, d) => s + Number(d.remaining || 0), 0);
+document.getElementById("debtCount").innerText = filteredDebts.length;
+document.getElementById("debtUsTotal").innerText =
+usT.toLocaleString() + " ج.س";
+document.getElementById("debtThemTotal").innerText =
+thT.toLocaleString() + " ج.س";
+document.getElementById("debtNet").innerText =
+(thT - usT).toLocaleString() + " ج.س";
+const tp = Math.ceil(filteredDebts.length / ITEMS_PER_PAGE);
+if (debtPage > tp && tp > 0) debtPage = tp;
+if (debtPage < 1) debtPage = 1;
+const pg = filteredDebts.slice(
+(debtPage - 1) * ITEMS_PER_PAGE,
+debtPage * ITEMS_PER_PAGE,
+);
+// جدول
+document.querySelector("#debtTable tbody").innerHTML =
+pg.length === 0
+? '<tr><td colspan="9" class="text-center text-muted">لا توجد ديون</td></tr>'
+: pg
+.map((d) => {
+const sc =
+d.status === "paid"
+? "debt-status-paid"
+: d.status === "partial"
+? "debt-status-partial"
+: "debt-status-pending";
+const st =
+d.status === "paid"
+? "مدفوع"
+: d.status === "partial"
+? "جزئي"
+: "معلق";
+const canPay = d.status !== "paid";
+return `<tr><td><span class="badge ${d.type === "us" ? "badge-debt-us" : "badge-debt-them"}">${d.type === "us" ? "علينا" : "لنا"}</span></td><td>${d.party}</td><td>${Number(d.amount).toLocaleString()}</td><td>${Number(d.paid || 0).toLocaleString()}</td><td>${Number(d.remaining || 0).toLocaleString()}</td><td>${d.date}</td><td>${d.dueDate || "-"}</td><td><span class="${sc}">${st}</span></td><td><button class="btn btn-sm btn-info" onclick="printDebtSingle('${d.id}')"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-warning" onclick="openDebtStatement('${d.id}')"><i class="fas fa-file-invoice"></i></button>${canPay ? `<button class="btn btn-sm btn-success" onclick="openPayDebtModal('${d.id}')"><i class="fas fa-money-bill"></i></button>` : ""}<button class="btn btn-sm btn-danger" onclick="deleteDebt('${d.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
+})
+.join("");
+// بطاقات الهاتف
+document.getElementById("debtMobileCards").innerHTML =
+pg.length === 0
+? '<p class="text-center text-muted" style="padding:2rem">لا توجد ديون</p>'
+: pg
+.map((d) => {
+const sc =
+d.status === "paid"
+? "debt-status-paid"
+: d.status === "partial"
+? "debt-status-partial"
+: "debt-status-pending";
+const st =
+d.status === "paid"
+? "مدفوع"
+: d.status === "partial"
+? "جزئي"
+: "معلق";
+const canPay = d.status !== "paid";
+return `<div class="mobile-card"><div class="mobile-card-header"><div><strong>${d.party}</strong><br><small class="text-muted">${d.type === "us" ? "علينا" : "لنا"} - ${d.date}</small></div><span class="${sc}">${st}</span></div><div class="mobile-card-row"><span class="label">المبلغ</span><span class="value">${Number(d.amount).toLocaleString()}</span></div><div class="mobile-card-row"><span class="label">المدفوع</span><span class="value">${Number(d.paid || 0).toLocaleString()}</span></div><div class="mobile-card-row"><span class="label">المتبقي</span><span class="value text-danger">${Number(d.remaining || 0).toLocaleString()}</span></div><div class="mobile-card-actions"><button class="btn btn-sm btn-info" onclick="printDebtSingle('${d.id}')"><i class="fas fa-print"></i> طباعة</button><button class="btn btn-sm btn-warning" onclick="openDebtStatement('${d.id}')"><i class="fas fa-file-invoice"></i> كشف</button>${canPay ? `<button class="btn btn-sm btn-success" onclick="openPayDebtModal('${d.id}')"><i class="fas fa-money-bill"></i> دفع</button>` : ""}<button class="btn btn-sm btn-danger" onclick="deleteDebt('${d.id}')"><i class="fas fa-trash"></i> حذف</button></div></div>`;
+})
+.join("");
+renderPagination(
+"debtPagination",
+filteredDebts.length,
+debtPage,
+"goDebtPage",
+);
 }
 function goDebtPage(p) {
 debtPage = p;
@@ -4876,96 +4970,96 @@ printContent(
 );
 }
 function exportEmployeesToExcel() {
-  if (!employees.length) return showToast("لا بيانات", "error");
-  const ws = XLSX.utils.json_to_sheet(
-    employees.map((e, i) => ({
-      "#": i + 1,
-      الاسم: e.name,
-      القسم: e.dept,
-      الوظيفة: e.position || "-",
-      الراتب: e.salary,
-    })),
-  );
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "الموظفين");
-  XLSX.writeFile(wb, `موظفين_${new Date().toISOString().slice(0, 10)}.xlsx`);
-  showToast("✅ تم التصدير");
+if (!employees.length) return showToast("لا بيانات", "error");
+const ws = XLSX.utils.json_to_sheet(
+employees.map((e, i) => ({
+"#": i + 1,
+الاسم: e.name,
+القسم: e.dept,
+الوظيفة: e.position || "-",
+الراتب: e.salary,
+})),
+);
+const wb = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb, ws, "الموظفين");
+XLSX.writeFile(wb, `موظفين_${new Date().toISOString().slice(0, 10)}.xlsx`);
+showToast("✅ تم التصدير");
 }
 function exportLoansToExcel() {
-  if (!filteredLoans.length) return showToast("لا بيانات", "error");
-  const ws = XLSX.utils.json_to_sheet(
-    filteredLoans.map((l, i) => ({
-      "#": i + 1,
-      الموظف: l.empName,
-      النوع: l.type,
-      المبلغ: l.amount,
-      التاريخ: l.date,
-      الشهر: l.targetMonth,
-    })),
-  );
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "السلفيات");
-  XLSX.writeFile(wb, `سلفيات_${new Date().toISOString().slice(0, 10)}.xlsx`);
-  showToast("✅ تم التصدير");
+if (!filteredLoans.length) return showToast("لا بيانات", "error");
+const ws = XLSX.utils.json_to_sheet(
+filteredLoans.map((l, i) => ({
+"#": i + 1,
+الموظف: l.empName,
+النوع: l.type,
+المبلغ: l.amount,
+التاريخ: l.date,
+الشهر: l.targetMonth,
+})),
+);
+const wb = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb, ws, "السلفيات");
+XLSX.writeFile(wb, `سلفيات_${new Date().toISOString().slice(0, 10)}.xlsx`);
+showToast("✅ تم التصدير");
 }
 function exportPayrollToExcel() {
-  if (!payrollData.length) return showToast("لا بيانات", "error");
-  const m = payrollData[0].month;
-  const ws = XLSX.utils.json_to_sheet(
-    payrollData.map((p, i) => ({
-      "#": i + 1,
-      الموظف: p.name,
-      الأيام: p.workDays,
-      الراتب_الفعلي: p.actualBaseSalary,
-      البدلات: p.allowances,
-      سلفيات: p.currentLoans,
-      خصومات: p.currentDeductions,
-      مرحلات: p.carryOver,
-      الصافي: p.net,
-    })),
-  );
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, `رواتب_${m}`);
-  XLSX.writeFile(wb, `رواتب_${m}.xlsx`);
-  showToast("✅ تم التصدير");
+if (!payrollData.length) return showToast("لا بيانات", "error");
+const m = payrollData[0].month;
+const ws = XLSX.utils.json_to_sheet(
+payrollData.map((p, i) => ({
+"#": i + 1,
+الموظف: p.name,
+الأيام: p.workDays,
+الراتب_الفعلي: p.actualBaseSalary,
+البدلات: p.allowances,
+سلفيات: p.currentLoans,
+خصومات: p.currentDeductions,
+مرحلات: p.carryOver,
+الصافي: p.net,
+})),
+);
+const wb = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb, ws, `رواتب_${m}`);
+XLSX.writeFile(wb, `رواتب_${m}.xlsx`);
+showToast("✅ تم التصدير");
 }
 function exportExpensesToExcel() {
-  if (!filteredExpenses.length) return showToast("لا بيانات", "error");
-  const ws = XLSX.utils.json_to_sheet(
-    filteredExpenses.map((e, i) => ({
-      "#": i + 1,
-      التاريخ: e.date,
-      الوقت: e.time || "-",
-      التصنيف: e.category,
-      الوصف: e.description || "-",
-      المبلغ: e.amount,
-      ملاحظات: e.note || "-",
-    })),
-  );
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "المصروفات");
-  XLSX.writeFile(wb, `مصروفات_${new Date().toISOString().slice(0, 10)}.xlsx`);
-  showToast("✅ تم تصدير المصروفات");
+if (!filteredExpenses.length) return showToast("لا بيانات", "error");
+const ws = XLSX.utils.json_to_sheet(
+filteredExpenses.map((e, i) => ({
+"#": i + 1,
+التاريخ: e.date,
+الوقت: e.time || "-",
+التصنيف: e.category,
+الوصف: e.description || "-",
+المبلغ: e.amount,
+ملاحظات: e.note || "-",
+})),
+);
+const wb = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb, ws, "المصروفات");
+XLSX.writeFile(wb, `مصروفات_${new Date().toISOString().slice(0, 10)}.xlsx`);
+showToast("✅ تم تصدير المصروفات");
 }
 function exportDebtsToExcel() {
-  if (!filteredDebts.length) return showToast("لا بيانات", "error");
-  const ws = XLSX.utils.json_to_sheet(
-    filteredDebts.map((d, i) => ({
-      "#": i + 1,
-      النوع: d.type === "us" ? "علينا" : "لنا",
-      الجهة: d.party,
-      المبلغ: d.amount,
-      المدفوع: d.paid || 0,
-      المتبقي: d.remaining || 0,
-      التاريخ: d.date,
-      الاستحقاق: d.dueDate || "-",
-      الحالة: d.status,
-    })),
-  );
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "الديون");
-  XLSX.writeFile(wb, `ديون_${new Date().toISOString().slice(0, 10)}.xlsx`);
-  showToast("✅ تم تصدير الديون");
+if (!filteredDebts.length) return showToast("لا بيانات", "error");
+const ws = XLSX.utils.json_to_sheet(
+filteredDebts.map((d, i) => ({
+"#": i + 1,
+النوع: d.type === "us" ? "علينا" : "لنا",
+الجهة: d.party,
+المبلغ: d.amount,
+المدفوع: d.paid || 0,
+المتبقي: d.remaining || 0,
+التاريخ: d.date,
+الاستحقاق: d.dueDate || "-",
+الحالة: d.status,
+})),
+);
+const wb = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb, ws, "الديون");
+XLSX.writeFile(wb, `ديون_${new Date().toISOString().slice(0, 10)}.xlsx`);
+showToast("✅ تم تصدير الديون");
 }
 function exportAllDataToExcel() {
 const wb = XLSX.utils.book_new();
