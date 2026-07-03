@@ -4084,33 +4084,72 @@
             at = Math.round((ta / 30) * wd),
             al = am + at,
             gs = ab + al;
+          // ===== البديل النهائي الذي يتعامل مع targetMonth الفارغ =====
           let co = 0;
-          const amths = [
-            ...new Set(
-              loans.filter((l) => l.empId === emp.id).map((l) => l.targetMonth),
-            ),
-          ].sort();
-          for (const pm of amths) {
-            if (pm >= month) break;
-            const pg = bs + ma + ta;
-            const pl = loans
-              .filter(
-                (l) =>
-                  l.empId === emp.id &&
-                  l.targetMonth === pm &&
-                  l.type === "سلفة",
-              )
+          const monthSet = new Set();
+
+          // 1. جمع كل الأشهر المرتبطة بهذا الموظف (من targetMonth أو من تاريخ الإنشاء)
+          loans.forEach((l) => {
+            if (l.empId === emp.id) {
+              let m = l.targetMonth;
+              // إذا كان targetMonth فارغاً، استخدم الشهر من تاريخ الإنشاء (date)
+              if (!m && l.date) {
+                m = l.date.substring(0, 7); // مثال: "2026-06-15" → "2026-06"
+              }
+              if (m) {
+                // توحيد التنسيق: لو كان 06-2026 يحوله إلى 2026-06
+                if (m.match(/^\d{2}-\d{4}$/)) {
+                  const parts = m.split("-");
+                  m = parts[1] + "-" + parts[0];
+                }
+                monthSet.add(m);
+              }
+            }
+          });
+
+          // 2. ترتيب الأشهر تصاعدياً
+          const sortedMonths = Array.from(monthSet).sort();
+
+          // 3. التكرار على الأشهر السابقة فقط (قبل الشهر الحالي)
+          for (const pm of sortedMonths) {
+            if (pm >= month) break; // توقف عند الوصول للشهر الحالي
+
+            // 4. حساب الراتب الفعلي بناءً على أيام العمل في ذلك الشهر السابق
+            const wd =
+              (workDaysPerEmployee[pm] && workDaysPerEmployee[pm][emp.id]) ||
+              30;
+            const actualBase = Math.round((bs / 30) * wd);
+            const actualMeal = Math.round((ma / 30) * wd);
+            const actualTransport = Math.round((ta / 30) * wd);
+            const actualGross = actualBase + actualMeal + actualTransport;
+
+            // 5. جلب سلفيات وخصومات ذلك الشهر السابق (مع توحيد التنسيق)
+            const monthLoans = loans.filter((l) => {
+              let target = l.targetMonth;
+              // إذا كان targetMonth فارغاً، استخدم الـ date كبديل
+              if (!target && l.date) {
+                target = l.date.substring(0, 7);
+              }
+              // توحيد التنسيق للمقارنة
+              if (target && target.match(/^\d{2}-\d{4}$/)) {
+                const parts = target.split("-");
+                target = parts[1] + "-" + parts[0];
+              }
+              return l.empId === emp.id && target === pm;
+            });
+
+            const totalLoans = monthLoans
+              .filter((l) => l.type === "سلفة")
               .reduce((s, l) => s + Number(l.amount), 0);
-            const pd = loans
-              .filter(
-                (l) =>
-                  l.empId === emp.id &&
-                  l.targetMonth === pm &&
-                  l.type === "خصم",
-              )
+            const totalDeductions = monthLoans
+              .filter((l) => l.type === "خصم")
               .reduce((s, l) => s + Number(l.amount), 0);
-            const bal = co + pg - pl - pd;
-            co = bal < 0 ? Math.abs(bal) : 0;
+
+            // 6. حساب الرصيد
+            const balance = co + actualGross - totalLoans - totalDeductions;
+
+            // 7. تخزين العجز الجديد (إن وجد)
+            co = balance < 0 ? Math.abs(balance) : 0;
           }
           if (co > 0) hasCO = true;
           const ct = loans.filter(
