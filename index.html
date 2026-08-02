@@ -1489,20 +1489,103 @@
       .payment-row {
         background: #f0f9ff;
       }
-
-      /* ============================================================
-   تحسينات الهواتف - تجعل كل الشاشات طويلة ومتوافقة
-   ============================================================ */
+      .backup-section {
+        background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
+        border: 2px solid var(--primary);
+        border-radius: 12px;
+        padding: 1.2rem;
+        margin-top: 1.5rem;
+      }
+      .backup-section h3 {
+        color: var(--primary);
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .backup-buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 0.8rem;
+      }
+      .backup-btn {
+        padding: 1rem;
+        border-radius: 10px;
+        border: 2px solid var(--border);
+        background: var(--bg-card);
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.3s;
+        font-family: var(--font);
+      }
+      .backup-btn:hover {
+        border-color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+      }
+      .backup-btn i {
+        font-size: 2rem;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+      .backup-btn .title {
+        font-weight: 700;
+        font-size: 1rem;
+        margin-bottom: 0.3rem;
+      }
+      .backup-btn .desc {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+      .backup-btn.danger {
+        border-color: rgba(220, 53, 69, 0.3);
+      }
+      .backup-btn.danger i {
+        color: var(--danger);
+      }
+      .backup-btn.danger:hover {
+        border-color: var(--danger);
+      }
+      .customer-stmt-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.8rem;
+        margin-bottom: 1rem;
+      }
+      .customer-stmt-summary-item {
+        background: white;
+        padding: 0.8rem;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        text-align: center;
+      }
+      .customer-stmt-summary-item .label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-bottom: 0.3rem;
+      }
+      .customer-stmt-summary-item .value {
+        font-size: 1.2rem;
+        font-weight: 800;
+      }
+      .customer-stmt-summary-item .value.us {
+        color: var(--danger);
+      }
+      .customer-stmt-summary-item .value.them {
+        color: var(--success);
+      }
+      .customer-stmt-summary-item .value.net {
+        color: var(--primary);
+      }
       @media (max-width: 768px) {
-        /* إخفاء الجدول في الهواتف وإظهار البطاقات */
         .table-container {
           display: none !important;
         }
         .mobile-cards {
           display: block !important;
         }
-
-        /* تعديل الهوامش والحشوات */
         .main-content {
           margin-right: 0;
           padding: 0.8rem;
@@ -1526,8 +1609,6 @@
         .mobile-menu-btn {
           display: flex;
         }
-
-        /* حجم الخط الأساسي للهواتف */
         body {
           font-size: 16px;
         }
@@ -1543,8 +1624,6 @@
         .stat-icon {
           font-size: 1.6rem;
         }
-
-        /* شبكة الإحصائيات */
         .stats-grid {
           grid-template-columns: repeat(2, 1fr) !important;
           gap: 0.6rem !important;
@@ -1552,14 +1631,10 @@
         .stat-card {
           padding: 0.8rem;
         }
-
-        /* البطاقات */
         .card {
           padding: 0.8rem;
           border-radius: 10px;
         }
-
-        /* الفلاتر */
         .filter-bar {
           padding: 0.8rem;
         }
@@ -1576,8 +1651,6 @@
           width: 100%;
           justify-content: center;
         }
-
-        /* ملخص الفلتر */
         .filter-summary {
           padding: 0.8rem;
           gap: 0.5rem;
@@ -1591,8 +1664,6 @@
         .filter-summary .stat-label {
           font-size: 0.7rem;
         }
-
-        /* الأزرار */
         .btn {
           padding: 0.6rem 1rem;
           font-size: 0.9rem;
@@ -1611,8 +1682,6 @@
           width: 100%;
           justify-content: center;
         }
-
-        /* أزرار التصدير */
         .export-buttons {
           flex-direction: column;
           gap: 0.5rem;
@@ -1621,8 +1690,6 @@
           min-width: 100%;
           justify-content: center;
         }
-
-        /* النماذج */
         .modal {
           width: 100%;
           max-width: 100%;
@@ -1638,8 +1705,6 @@
           flex-direction: column;
           gap: 0.6rem;
         }
-
-        /* شاشة الرواتب - أيام العمل */
         .work-days-box .box-header {
           flex-direction: column;
           align-items: stretch;
@@ -1652,8 +1717,6 @@
         .work-days-box .box-title {
           font-size: 1rem;
         }
-
-        /* كشف الحساب */
         .statement-info-grid {
           grid-template-columns: repeat(2, 1fr);
         }
@@ -1667,8 +1730,6 @@
         .stmt-filter-box .flex .btn {
           width: 100%;
         }
-
-        /* المصروفات - الأقسام */
         .expense-category-grid {
           grid-template-columns: repeat(2, 1fr);
         }
@@ -1677,16 +1738,12 @@
           font-size: 0.85rem;
           min-height: 40px;
         }
-
-        /* الديون */
         .debt-stmt-info {
           grid-template-columns: repeat(2, 1fr);
         }
         .debt-stmt-summary {
           grid-template-columns: repeat(2, 1fr);
         }
-
-        /* ترقيم الصفحات */
         .pagination-btn {
           padding: 0.4rem 0.7rem;
           min-width: 36px;
@@ -1697,8 +1754,6 @@
           font-size: 0.75rem;
           margin: 0 0.3rem;
         }
-
-        /* الرسائل */
         .toast-container {
           bottom: calc(var(--bottom-nav-height) + 10px);
           left: 10px;
@@ -1709,8 +1764,6 @@
           font-size: 0.85rem;
           padding: 0.8rem 1rem;
         }
-
-        /* شاشة البداية */
         .splash-logo-wrap {
           width: 110px;
           height: 110px;
@@ -1732,8 +1785,6 @@
         .splash-developer {
           font-size: 0.75rem;
         }
-
-        /* تحسين البطاقات المتحركة */
         .mobile-card {
           padding: 0.8rem;
         }
@@ -1748,8 +1799,6 @@
           padding: 0.4rem 0.6rem;
           min-height: 36px;
         }
-
-        /* لوحة التحكم - الرسوم البيانية */
         #dashboardCharts {
           flex-direction: column;
         }
@@ -1757,8 +1806,6 @@
           min-width: 100%;
           width: 100%;
         }
-
-        /* شاشة المصروفات - تبويب لوحة التحكم */
         #expDashContent .flex.gap-4.flex-wrap {
           flex-direction: column !important;
         }
@@ -1766,8 +1813,6 @@
           min-width: 100% !important;
           width: 100% !important;
         }
-
-        /* سلة التنبيهات */
         #installBanner {
           bottom: calc(var(--bottom-nav-height) + 10px);
           right: 10px;
@@ -1777,8 +1822,13 @@
           font-size: 0.85rem;
           padding: 12px 16px;
         }
+        .backup-buttons {
+          grid-template-columns: 1fr;
+        }
+        .customer-stmt-summary {
+          grid-template-columns: repeat(2, 1fr);
+        }
       }
-
       @media (max-width: 380px) {
         .stats-grid {
           grid-template-columns: 1fr !important;
@@ -1811,7 +1861,7 @@
         </div>
         <h1 class="splash-title">كفتة على الفحم</h1>
         <p class="splash-tagline">نظام إدارة الموارد البشرية</p>
-        <div class="splash-version">Version 2.2.4</div>
+        <div class="splash-version">Version 2.3.0</div>
         <div class="splash-developer">
           Developed by: <strong>Ammar Konna</strong>
         </div>
@@ -2042,6 +2092,36 @@
               <i class="fas fa-file-excel"></i> تصدير Excel
             </button>
           </div>
+          <div class="backup-section">
+            <h3><i class="fas fa-shield-alt"></i> النسخ الاحتياطي للبيانات</h3>
+            <div class="backup-buttons">
+              <button class="backup-btn" onclick="exportBackup()">
+                <i class="fas fa-download"></i>
+                <div class="title">تصدير نسخة احتياطية</div>
+                <div class="desc">حفظ كل البيانات في ملف JSON</div>
+              </button>
+              <button
+                class="backup-btn"
+                onclick="document.getElementById('importFile').click()"
+              >
+                <i class="fas fa-upload"></i>
+                <div class="title">استيراد نسخة احتياطية</div>
+                <div class="desc">استعادة البيانات من ملف</div>
+              </button>
+              <button class="backup-btn danger" onclick="clearAllData()">
+                <i class="fas fa-trash-alt"></i>
+                <div class="title">مسح كل البيانات</div>
+                <div class="desc">حذف كل البيانات نهائياً</div>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="importFile"
+              accept=".json"
+              style="display: none"
+              onchange="importBackup(event)"
+            />
+          </div>
         </section>
         <section id="employees" class="view-section hidden">
           <div class="card mb-4 filter-bar">
@@ -2072,7 +2152,6 @@
             </div>
           </div>
           <div class="card">
-            <!-- الجدول مخفي في الهواتف -->
             <div class="table-container">
               <table id="employeesTable">
                 <thead>
@@ -2084,13 +2163,13 @@
                     <th>الهاتف</th>
                     <th>الراتب الأساسي</th>
                     <th>تاريخ التعيين</th>
+                    <th>الحالة</th>
                     <th>الإجراءات</th>
                   </tr>
                 </thead>
                 <tbody></tbody>
               </table>
             </div>
-            <!-- البطاقات تظهر في الهواتف -->
             <div class="mobile-cards" id="employeesMobileCards"></div>
           </div>
           <div class="pagination" id="employeesPagination"></div>
@@ -2143,16 +2222,16 @@
                     />
                   </div>
                   <div class="flex items-center gap-2">
-                    <label><i class="fas fa-filter"></i> النوع:</label
-                    ><select id="loanFilterType" onchange="renderLoans()">
+                    <label><i class="fas fa-filter"></i> النوع:</label>
+                    <select id="loanFilterType" onchange="renderLoans()">
                       <option value="all">الكل</option>
                       <option value="سلفة">سلفيات فقط</option>
                       <option value="خصم">خصومات فقط</option>
                     </select>
                   </div>
                   <div class="flex items-center gap-2">
-                    <label><i class="fas fa-user"></i> الموظف:</label
-                    ><select id="loanFilterEmp" onchange="renderLoans()">
+                    <label><i class="fas fa-user"></i> الموظف:</label>
+                    <select id="loanFilterEmp" onchange="renderLoans()">
                       <option value="all">جميع الموظفين</option>
                     </select>
                   </div>
@@ -2219,15 +2298,16 @@
                 <div class="flex items-center gap-2">
                   <label
                     ><i class="fas fa-calendar-alt"></i> حساب رواتب شهر:</label
-                  ><input
+                  >
+                  <input
                     type="month"
                     id="payrollMonth"
                     onchange="onPayrollMonthChange()"
                   />
                 </div>
                 <div class="flex items-center gap-2">
-                  <label><i class="fas fa-user"></i> الموظف:</label
-                  ><select id="payrollFilterEmp" onchange="calculatePayroll()">
+                  <label><i class="fas fa-user"></i> الموظف:</label>
+                  <select id="payrollFilterEmp" onchange="calculatePayroll()">
                     <option value="all">جميع الموظفين</option>
                   </select>
                 </div>
@@ -2377,8 +2457,8 @@
                     />
                   </div>
                   <div class="flex items-center gap-2">
-                    <label>التصنيف:</label
-                    ><select id="expCatFilter" onchange="renderExpenses()">
+                    <label>التصنيف:</label>
+                    <select id="expCatFilter" onchange="renderExpenses()">
                       <option value="all">الكل</option>
                       <option value="مكونات">مكونات</option>
                       <option value="غاز">غاز</option>
@@ -2471,16 +2551,26 @@
               <div class="filter-content show" id="debtFilter">
                 <div class="flex gap-4 items-center flex-wrap">
                   <div class="flex items-center gap-2">
-                    <label>النوع:</label
-                    ><select id="debtTypeFilter" onchange="renderDebts()">
+                    <label>الاسم/الجهة:</label>
+                    <input
+                      type="text"
+                      id="debtPartyFilter"
+                      placeholder="🔍 ابحث بالاسم..."
+                      onkeyup="renderDebts()"
+                      style="max-width: 200px"
+                    />
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <label>النوع:</label>
+                    <select id="debtTypeFilter" onchange="renderDebts()">
                       <option value="all">الكل</option>
                       <option value="us">علينا</option>
                       <option value="them">لنا</option>
                     </select>
                   </div>
                   <div class="flex items-center gap-2">
-                    <label>الحالة:</label
-                    ><select id="debtStatusFilter" onchange="renderDebts()">
+                    <label>الحالة:</label>
+                    <select id="debtStatusFilter" onchange="renderDebts()">
                       <option value="all">الكل</option>
                       <option value="pending">معلق</option>
                       <option value="partial">جزئي</option>
@@ -2648,7 +2738,8 @@
                   margin-bottom: 0.5rem;
                 "
                 >القسم</label
-              ><select id="empDept">
+              >
+              <select id="empDept">
                 <option value="المطبخ">المطبخ</option>
                 <option value="الخدمة">الخدمة</option>
                 <option value="التسليم">التسليم</option>
@@ -2712,6 +2803,75 @@
               ><input type="number" id="empTransport" value="0" />
             </div>
           </div>
+          <div
+            style="
+              grid-column: 1 / -1;
+              background: rgba(220, 53, 69, 0.1);
+              padding: 1rem;
+              border-radius: 10px;
+              border: 1px solid var(--danger);
+              margin-top: 1rem;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin-bottom: 1rem;
+              "
+            >
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  id="empSuspended"
+                  style="width: auto; min-height: auto"
+                />
+                <span
+                  style="
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    color: var(--danger);
+                  "
+                  ><i class="fas fa-user-slash"></i> تعليق الموظف</span
+                >
+              </label>
+            </div>
+            <div id="suspensionDateField" style="display: none">
+              <label
+                style="
+                  font-size: 0.9rem;
+                  font-weight: 600;
+                  display: block;
+                  margin-bottom: 0.5rem;
+                  color: var(--danger);
+                "
+                ><i class="fas fa-calendar-times"></i> تاريخ بداية التعليق
+                *</label
+              >
+              <input
+                type="date"
+                id="empSuspensionDate"
+                style="border-color: var(--danger)"
+              />
+              <small
+                style="
+                  color: var(--text-muted);
+                  font-size: 0.8rem;
+                  margin-top: 0.3rem;
+                  display: block;
+                "
+                >لن يُحسب راتب الموظف من هذا التاريخ</small
+              >
+            </div>
+          </div>
           <div class="mt-4 flex justify-between gap-2">
             <button
               type="button"
@@ -2762,7 +2922,8 @@
                   margin-bottom: 0.5rem;
                 "
                 >النوع</label
-              ><select id="loanType">
+              >
+              <select id="loanType">
                 <option value="سلفة">سلفة</option>
                 <option value="خصم">خصم</option>
               </select>
@@ -3074,13 +3235,28 @@
                 display: block;
                 margin-bottom: 0.5rem;
               "
-              >اسم الجهة *</label
-            ><input
+              >اسم العميل/الجهة *</label
+            >
+            <input
               type="text"
               id="debtParty"
+              list="debtPartyList"
               required
-              placeholder="اسم المورد/الزبون"
+              placeholder="اسم العميل/المورد/الزبون"
+              autocomplete="off"
             />
+            <datalist id="debtPartyList"></datalist>
+            <small
+              style="
+                color: var(--text-muted);
+                font-size: 0.8rem;
+                margin-top: 0.3rem;
+                display: block;
+              "
+            >
+              <i class="fas fa-info-circle"></i> يمكنك إضافة نفس الاسم عدة مرات
+              - كل معاملة ستكون مستقلة
+            </small>
           </div>
           <div class="flex gap-4 mb-4">
             <div class="w-full">
@@ -3248,6 +3424,22 @@
         <div id="debtStatementContent"></div>
       </div>
     </div>
+    <div class="modal-overlay" id="customerStatementModal">
+      <div class="modal large">
+        <div class="flex justify-between items-center mb-4">
+          <h2 style="font-size: 1.4rem; color: var(--primary)">
+            <i class="fas fa-user-tie"></i> كشف حساب العميل
+          </h2>
+          <button
+            onclick="closeModal('customerStatementModal')"
+            class="btn btn-outline btn-icon"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div id="customerStatementContent"></div>
+      </div>
+    </div>
     <div class="modal-overlay" id="statementModal">
       <div class="modal large">
         <div class="flex justify-between items-center mb-4">
@@ -3262,6 +3454,98 @@
           </button>
         </div>
         <div id="statementContent"></div>
+      </div>
+    </div>
+    <div class="modal-overlay" id="importOptionsModal">
+      <div class="modal">
+        <div class="flex justify-between items-center mb-4">
+          <h2 style="font-size: 1.4rem; font-weight: 700">
+            <i class="fas fa-upload"></i> خيارات الاستيراد
+          </h2>
+          <button
+            onclick="closeModal('importOptionsModal')"
+            class="btn btn-outline btn-icon"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div
+          style="
+            background: rgba(253, 126, 20, 0.1);
+            border: 1px solid var(--warning);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              color: var(--warning);
+              font-weight: 700;
+              margin-bottom: 0.5rem;
+            "
+          >
+            <i class="fas fa-exclamation-triangle"></i> تنبيه هام
+          </div>
+          <div style="font-size: 0.9rem; color: var(--text-main)">
+            سيتم استيراد <strong id="importStatsInfo">البيانات</strong> من
+            الملف. اختر طريقة الاستيراد:
+          </div>
+        </div>
+        <div style="display: grid; gap: 0.8rem">
+          <button
+            class="backup-btn"
+            onclick="doImport('merge')"
+            style="text-align: right; padding: 1rem"
+          >
+            <div style="display: flex; align-items: center; gap: 1rem">
+              <i
+                class="fas fa-plus-circle"
+                style="font-size: 1.5rem; color: var(--success)"
+              ></i>
+              <div>
+                <div class="title" style="margin-bottom: 0.2rem">
+                  دمج مع البيانات الحالية
+                </div>
+                <div class="desc">
+                  إضافة البيانات الجديدة مع الاحتفاظ بالقديم
+                </div>
+              </div>
+            </div>
+          </button>
+          <button
+            class="backup-btn danger"
+            onclick="doImport('replace')"
+            style="text-align: right; padding: 1rem"
+          >
+            <div style="display: flex; align-items: center; gap: 1rem">
+              <i
+                class="fas fa-sync-alt"
+                style="font-size: 1.5rem; color: var(--danger)"
+              ></i>
+              <div>
+                <div class="title" style="margin-bottom: 0.2rem">
+                  استبدال كل البيانات
+                </div>
+                <div class="desc">
+                  حذف كل البيانات الحالية واستبدالها بالملف
+                </div>
+              </div>
+            </div>
+          </button>
+        </div>
+        <div class="flex justify-between gap-2 mt-4">
+          <button
+            type="button"
+            onclick="closeModal('importOptionsModal')"
+            class="btn btn-outline w-full"
+          >
+            إلغاء
+          </button>
+        </div>
       </div>
     </div>
     <script>
@@ -3306,6 +3590,7 @@
         currentSection = "dashboard",
         currentExpTab = "expenses";
       let workDaysPerEmployee = {};
+      let pendingImportData = null;
       const LOGO_URL =
         "https://www.dropbox.com/scl/fi/fprczdxu04y7hi4ysqdqk/unnamed__4_-removebg-preview-1.png?rlkey=3f9ysoqw95oeeoc77i6jbs8h1&st=z82tk790&dl=1";
       const RESTAURANT_NAME = "كفتة على الفحم",
@@ -3349,6 +3634,23 @@
         } catch (e) {
           console.warn("[WorkDays] Load error:", e);
           workDaysPerEmployee[m] = {};
+        }
+      }
+      async function loadAllWorkDays() {
+        if (!currentUser) return;
+        try {
+          const snap = await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("workDays")
+            .get();
+          workDaysPerEmployee = {};
+          snap.forEach((doc) => {
+            const data = doc.data();
+            workDaysPerEmployee[data.month] = data.days || {};
+          });
+        } catch (e) {
+          console.warn("[WorkDays] Load all error:", e);
         }
       }
       if (window.location.protocol === "file:")
@@ -3451,7 +3753,9 @@
             ...d.data(),
             payments: d.data().payments || [],
           }));
+          await loadAllWorkDays();
           popSelects();
+          updateDebtPartyList();
           updateDashboard();
           const now = new Date(),
             cm = now.toISOString().slice(0, 7),
@@ -3476,6 +3780,17 @@
         } catch (error) {
           setLoading(false);
           showToast("خطأ: " + error.message, "error");
+        }
+      }
+      function updateDebtPartyList() {
+        const uniqueParties = [
+          ...new Set(debts.map((d) => d.party).filter((p) => p)),
+        ];
+        const datalist = document.getElementById("debtPartyList");
+        if (datalist) {
+          datalist.innerHTML = uniqueParties
+            .map((p) => `<option value="${p}">`)
+            .join("");
         }
       }
       function updateMonthBadge(m) {
@@ -3723,11 +4038,28 @@
         });
       }
       document
+        .getElementById("empSuspended")
+        .addEventListener("change", function () {
+          const dateField = document.getElementById("suspensionDateField");
+          if (this.checked) {
+            dateField.style.display = "block";
+            document.getElementById("empSuspensionDate").required = true;
+          } else {
+            dateField.style.display = "none";
+            document.getElementById("empSuspensionDate").required = false;
+            document.getElementById("empSuspensionDate").value = "";
+          }
+        });
+      document
         .getElementById("employeeForm")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
           if (isSubmitting) return;
           setSubmitting("empSubmitBtn", true);
+          const isSuspended = document.getElementById("empSuspended").checked;
+          const suspensionDate = isSuspended
+            ? document.getElementById("empSuspensionDate").value
+            : null;
           const d = {
             name: document.getElementById("empName").value,
             nationalId: document.getElementById("empNationalId").value,
@@ -3740,6 +4072,8 @@
             transportAllowance: Number(
               document.getElementById("empTransport").value,
             ),
+            suspended: isSuspended,
+            suspensionDate: suspensionDate,
           };
           const id = document.getElementById("empId").value;
           try {
@@ -3758,6 +4092,10 @@
                 .add(d);
             closeModal("employeeModal");
             await loadAllData();
+            showToast(
+              isSuspended ? "✅ تم تعليق الموظف" : "✅ تم حفظ البيانات",
+              "success",
+            );
           } catch (err) {
             showToast("خطأ: " + err.message, "error");
             setSubmitting("empSubmitBtn", false);
@@ -3784,72 +4122,50 @@
         if (empPage < 1) empPage = 1;
         const start = (empPage - 1) * ITEMS_PER_PAGE;
         const pg = f.slice(start, start + ITEMS_PER_PAGE);
-
-        // جدول
         document.querySelector("#employeesTable tbody").innerHTML =
           pg.length > 0
             ? pg
                 .map(
-                  (e, idx) =>
-                    `<tr>
-                <td><strong>${start + idx + 1}</strong></td>
-                <td>
-                  <div class="flex items-center gap-2">
-                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.name)}&background=D4AF37&color=151515&bold=true" class="avatar" style="width:36px;height:36px">
-                    <div>
-                      <div style="font-weight:700">${e.name}</div>
-                      <small class="text-muted">${e.nationalId || "-"}</small>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="badge" style="background:rgba(212,175,55,0.2);color:#b5952f">${e.dept}</span></td>
-                <td>${e.position || "-"}</td>
-                <td>${e.phone || "-"}</td>
-                <td><strong class="text-primary">${Number(e.salary).toLocaleString()} ج.س</strong></td>
-                <td>${e.joinDate || "-"}</td>
-                <td>
-                  <div class="flex gap-1" style="flex-wrap:wrap">
-                    <button class="btn btn-sm btn-outline" onclick="editEmployee('${e.id}')" title="تعديل"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-sm btn-primary" onclick="printEmployeeCard('${e.id}')" title="طباعة البطاقة"><i class="fas fa-print"></i></button>
-                    <button class="btn btn-sm btn-warning" onclick="openStatement('${e.id}','${new Date().toISOString().slice(0, 7)}')" title="كشف الحساب"><i class="fas fa-file-invoice-dollar"></i></button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')" title="حذف"><i class="fas fa-trash"></i></button>
-                  </div>
-                </td>
-              </tr>`,
+                  (e, idx) => `<tr>
+<td><strong>${start + idx + 1}</strong></td>
+<td><div class="flex items-center gap-2"><img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.name)}&background=D4AF37&color=151515&bold=true" class="avatar" style="width:36px;height:36px"><div><div style="font-weight:700">${e.name}</div><small class="text-muted">${e.nationalId || "-"}</small></div></div></td>
+<td><span class="badge" style="background:rgba(212,175,55,0.2);color:#b5952f">${e.dept}</span></td>
+<td>${e.position || "-"}</td>
+<td>${e.phone || "-"}</td>
+<td><strong class="text-primary">${Number(e.salary).toLocaleString()} ج.س</strong></td>
+<td>${e.joinDate || "-"}</td>
+<td>${e.suspended ? '<span class="badge" style="background: rgba(220, 53, 69, 0.2); color: var(--danger)"><i class="fas fa-user-slash"></i> معلق من ' + (e.suspensionDate || "-") + "</span>" : '<span class="badge" style="background: rgba(25, 135, 84, 0.2); color: var(--success)"><i class="fas fa-user-check"></i> نشط</span>'}</td>
+<td><div class="flex gap-1" style="flex-wrap:wrap"><button class="btn btn-sm btn-outline" onclick="editEmployee('${e.id}')" title="تعديل"><i class="fas fa-edit"></i></button><button class="btn btn-sm ${e.suspended ? "btn-success" : "btn-warning"}" onclick="toggleSuspension('${e.id}')" title="${e.suspended ? "إلغاء التعليق" : "تعليق الموظف"}"><i class="fas ${e.suspended ? "fa-user-check" : "fa-user-slash"}"></i></button><button class="btn btn-sm btn-primary" onclick="printEmployeeCard('${e.id}')" title="طباعة البطاقة"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-warning" onclick="openStatement('${e.id}','${new Date().toISOString().slice(0, 7)}')" title="كشف الحساب"><i class="fas fa-file-invoice-dollar"></i></button><button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')" title="حذف"><i class="fas fa-trash"></i></button></div></td>
+</tr>`,
                 )
                 .join("")
-            : '<tr><td colspan="8" class="text-center text-muted" style="padding:2rem">' +
+            : '<tr><td colspan="9" class="text-center text-muted" style="padding:2rem">' +
               (employees.length === 0
                 ? "⚠️ لا يوجد موظفين مسجلين. أضف موظف جديد!"
                 : "لا توجد نتائج مطابقة للبحث") +
               "</td></tr>";
-
-        // بطاقات الهاتف
         document.getElementById("employeesMobileCards").innerHTML =
           pg.length === 0
             ? '<p class="text-center text-muted" style="padding:2rem">لا يوجد موظفين</p>'
             : pg
                 .map(
-                  (e, idx) =>
-                    `<div class="mobile-card">
-                <div class="mobile-card-header">
-                  <div>
-                    <strong>${e.name}</strong>
-                    <br><small class="text-muted">${e.dept} - ${e.position || "-"}</small>
-                  </div>
-                  <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.name)}&background=D4AF37&color=151515&bold=true" class="avatar" style="width:32px;height:32px">
-                </div>
-                <div class="mobile-card-row"><span class="label">الهاتف</span><span class="value">${e.phone || "-"}</span></div>
-                <div class="mobile-card-row"><span class="label">الراتب</span><span class="value text-primary">${Number(e.salary).toLocaleString()} ج.س</span></div>
-                <div class="mobile-card-actions">
-                  <button class="btn btn-sm btn-outline" onclick="editEmployee('${e.id}')"><i class="fas fa-edit"></i> تعديل</button>
-                  <button class="btn btn-sm btn-warning" onclick="openStatement('${e.id}','${new Date().toISOString().slice(0, 7)}')"><i class="fas fa-file-invoice-dollar"></i> كشف</button>
-                  <button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')"><i class="fas fa-trash"></i> حذف</button>
-                </div>
-              </div>`,
+                  (e, idx) => `<div class="mobile-card">
+<div class="mobile-card-header">
+<div><strong>${e.name}</strong><br><small class="text-muted">${e.dept} - ${e.position || "-"}</small></div>
+${e.suspended ? '<span class="badge" style="background: rgba(220, 53, 69, 0.2); color: var(--danger)"><i class="fas fa-user-slash"></i> معلق</span>' : '<span class="badge" style="background: rgba(25, 135, 84, 0.2); color: var(--success)"><i class="fas fa-user-check"></i> نشط</span>'}
+</div>
+<div class="mobile-card-row"><span class="label">الهاتف</span><span class="value">${e.phone || "-"}</span></div>
+<div class="mobile-card-row"><span class="label">الراتب</span><span class="value text-primary">${Number(e.salary).toLocaleString()} ج.س</span></div>
+${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ التعليق</span><span class="value text-danger">' + (e.suspensionDate || "-") + "</span></div>" : ""}
+<div class="mobile-card-actions">
+<button class="btn btn-sm btn-outline" onclick="editEmployee('${e.id}')"><i class="fas fa-edit"></i> تعديل</button>
+<button class="btn btn-sm ${e.suspended ? "btn-success" : "btn-warning"}" onclick="toggleSuspension('${e.id}')"><i class="fas ${e.suspended ? "fa-user-check" : "fa-user-slash"}"></i> ${e.suspended ? "إلغاء التعليق" : "تعليق"}</button>
+<button class="btn btn-sm btn-warning" onclick="openStatement('${e.id}','${new Date().toISOString().slice(0, 7)}')"><i class="fas fa-file-invoice-dollar"></i> كشف</button>
+<button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')"><i class="fas fa-trash"></i> حذف</button>
+</div>
+</div>`,
                 )
                 .join("");
-
         renderPagination(
           "employeesPagination",
           f.length,
@@ -3869,6 +4185,9 @@
           .slice(0, 10);
         document.getElementById("employeeModalTitle").innerText =
           "إضافة موظف جديد";
+        document.getElementById("empSuspended").checked = false;
+        document.getElementById("suspensionDateField").style.display = "none";
+        document.getElementById("empSuspensionDate").value = "";
         openModal("employeeModal");
         setTimeout(() => document.getElementById("empName").focus(), 300);
       }
@@ -3886,6 +4205,13 @@
         document.getElementById("empMeal").value = e.mealAllowance || 0;
         document.getElementById("empTransport").value =
           e.transportAllowance || 0;
+        const isSuspended = e.suspended || false;
+        document.getElementById("empSuspended").checked = isSuspended;
+        document.getElementById("suspensionDateField").style.display =
+          isSuspended ? "block" : "none";
+        document.getElementById("empSuspensionDate").value =
+          e.suspensionDate || "";
+        document.getElementById("empSuspensionDate").required = isSuspended;
         document.getElementById("employeeModalTitle").innerText =
           "تعديل بيانات الموظف";
         openModal("employeeModal");
@@ -3908,6 +4234,46 @@
           showToast("تم الحذف");
         } catch (err) {
           showToast(err.message, "error");
+        }
+      }
+      async function toggleSuspension(empId) {
+        const emp = employees.find((e) => e.id === empId);
+        if (!emp) return;
+        const isCurrentlySuspended = emp.suspended || false;
+        if (isCurrentlySuspended) {
+          if (confirm(`إلغاء تعليق "${emp.name}"؟`)) {
+            try {
+              await db
+                .collection("users")
+                .doc(currentUser.uid)
+                .collection("employees")
+                .doc(empId)
+                .update({ suspended: false, suspensionDate: null });
+              await loadAllData();
+              showToast("✅ تم إلغاء التعليق", "success");
+            } catch (err) {
+              showToast("خطأ: " + err.message, "error");
+            }
+          }
+        } else {
+          const suspensionDate = prompt(
+            `أدخل تاريخ بداية التعليق لـ "${emp.name}" (YYYY-MM-DD):`,
+            new Date().toISOString().slice(0, 10),
+          );
+          if (suspensionDate) {
+            try {
+              await db
+                .collection("users")
+                .doc(currentUser.uid)
+                .collection("employees")
+                .doc(empId)
+                .update({ suspended: true, suspensionDate: suspensionDate });
+              await loadAllData();
+              showToast("✅ تم تعليق الموظف", "success");
+            } catch (err) {
+              showToast("خطأ: " + err.message, "error");
+            }
+          }
         }
       }
       function openLoanModal() {
@@ -3996,7 +4362,6 @@
           (loanPage - 1) * ITEMS_PER_PAGE,
           loanPage * ITEMS_PER_PAGE,
         );
-        // جدول
         document.querySelector("#loansTable tbody").innerHTML =
           pg.length === 0
             ? '<tr><td colspan="8" class="text-center text-muted">لا توجد معاملات</td></tr>'
@@ -4006,7 +4371,6 @@
                     `<tr><td>${l.empName}</td><td><span class="badge ${l.type === "سلفة" ? "badge-loan" : "badge-deduction"}">${l.type}</span></td><td>${Number(l.amount).toLocaleString()}</td><td>${l.date}</td><td>${l.time || "--:--"}</td><td><strong>${l.targetMonth || "-"}</strong></td><td>${l.note || "-"}</td><td><button class="btn btn-sm btn-outline" onclick="printLoanVoucher('${l.id}')"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-danger" onclick="deleteLoan('${l.id}')"><i class="fas fa-trash"></i></button></td></tr>`,
                 )
                 .join("");
-        // بطاقات الهاتف
         document.getElementById("loansMobileCards").innerHTML =
           pg.length === 0
             ? '<p class="text-center text-muted" style="padding:2rem">لا توجد معاملات</p>'
@@ -4075,29 +4439,33 @@
           fe === "all" ? employees : employees.filter((e) => e.id === fe);
         let hasCO = false;
         emps.forEach((emp) => {
+          const isSuspended = emp.suspended || false;
+          const suspensionDate = emp.suspensionDate;
+          const monthStart = month + "-01";
+          if (isSuspended && suspensionDate && suspensionDate <= monthStart)
+            return;
+          let effectiveDays = 30;
+          if (isSuspended && suspensionDate && suspensionDate > monthStart) {
+            const suspDay = parseInt(suspensionDate.split("-")[2]);
+            effectiveDays = suspDay - 1;
+          }
           const bs = Number(emp.salary || 0),
             ma = Number(emp.mealAllowance || 0),
             ta = Number(emp.transportAllowance || 0),
             wd = getWD(emp.id, month);
-          const ab = Math.round((bs / 30) * wd),
-            am = Math.round((ma / 30) * wd),
-            at = Math.round((ta / 30) * wd),
+          const actualDays = Math.min(wd, effectiveDays);
+          const ab = Math.round((bs / 30) * actualDays),
+            am = Math.round((ma / 30) * actualDays),
+            at = Math.round((ta / 30) * actualDays),
             al = am + at,
             gs = ab + al;
-          // ===== البديل النهائي الذي يتعامل مع targetMonth الفارغ =====
           let co = 0;
           const monthSet = new Set();
-
-          // 1. جمع كل الأشهر المرتبطة بهذا الموظف (من targetMonth أو من تاريخ الإنشاء)
           loans.forEach((l) => {
             if (l.empId === emp.id) {
               let m = l.targetMonth;
-              // إذا كان targetMonth فارغاً، استخدم الشهر من تاريخ الإنشاء (date)
-              if (!m && l.date) {
-                m = l.date.substring(0, 7); // مثال: "2026-06-15" → "2026-06"
-              }
+              if (!m && l.date) m = l.date.substring(0, 7);
               if (m) {
-                // توحيد التنسيق: لو كان 06-2026 يحوله إلى 2026-06
                 if (m.match(/^\d{2}-\d{4}$/)) {
                   const parts = m.split("-");
                   m = parts[1] + "-" + parts[0];
@@ -4106,15 +4474,9 @@
               }
             }
           });
-
-          // 2. ترتيب الأشهر تصاعدياً
           const sortedMonths = Array.from(monthSet).sort();
-
-          // 3. التكرار على الأشهر السابقة فقط (قبل الشهر الحالي)
           for (const pm of sortedMonths) {
-            if (pm >= month) break; // توقف عند الوصول للشهر الحالي
-
-            // 4. حساب الراتب الفعلي بناءً على أيام العمل في ذلك الشهر السابق
+            if (pm >= month) break;
             const wd =
               (workDaysPerEmployee[pm] && workDaysPerEmployee[pm][emp.id]) ||
               30;
@@ -4122,33 +4484,22 @@
             const actualMeal = Math.round((ma / 30) * wd);
             const actualTransport = Math.round((ta / 30) * wd);
             const actualGross = actualBase + actualMeal + actualTransport;
-
-            // 5. جلب سلفيات وخصومات ذلك الشهر السابق (مع توحيد التنسيق)
             const monthLoans = loans.filter((l) => {
               let target = l.targetMonth;
-              // إذا كان targetMonth فارغاً، استخدم الـ date كبديل
-              if (!target && l.date) {
-                target = l.date.substring(0, 7);
-              }
-              // توحيد التنسيق للمقارنة
+              if (!target && l.date) target = l.date.substring(0, 7);
               if (target && target.match(/^\d{2}-\d{4}$/)) {
                 const parts = target.split("-");
                 target = parts[1] + "-" + parts[0];
               }
               return l.empId === emp.id && target === pm;
             });
-
             const totalLoans = monthLoans
               .filter((l) => l.type === "سلفة")
               .reduce((s, l) => s + Number(l.amount), 0);
             const totalDeductions = monthLoans
               .filter((l) => l.type === "خصم")
               .reduce((s, l) => s + Number(l.amount), 0);
-
-            // 6. حساب الرصيد
             const balance = co + actualGross - totalLoans - totalDeductions;
-
-            // 7. تخزين العجز الجديد (إن وجد)
             co = balance < 0 ? Math.abs(balance) : 0;
           }
           if (co > 0) hasCO = true;
@@ -4204,7 +4555,6 @@
           (payrollPage - 1) * ITEMS_PER_PAGE,
           payrollPage * ITEMS_PER_PAGE,
         );
-        // جدول
         document.querySelector("#payrollTable tbody").innerHTML =
           payrollData.length === 0
             ? '<tr><td colspan="10" class="text-center text-muted">لا يوجد موظفين</td></tr>'
@@ -4222,7 +4572,6 @@
                   return `<tr><td><strong>${e.name}</strong></td><td><input type="number" class="work-days-input" min="1" max="31" value="${e.workDays}" onchange="updateEmployeeDays('${e.empId}',this.value,'${month}')"/></td><td>${e.actualBaseSalary.toLocaleString()}</td><td>${e.allowances.toLocaleString()}</td><td>${e.currentLoans > 0 ? '<span class="text-danger">' + e.currentLoans.toLocaleString() + "</span>" : "0"}</td><td>${e.currentDeductions > 0 ? '<span class="text-danger">' + e.currentDeductions.toLocaleString() + "</span>" : "0"}</td><td>${e.carryOver > 0 ? '<span class="payroll-carryover">-' + e.carryOver.toLocaleString() + "</span>" : "0"}</td><td class="${nc}">${e.net.toLocaleString()} ج.س</td><td>${st}</td><td><button class="btn btn-sm btn-warning" onclick="openStatement('${e.empId}','${e.month}')"><i class="fas fa-file-invoice-dollar"></i></button><button class="btn btn-sm btn-outline" onclick="printPayslip('${e.empId}','${e.month}')"><i class="fas fa-print"></i></button></td></tr>`;
                 })
                 .join("");
-        // بطاقات الهاتف
         document.getElementById("payrollMobileCards").innerHTML = pg
           .map((e) => {
             let st = "";
@@ -4296,7 +4645,6 @@
           (expPage - 1) * ITEMS_PER_PAGE,
           expPage * ITEMS_PER_PAGE,
         );
-        // جدول
         document.querySelector("#expTable tbody").innerHTML =
           pg.length === 0
             ? '<tr><td colspan="7" class="text-center text-muted">لا توجد مصروفات</td></tr>'
@@ -4306,7 +4654,6 @@
                     `<tr><td>${e.date}</td><td>${e.time || "--:--"}</td><td><span class="badge badge-expense">${e.category}</span></td><td>${e.description || "-"}</td><td>${Number(e.amount).toLocaleString()}</td><td>${e.note || "-"}</td><td><button class="btn btn-sm btn-info" onclick="printExpenseSingle('${e.id}')"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-danger" onclick="deleteExpense('${e.id}')"><i class="fas fa-trash"></i></button></td></tr>`,
                 )
                 .join("");
-        // بطاقات الهاتف
         document.getElementById("expMobileCards").innerHTML =
           pg.length === 0
             ? '<p class="text-center text-muted" style="padding:2rem">لا توجد مصروفات</p>'
@@ -4410,11 +4757,15 @@
       }
       function renderDebts() {
         const ft = document.getElementById("debtTypeFilter").value,
-          fs = document.getElementById("debtStatusFilter").value;
+          fs = document.getElementById("debtStatusFilter").value,
+          fp = (document.getElementById("debtPartyFilter").value || "")
+            .toLowerCase()
+            .trim();
         filteredDebts = debts.filter((d) => {
           let m = true;
           if (ft !== "all" && d.type !== ft) m = false;
           if (fs !== "all" && d.status !== fs) m = false;
+          if (fp && !(d.party || "").toLowerCase().includes(fp)) m = false;
           return m;
         });
         const usT = debts
@@ -4437,7 +4788,6 @@
           (debtPage - 1) * ITEMS_PER_PAGE,
           debtPage * ITEMS_PER_PAGE,
         );
-        // جدول
         document.querySelector("#debtTable tbody").innerHTML =
           pg.length === 0
             ? '<tr><td colspan="9" class="text-center text-muted">لا توجد ديون</td></tr>'
@@ -4456,10 +4806,9 @@
                         ? "جزئي"
                         : "معلق";
                   const canPay = d.status !== "paid";
-                  return `<tr><td><span class="badge ${d.type === "us" ? "badge-debt-us" : "badge-debt-them"}">${d.type === "us" ? "علينا" : "لنا"}</span></td><td>${d.party}</td><td>${Number(d.amount).toLocaleString()}</td><td>${Number(d.paid || 0).toLocaleString()}</td><td>${Number(d.remaining || 0).toLocaleString()}</td><td>${d.date}</td><td>${d.dueDate || "-"}</td><td><span class="${sc}">${st}</span></td><td><button class="btn btn-sm btn-info" onclick="printDebtSingle('${d.id}')"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-warning" onclick="openDebtStatement('${d.id}')"><i class="fas fa-file-invoice"></i></button>${canPay ? `<button class="btn btn-sm btn-success" onclick="openPayDebtModal('${d.id}')"><i class="fas fa-money-bill"></i></button>` : ""}<button class="btn btn-sm btn-danger" onclick="deleteDebt('${d.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
+                  return `<tr><td><span class="badge ${d.type === "us" ? "badge-debt-us" : "badge-debt-them"}">${d.type === "us" ? "علينا" : "لنا"}</span></td><td><strong>${d.party}</strong></td><td>${Number(d.amount).toLocaleString()}</td><td>${Number(d.paid || 0).toLocaleString()}</td><td>${Number(d.remaining || 0).toLocaleString()}</td><td>${d.date}</td><td>${d.dueDate || "-"}</td><td><span class="${sc}">${st}</span></td><td><div class="flex gap-1" style="flex-wrap:wrap"><button class="btn btn-sm btn-info" onclick="printDebtSingle('${d.id}')"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-warning" onclick="openDebtStatement('${d.id}')"><i class="fas fa-file-invoice"></i></button><button class="btn btn-sm btn-primary" onclick="openCustomerStatement('${d.party.replace(/'/g, "\\'")}')" title="كشف حساب العميل"><i class="fas fa-user-tie"></i></button>${canPay ? `<button class="btn btn-sm btn-success" onclick="openPayDebtModal('${d.id}')"><i class="fas fa-money-bill"></i></button>` : ""}<button class="btn btn-sm btn-danger" onclick="deleteDebt('${d.id}')"><i class="fas fa-trash"></i></button></div></td></tr>`;
                 })
                 .join("");
-        // بطاقات الهاتف
         document.getElementById("debtMobileCards").innerHTML =
           pg.length === 0
             ? '<p class="text-center text-muted" style="padding:2rem">لا توجد ديون</p>'
@@ -4478,7 +4827,7 @@
                         ? "جزئي"
                         : "معلق";
                   const canPay = d.status !== "paid";
-                  return `<div class="mobile-card"><div class="mobile-card-header"><div><strong>${d.party}</strong><br><small class="text-muted">${d.type === "us" ? "علينا" : "لنا"} - ${d.date}</small></div><span class="${sc}">${st}</span></div><div class="mobile-card-row"><span class="label">المبلغ</span><span class="value">${Number(d.amount).toLocaleString()}</span></div><div class="mobile-card-row"><span class="label">المدفوع</span><span class="value">${Number(d.paid || 0).toLocaleString()}</span></div><div class="mobile-card-row"><span class="label">المتبقي</span><span class="value text-danger">${Number(d.remaining || 0).toLocaleString()}</span></div><div class="mobile-card-actions"><button class="btn btn-sm btn-info" onclick="printDebtSingle('${d.id}')"><i class="fas fa-print"></i> طباعة</button><button class="btn btn-sm btn-warning" onclick="openDebtStatement('${d.id}')"><i class="fas fa-file-invoice"></i> كشف</button>${canPay ? `<button class="btn btn-sm btn-success" onclick="openPayDebtModal('${d.id}')"><i class="fas fa-money-bill"></i> دفع</button>` : ""}<button class="btn btn-sm btn-danger" onclick="deleteDebt('${d.id}')"><i class="fas fa-trash"></i> حذف</button></div></div>`;
+                  return `<div class="mobile-card"><div class="mobile-card-header"><div><strong>${d.party}</strong><br><small class="text-muted">${d.type === "us" ? "علينا" : "لنا"} - ${d.date}</small></div><span class="${sc}">${st}</span></div><div class="mobile-card-row"><span class="label">المبلغ</span><span class="value">${Number(d.amount).toLocaleString()}</span></div><div class="mobile-card-row"><span class="label">المدفوع</span><span class="value">${Number(d.paid || 0).toLocaleString()}</span></div><div class="mobile-card-row"><span class="label">المتبقي</span><span class="value text-danger">${Number(d.remaining || 0).toLocaleString()}</span></div><div class="mobile-card-actions"><button class="btn btn-sm btn-info" onclick="printDebtSingle('${d.id}')"><i class="fas fa-print"></i> طباعة</button><button class="btn btn-sm btn-warning" onclick="openDebtStatement('${d.id}')"><i class="fas fa-file-invoice"></i> كشف</button><button class="btn btn-sm btn-primary" onclick="openCustomerStatement('${d.party.replace(/'/g, "\\'")}')" title="كشف حساب العميل"><i class="fas fa-user-tie"></i> حساب</button>${canPay ? `<button class="btn btn-sm btn-success" onclick="openPayDebtModal('${d.id}')"><i class="fas fa-money-bill"></i> دفع</button>` : ""}<button class="btn btn-sm btn-danger" onclick="deleteDebt('${d.id}')"><i class="fas fa-trash"></i> حذف</button></div></div>`;
                 })
                 .join("");
         renderPagination(
@@ -4495,6 +4844,7 @@
       function clearDebtFilters() {
         document.getElementById("debtTypeFilter").value = "all";
         document.getElementById("debtStatusFilter").value = "all";
+        document.getElementById("debtPartyFilter").value = "";
         debtPage = 1;
         renderDebts();
         showToast("تم مسح الفلاتر", "success");
@@ -4508,6 +4858,7 @@
         document.getElementById("debtDate").value = new Date()
           .toISOString()
           .slice(0, 10);
+        updateDebtPartyList();
         openModal("debtModal");
       }
       document
@@ -4533,7 +4884,7 @@
               : [];
           const d = {
             type: document.getElementById("debtTypeField").value,
-            party: document.getElementById("debtParty").value,
+            party: document.getElementById("debtParty").value.trim(),
             amount: amt,
             paid: paid,
             remaining: amt - paid,
@@ -4623,7 +4974,7 @@
             return;
           }
           const newPaid = Number(d.paid || 0) + payAmount;
-          const newRemaining = d.amount - newPaid;
+          let newRemaining = d.amount - newPaid;
           let newStatus = "partial";
           if (newRemaining <= 0) {
             newRemaining = 0;
@@ -4692,6 +5043,146 @@
         document.getElementById("debtStatementContent").innerHTML =
           `<div class="debt-stmt-header"><h3><i class="fas fa-file-invoice-dollar"></i> كشف الدين - ${d.party}</h3><div class="debt-stmt-info"><div class="debt-stmt-info-item"><div class="label">النوع</div><div class="value">${d.type === "us" ? "علينا" : "لنا"}</div></div><div class="debt-stmt-info-item"><div class="label">المبلغ الكلي</div><div class="value">${Number(d.amount).toLocaleString()} ج.س</div></div><div class="debt-stmt-info-item"><div class="label">المدفوع</div><div class="value" style="color:#198754">${totalPaid.toLocaleString()} ج.س</div></div><div class="debt-stmt-info-item"><div class="label">المتبقي</div><div class="value" style="color:#dc3545">${remaining.toLocaleString()} ج.س</div></div><div class="debt-stmt-info-item"><div class="label">تاريخ الإنشاء</div><div class="value">${d.date}</div></div><div class="debt-stmt-info-item"><div class="label">الاستحقاق</div><div class="value">${d.dueDate || "-"}</div></div><div class="debt-stmt-info-item"><div class="label">الحالة</div><div class="value" style="color:${statusColor}">${statusText}</div></div><div class="debt-stmt-info-item"><div class="label">عدد الدفعيات</div><div class="value">${payments.length}</div></div></div></div><div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem"><h4 style="color:var(--primary);margin-bottom:1rem"><i class="fas fa-history"></i> سجل الدفعيات</h4><table class="debt-stmt-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>المبلغ</th><th>ملاحظات</th></tr></thead><tbody>${paymentsHtml}</tbody></table></div><div class="debt-stmt-summary"><div class="debt-stmt-summary-item"><div class="label">المبلغ الكلي</div><div class="value">${Number(d.amount).toLocaleString()} ج.س</div></div><div class="debt-stmt-summary-item"><div class="label">إجمالي المدفوع</div><div class="value" style="color:#198754">${totalPaid.toLocaleString()} ج.س</div></div><div class="debt-stmt-summary-item"><div class="label">المتبقي</div><div class="value" style="color:#dc3545">${remaining.toLocaleString()} ج.س</div></div><div class="debt-stmt-summary-item"><div class="label">عدد الدفعيات</div><div class="value">${payments.length}</div></div></div><div style="display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap"><button class="btn btn-primary" onclick="printDebtStatement('${d.id}')"><i class="fas fa-print"></i> طباعة الكشف</button><button class="btn btn-outline" onclick="closeModal('debtStatementModal')"><i class="fas fa-times"></i> إغلاق</button></div>`;
         openModal("debtStatementModal");
+      }
+      function openCustomerStatement(partyName) {
+        const customerDebts = debts.filter((d) => d.party === partyName);
+        if (customerDebts.length === 0) {
+          showToast("لا توجد معاملات", "error");
+          return;
+        }
+        const usDebts = customerDebts.filter((d) => d.type === "us");
+        const themDebts = customerDebts.filter((d) => d.type === "them");
+        const usTotal = usDebts.reduce((s, d) => s + Number(d.amount || 0), 0);
+        const usPaid = usDebts.reduce((s, d) => s + Number(d.paid || 0), 0);
+        const usRemaining = usDebts.reduce(
+          (s, d) => s + Number(d.remaining || 0),
+          0,
+        );
+        const themTotal = themDebts.reduce(
+          (s, d) => s + Number(d.amount || 0),
+          0,
+        );
+        const themPaid = themDebts.reduce((s, d) => s + Number(d.paid || 0), 0);
+        const themRemaining = themDebts.reduce(
+          (s, d) => s + Number(d.remaining || 0),
+          0,
+        );
+        const net = themRemaining - usRemaining;
+        const allTransactions = [];
+        customerDebts.forEach((d) => {
+          allTransactions.push({
+            date: d.date,
+            time: "00:00",
+            type: "إنشاء دين",
+            desc: `${d.type === "us" ? "علينا" : "لنا"} - ${d.note || "-"}`,
+            amount: Number(d.amount),
+            isDebt: true,
+            debtType: d.type,
+            debtId: d.id,
+          });
+          (d.payments || []).forEach((p) => {
+            allTransactions.push({
+              date: p.date,
+              time: p.time || "--:--",
+              type: "دفعة",
+              desc: `دفعة على دين ${d.type === "us" ? "علينا" : "لنا"} - ${p.note || "-"}`,
+              amount: Number(p.amount),
+              isPayment: true,
+              debtType: d.type,
+              debtId: d.id,
+            });
+          });
+        });
+        allTransactions.sort((a, b) =>
+          (a.date + a.time).localeCompare(b.date + b.time),
+        );
+        let usBal = 0,
+          themBal = 0;
+        const rows = allTransactions.map((t, i) => {
+          if (t.isDebt) {
+            if (t.debtType === "us") usBal += t.amount;
+            else themBal += t.amount;
+          } else if (t.isPayment) {
+            if (t.debtType === "us") usBal -= t.amount;
+            else themBal -= t.amount;
+          }
+          return { ...t, idx: i + 1, usBal, themBal, net: themBal - usBal };
+        });
+        const rowsHtml =
+          rows.length === 0
+            ? '<tr><td colspan="7" class="text-center text-muted" style="padding:2rem">لا توجد معاملات</td></tr>'
+            : rows
+                .map((r) => {
+                  const typeBadge = r.isDebt
+                    ? `<span class="badge ${r.debtType === "us" ? "badge-debt-us" : "badge-debt-them"}">${r.debtType === "us" ? "دين علينا" : "دين لنا"}</span>`
+                    : `<span class="badge" style="background:rgba(25,135,84,0.2);color:#198754">دفعة ${r.debtType === "us" ? "علينا" : "لنا"}</span>`;
+                  const amountClass = r.isDebt
+                    ? r.debtType === "us"
+                      ? "text-danger"
+                      : "text-success"
+                    : r.debtType === "us"
+                      ? "text-success"
+                      : "text-danger";
+                  return `<tr><td>${r.idx}</td><td><strong>${r.date}</strong></td><td>${r.time}</td><td>${typeBadge}</td><td>${r.desc}</td><td class="${amountClass}"><strong>${r.amount.toLocaleString()}</strong></td><td class="${r.net < 0 ? "text-danger" : "text-success"}"><strong>${r.net.toLocaleString()}</strong></td></tr>`;
+                })
+                .join("");
+        document.getElementById("customerStatementContent").innerHTML =
+          `<div class="statement-header"><h3><i class="fas fa-user-tie"></i> ${partyName}</h3><div class="customer-stmt-summary">
+<div class="customer-stmt-summary-item"><div class="label">عدد المعاملات</div><div class="value">${customerDebts.length} دين / ${rows.length} حركة</div></div>
+<div class="customer-stmt-summary-item"><div class="label">إجمالي الديون علينا</div><div class="value us">${usTotal.toLocaleString()} ج.س</div></div>
+<div class="customer-stmt-summary-item"><div class="label">المدفوع منا</div><div class="value us">${usPaid.toLocaleString()} ج.س</div></div>
+<div class="customer-stmt-summary-item"><div class="label">المتبقي لنا عليه</div><div class="value us">${usRemaining.toLocaleString()} ج.س</div></div>
+<div class="customer-stmt-summary-item"><div class="label">إجمالي الديون لنا</div><div class="value them">${themTotal.toLocaleString()} ج.س</div></div>
+<div class="customer-stmt-summary-item"><div class="label">المستلم منه</div><div class="value them">${themPaid.toLocaleString()} ج.س</div></div>
+<div class="customer-stmt-summary-item"><div class="label">المتبقي له عندنا</div><div class="value them">${themRemaining.toLocaleString()} ج.س</div></div>
+<div class="customer-stmt-summary-item"><div class="label">الصافي</div><div class="value net">${net.toLocaleString()} ج.س</div></div>
+</div></div>
+<div style="background:#fff9e6;border:1px solid var(--primary);border-radius:10px;padding:1rem;margin-bottom:1rem">
+<strong style="color:var(--primary)"><i class="fas fa-info-circle"></i> ملخص الحساب:</strong>
+<div style="margin-top:0.5rem;font-size:0.9rem">
+${usRemaining > 0 ? `<div style="color:var(--danger)">• عليه لنا: <strong>${usRemaining.toLocaleString()} ج.س</strong></div>` : ""}
+${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <strong>${themRemaining.toLocaleString()} ج.س</strong></div>` : ""}
+<div style="margin-top:0.5rem;font-weight:bold;color:${net < 0 ? "var(--danger)" : "var(--success)"}">• ${net < 0 ? `هو مدين لنا بـ: ${Math.abs(net).toLocaleString()} ج.س` : net > 0 ? `نحن مدينون له بـ: ${net.toLocaleString()} ج.س` : "الحساب مسوي ✓"}</div>
+</div>
+</div>
+<table class="statement-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>النوع</th><th>البيان</th><th>المبلغ</th><th>الصافي</th></tr></thead><tbody>${rowsHtml}</tbody></table>
+<div style="display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap">
+<button class="btn btn-primary" onclick="printCustomerStatement('${partyName.replace(/'/g, "\\'")}')"><i class="fas fa-print"></i> طباعة الكشف</button>
+<button class="btn btn-outline" onclick="closeModal('customerStatementModal')"><i class="fas fa-times"></i> إغلاق</button>
+</div>`;
+        window._customerStmt = {
+          partyName,
+          customerDebts,
+          usDebts,
+          themDebts,
+          usTotal,
+          usPaid,
+          usRemaining,
+          themTotal,
+          themPaid,
+          themRemaining,
+          net,
+          rows,
+        };
+        openModal("customerStatementModal");
+      }
+      function printCustomerStatement(partyName) {
+        const s = window._customerStmt;
+        if (!s) return;
+        const rowsHtml = s.rows
+          .map((r) => {
+            const type = r.isDebt
+              ? r.debtType === "us"
+                ? "دين علينا"
+                : "دين لنا"
+              : `دفعة ${r.debtType === "us" ? "علينا" : "لنا"}`;
+            return `<tr><td>${r.idx}</td><td>${r.date}</td><td>${r.time}</td><td>${type}</td><td>${r.desc}</td><td>${r.amount.toLocaleString()}</td><td style="color:${r.net < 0 ? "#dc3545" : "#198754"};font-weight:bold">${r.net.toLocaleString()}</td></tr>`;
+          })
+          .join("");
+        printContent(
+          `${getPrintHeader("كشف حساب عميل", s.partyName)}<div class="summary-box"><div class="summary-item"><div class="label">ديون علينا (إجمالي)</div><div class="value" style="color:#dc3545">${s.usTotal.toLocaleString()}</div></div><div class="summary-item"><div class="label">المتبقي علينا</div><div class="value" style="color:#dc3545">${s.usRemaining.toLocaleString()}</div></div><div class="summary-item"><div class="label">ديون لنا (إجمالي)</div><div class="value" style="color:#198754">${s.themTotal.toLocaleString()}</div></div><div class="summary-item"><div class="label">الصافي</div><div class="value" style="color:${s.net < 0 ? "#dc3545" : "#198754"}">${s.net.toLocaleString()}</div></div></div><div style="background:#f9f9f9;padding:15px;border-radius:8px;margin-bottom:20px;border:1px solid #e0e0e0"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><strong>اسم العميل:</strong> ${s.partyName}</div><div><strong>عدد الديون:</strong> ${s.customerDebts.length}</div><div><strong>عدد الحركات:</strong> ${s.rows.length}</div><div><strong>تاريخ الكشف:</strong> ${new Date().toLocaleDateString("ar-EG")}</div></div></div><table class="payroll-summary-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>النوع</th><th>البيان</th><th>المبلغ</th><th>الصافي</th></tr></thead><tbody>${rowsHtml}</tbody></table><div style="margin-top:20px;padding:15px;background:#fff9e6;border:2px solid #d4af37;border-radius:8px;text-align:center"><div style="font-size:12pt;color:#666;margin-bottom:10px">الخلاصة النهائية</div><div style="font-size:20pt;font-weight:bold;color:${s.net < 0 ? "#dc3545" : "#198754"}">${s.net < 0 ? `مدين لنا بـ: ${Math.abs(s.net).toLocaleString()} ج.س` : s.net > 0 ? `له عندنا: ${s.net.toLocaleString()} ج.س` : "الحساب مسوي ✓"}</div></div>${getSignatures()}${getPrintFooter()}`,
+          `كشف حساب ${s.partyName}`,
+        );
       }
       function printDebtStatement(id) {
         const d = debts.find((x) => x.id === id);
@@ -5017,6 +5508,7 @@
             القسم: e.dept,
             الوظيفة: e.position || "-",
             الراتب: e.salary,
+            الحالة: e.suspended ? "معلق" : "نشط",
           })),
         );
         const wb = XLSX.utils.book_new();
@@ -5171,6 +5663,269 @@
         );
         showToast("تم التصدير");
       }
+      // ========== النسخ الاحتياطي ==========
+      async function exportBackup() {
+        if (!currentUser) return;
+        setLoading(true);
+        try {
+          const backupData = {
+            version: "2.3.0",
+            exportDate: new Date().toISOString(),
+            user: currentUser.email,
+            employees: employees,
+            loans: loans,
+            expenses: expenses,
+            debts: debts,
+            workDays: workDaysPerEmployee,
+          };
+          const json = JSON.stringify(backupData, null, 2);
+          const blob = new Blob([json], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          const date = new Date().toISOString().slice(0, 10);
+          const time = new Date().toTimeString().slice(0, 5).replace(":", "-");
+          a.download = `نسخة_احتياطية_${date}_${time}.json`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showToast("✅ تم تصدير النسخة الاحتياطية بنجاح", "success");
+        } catch (err) {
+          showToast("خطأ في التصدير: " + err.message, "error");
+        }
+        setLoading(false);
+      }
+      function importBackup(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const data = JSON.parse(e.target.result);
+            if (
+              !data.employees &&
+              !data.loans &&
+              !data.expenses &&
+              !data.debts
+            ) {
+              showToast("ملف غير صالح", "error");
+              return;
+            }
+            pendingImportData = data;
+            const stats = [];
+            if (data.employees) stats.push(`${data.employees.length} موظف`);
+            if (data.loans) stats.push(`${data.loans.length} سلفة/خصم`);
+            if (data.expenses) stats.push(`${data.expenses.length} مصروف`);
+            if (data.debts) stats.push(`${data.debts.length} دين`);
+            document.getElementById("importStatsInfo").innerHTML =
+              `<strong>${stats.join("، ")}</strong>`;
+            openModal("importOptionsModal");
+          } catch (err) {
+            showToast("خطأ في قراءة الملف: " + err.message, "error");
+          }
+        };
+        reader.readAsText(file);
+        event.target.value = "";
+      }
+      async function doImport(mode) {
+        if (!pendingImportData || !currentUser) return;
+        closeModal("importOptionsModal");
+        setLoading(true);
+        try {
+          const uid = currentUser.uid;
+          if (mode === "replace") {
+            if (
+              !confirm(
+                "⚠️ تحذير: سيتم حذف كل البيانات الحالية واستبدالها بالبيانات المستوردة. هل أنت متأكد؟",
+              )
+            ) {
+              setLoading(false);
+              return;
+            }
+            // Delete existing data
+            const collections = [
+              "employees",
+              "loans",
+              "expenses",
+              "debts",
+              "workDays",
+            ];
+            for (const col of collections) {
+              const snap = await db
+                .collection("users")
+                .doc(uid)
+                .collection(col)
+                .get();
+              const batch = db.batch();
+              snap.forEach((doc) => batch.delete(doc.ref));
+              if (snap.size > 0) await batch.commit();
+            }
+          }
+          const data = pendingImportData;
+          // Import employees
+          if (data.employees && data.employees.length > 0) {
+            const batch = db.batch();
+            let count = 0;
+            for (const emp of data.employees) {
+              const { id, ...empData } = emp;
+              const ref =
+                mode === "replace"
+                  ? db
+                      .collection("users")
+                      .doc(uid)
+                      .collection("employees")
+                      .doc()
+                  : db
+                      .collection("users")
+                      .doc(uid)
+                      .collection("employees")
+                      .doc();
+              batch.set(ref, empData);
+              count++;
+              if (count >= 400) {
+                await batch.commit();
+                count = 0;
+              }
+            }
+            if (count > 0) await batch.commit();
+          }
+          // Import loans
+          if (data.loans && data.loans.length > 0) {
+            const batch = db.batch();
+            let count = 0;
+            for (const loan of data.loans) {
+              const { id, ...loanData } = loan;
+              const ref = db
+                .collection("users")
+                .doc(uid)
+                .collection("loans")
+                .doc();
+              batch.set(ref, loanData);
+              count++;
+              if (count >= 400) {
+                await batch.commit();
+                count = 0;
+              }
+            }
+            if (count > 0) await batch.commit();
+          }
+          // Import expenses
+          if (data.expenses && data.expenses.length > 0) {
+            const batch = db.batch();
+            let count = 0;
+            for (const exp of data.expenses) {
+              const { id, ...expData } = exp;
+              const ref = db
+                .collection("users")
+                .doc(uid)
+                .collection("expenses")
+                .doc();
+              batch.set(ref, expData);
+              count++;
+              if (count >= 400) {
+                await batch.commit();
+                count = 0;
+              }
+            }
+            if (count > 0) await batch.commit();
+          }
+          // Import debts
+          if (data.debts && data.debts.length > 0) {
+            const batch = db.batch();
+            let count = 0;
+            for (const debt of data.debts) {
+              const { id, ...debtData } = debt;
+              const ref = db
+                .collection("users")
+                .doc(uid)
+                .collection("debts")
+                .doc();
+              batch.set(ref, debtData);
+              count++;
+              if (count >= 400) {
+                await batch.commit();
+                count = 0;
+              }
+            }
+            if (count > 0) await batch.commit();
+          }
+          // Import workDays
+          if (data.workDays) {
+            for (const month in data.workDays) {
+              await db
+                .collection("users")
+                .doc(uid)
+                .collection("workDays")
+                .doc(month)
+                .set({
+                  month: month,
+                  days: data.workDays[month],
+                  updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                });
+            }
+          }
+          pendingImportData = null;
+          await loadAllData();
+          showToast(
+            `✅ تم استيراد البيانات بنجاح (${mode === "replace" ? "استبدال" : "دمج"})`,
+            "success",
+          );
+        } catch (err) {
+          showToast("خطأ في الاستيراد: " + err.message, "error");
+        }
+        setLoading(false);
+      }
+      async function clearAllData() {
+        if (!currentUser) return;
+        if (
+          !confirm(
+            "⚠️ تحذير خطير!\n\nسيتم حذف كل البيانات نهائياً:\n- كل الموظفين\n- كل السلفيات والخصومات\n- كل المصروفات\n- كل الديون\n- كل أيام العمل\n\nلا يمكن التراجع عن هذه العملية!\n\nهل أنت متأكد تماماً؟",
+          )
+        )
+          return;
+        if (!confirm("تأكيد أخير: هل تريد فعلاً حذف كل البيانات؟")) return;
+        setLoading(true);
+        try {
+          const uid = currentUser.uid;
+          const collections = [
+            "employees",
+            "loans",
+            "expenses",
+            "debts",
+            "workDays",
+          ];
+          for (const col of collections) {
+            const snap = await db
+              .collection("users")
+              .doc(uid)
+              .collection(col)
+              .get();
+            const batch = db.batch();
+            snap.forEach((doc) => batch.delete(doc.ref));
+            if (snap.size > 0) await batch.commit();
+          }
+          employees = [];
+          loans = [];
+          expenses = [];
+          debts = [];
+          workDaysPerEmployee = {};
+          payrollData = [];
+          popSelects();
+          updateDebtPartyList();
+          updateDashboard();
+          renderEmployees();
+          renderLoans();
+          renderExpenses();
+          renderDebts();
+          calculatePayroll();
+          showToast("✅ تم حذف كل البيانات", "success");
+        } catch (err) {
+          showToast("خطأ في الحذف: " + err.message, "error");
+        }
+        setLoading(false);
+      }
+      // ========== نهاية النسخ الاحتياطي ==========
       let printWindow = null;
       function printContent(htmlContent, title = "طباعة") {
         if (printWindow && !printWindow.closed) printWindow.close();
@@ -5212,7 +5967,7 @@
       function printAllEmployees() {
         if (!employees.length) return showToast("لا بيانات", "error");
         printContent(
-          `${getPrintHeader("كشف الموظفين", `إجمالي: ${employees.length}`)}<table class="payroll-summary-table"><thead><tr><th>#</th><th>الاسم</th><th>القسم</th><th>الراتب</th></tr></thead><tbody>${employees.map((e, i) => `<tr><td>${i + 1}</td><td>${e.name}</td><td>${e.dept}</td><td>${Number(e.salary).toLocaleString()}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
+          `${getPrintHeader("كشف الموظفين", `إجمالي: ${employees.length}`)}<table class="payroll-summary-table"><thead><tr><th>#</th><th>الاسم</th><th>القسم</th><th>الوظيفة</th><th>الهاتف</th><th>الراتب</th><th>تاريخ التعيين</th><th>الحالة</th></tr></thead><tbody>${employees.map((e, i) => `<tr><td>${i + 1}</td><td>${e.name}</td><td>${e.dept}</td><td>${e.position || "-"}</td><td>${e.phone || "-"}</td><td>${Number(e.salary).toLocaleString()} ج.س</td><td>${e.joinDate || "-"}</td><td>${e.suspended ? '<span style="color:#dc3545;font-weight:bold">معلق</span>' : '<span style="color:#198754;font-weight:bold">نشط</span>'}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
           "الموظفين",
         );
       }
