@@ -1861,7 +1861,7 @@
         </div>
         <h1 class="splash-title">كفتة على الفحم</h1>
         <p class="splash-tagline">نظام إدارة الموارد البشرية</p>
-        <div class="splash-version">Version 2.3.0</div>
+        <div class="splash-version">Version 2.4.0</div>
         <div class="splash-developer">
           Developed by: <strong>Ammar Konna</strong>
         </div>
@@ -2015,6 +2015,17 @@
         <div style="margin-top: auto">
           <button
             class="btn btn-outline w-full"
+            onclick="openSalaryChangeModal()"
+            style="
+              justify-content: center;
+              border-color: rgba(212, 175, 55, 0.4);
+              color: var(--primary);
+            "
+          >
+            <i class="fas fa-coins"></i> تعديل راتب موظف
+          </button>
+          <button
+            class="btn btn-outline w-full mt-4"
             onclick="toggleTheme()"
             style="
               justify-content: center;
@@ -2138,6 +2149,15 @@
               <button class="add-btn" onclick="openAddEmployeeModal()">
                 <i class="fas fa-plus-circle"></i> إضافة موظف
               </button>
+              <button class="btn btn-primary" onclick="openSalaryChangeModal()">
+                <i class="fas fa-coins"></i> تعديل الراتب
+              </button>
+              <button
+                class="btn btn-outline"
+                onclick="openSalaryHistoryModal()"
+              >
+                <i class="fas fa-history"></i> سجل تغييرات الراتب
+              </button>
             </div>
             <div class="export-buttons">
               <button class="btn btn-info" onclick="printAllEmployees()">
@@ -2161,7 +2181,7 @@
                     <th>القسم</th>
                     <th>الوظيفة</th>
                     <th>الهاتف</th>
-                    <th>الراتب الأساسي</th>
+                    <th>الراتب الحالي</th>
                     <th>تاريخ التعيين</th>
                     <th>الحالة</th>
                     <th>الإجراءات</th>
@@ -2311,6 +2331,20 @@
                     <option value="all">جميع الموظفين</option>
                   </select>
                 </div>
+              </div>
+              <div class="flex gap-2 items-center" style="flex-wrap: wrap">
+                <button
+                  class="btn btn-primary btn-sm"
+                  onclick="openSalaryChangeModal()"
+                >
+                  <i class="fas fa-coins"></i> تعديل الراتب
+                </button>
+                <button
+                  class="btn btn-outline btn-sm"
+                  onclick="openSalaryHistoryModal()"
+                >
+                  <i class="fas fa-history"></i> سجل الرواتب
+                </button>
               </div>
             </div>
             <div class="work-days-box">
@@ -2885,6 +2919,234 @@
             </button>
           </div>
         </form>
+      </div>
+    </div>
+    <!-- ========== نافذة تعديل الراتب (جديد) ========== -->
+    <div class="modal-overlay" id="salaryChangeModal">
+      <div class="modal">
+        <div class="flex justify-between items-center mb-4">
+          <h2
+            id="salaryChangeModalTitle"
+            style="font-size: 1.4rem; font-weight: 700"
+          >
+            <i class="fas fa-coins text-primary"></i> تعديل راتب موظف
+          </h2>
+          <button
+            onclick="closeModal('salaryChangeModal')"
+            class="btn btn-outline btn-icon"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <form id="salaryChangeForm">
+          <input type="hidden" id="scId" />
+          <div class="mb-4">
+            <label
+              style="
+                font-size: 0.9rem;
+                font-weight: 600;
+                display: block;
+                margin-bottom: 0.5rem;
+              "
+              ><i class="fas fa-user"></i> الموظف *</label
+            >
+            <select
+              id="scEmployee"
+              required
+              onchange="onScEmployeeChange()"
+            ></select>
+          </div>
+          <div
+            style="
+              background: rgba(212, 175, 55, 0.08);
+              border: 1px solid var(--primary);
+              border-radius: 10px;
+              padding: 1rem;
+              margin-bottom: 1rem;
+            "
+          >
+            <div
+              class="flex justify-between items-center"
+              style="flex-wrap: wrap; gap: 0.5rem"
+            >
+              <div>
+                <div style="font-size: 0.8rem; color: var(--text-muted)">
+                  الراتب الحالي الفعلي
+                </div>
+                <div
+                  id="scCurrentSalary"
+                  class="font-bold text-primary"
+                  style="font-size: 1.3rem"
+                >
+                  -
+                </div>
+              </div>
+              <div
+                id="scLastChange"
+                style="
+                  font-size: 0.8rem;
+                  color: var(--text-muted);
+                  text-align: left;
+                "
+              ></div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label
+              style="
+                font-size: 0.9rem;
+                font-weight: 600;
+                display: block;
+                margin-bottom: 0.5rem;
+              "
+              ><i class="fas fa-money-bill-wave"></i> الراتب الجديد *</label
+            >
+            <input type="number" id="scNewSalary" min="1" required />
+          </div>
+          <div class="flex gap-4 mb-4">
+            <div class="w-full">
+              <label
+                style="
+                  font-size: 0.9rem;
+                  font-weight: 600;
+                  display: block;
+                  margin-bottom: 0.5rem;
+                "
+                ><i class="fas fa-calendar-day"></i> تاريخ بداية التطبيق
+                *</label
+              >
+              <input type="date" id="scEffectiveDate" required />
+            </div>
+            <div class="w-full">
+              <label
+                style="
+                  font-size: 0.9rem;
+                  font-weight: 600;
+                  display: block;
+                  margin-bottom: 0.5rem;
+                "
+                ><i class="fas fa-calendar-alt"></i> الشهر الذي يبدأ منه
+                *</label
+              >
+              <input type="month" id="scEffectiveMonth" required />
+            </div>
+          </div>
+          <div
+            style="
+              background: rgba(13, 202, 240, 0.08);
+              border: 1px solid var(--info);
+              border-radius: 10px;
+              padding: 0.8rem;
+              font-size: 0.85rem;
+              margin-bottom: 1rem;
+            "
+          >
+            <i class="fas fa-info-circle"></i> سيُطبق الراتب الجديد على الشهر
+            المحدد وكل الأشهر التالية فقط، ولن تتغير كشوف الأشهر السابقة.
+          </div>
+          <div
+            id="scPreview"
+            style="
+              display: none;
+              background: rgba(25, 135, 84, 0.1);
+              border: 1px solid var(--success);
+              border-radius: 10px;
+              padding: 0.8rem;
+              font-size: 0.9rem;
+              color: var(--success);
+              margin-bottom: 1rem;
+            "
+          ></div>
+          <div class="mb-4">
+            <label
+              style="
+                font-size: 0.9rem;
+                font-weight: 600;
+                display: block;
+                margin-bottom: 0.5rem;
+              "
+              >ملاحظات</label
+            >
+            <textarea id="scNotes" rows="2"></textarea>
+          </div>
+          <div class="flex justify-between gap-2">
+            <button
+              type="button"
+              onclick="closeModal('salaryChangeModal')"
+              class="btn btn-outline"
+            >
+              إلغاء
+            </button>
+            <button type="submit" class="btn btn-primary" id="scSubmitBtn">
+              <i class="fas fa-save"></i> حفظ التعديل
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- ========== نافذة سجل تغييرات الرواتب (جديد) ========== -->
+    <div class="modal-overlay" id="salaryHistoryModal">
+      <div class="modal large">
+        <div class="flex justify-between items-center mb-4">
+          <h2 style="font-size: 1.4rem; color: var(--primary)">
+            <i class="fas fa-history"></i> سجل تغييرات الرواتب
+          </h2>
+          <div class="flex gap-2 items-center">
+            <button
+              class="btn btn-primary btn-sm"
+              onclick="
+                closeModal('salaryHistoryModal');
+                openSalaryChangeModal();
+              "
+            >
+              <i class="fas fa-plus"></i> تعديل جديد
+            </button>
+            <button
+              onclick="closeModal('salaryHistoryModal')"
+              class="btn btn-outline btn-icon"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="mb-4 flex gap-2 items-center" style="flex-wrap: wrap">
+          <label class="font-bold"><i class="fas fa-user"></i> الموظف:</label>
+          <select
+            id="salaryHistoryFilterEmp"
+            onchange="renderSalaryHistory()"
+            style="max-width: 250px"
+          >
+            <option value="all">جميع الموظفين</option>
+          </select>
+        </div>
+        <div class="filter-summary" style="margin-bottom: 1rem">
+          <div class="stat">
+            <div class="stat-value" id="shCount">0</div>
+            <div class="stat-label">عدد التغييرات</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="shLast" style="font-size: 1rem">-</div>
+            <div class="stat-label">آخر تغيير</div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="statement-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>الموظف</th>
+                <th>الراتب السابق</th>
+                <th>الراتب الجديد</th>
+                <th>تاريخ التطبيق</th>
+                <th>شهر البداية</th>
+                <th>ملاحظات</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="salaryHistoryTbody"></tbody>
+          </table>
+        </div>
+        <div class="mobile-cards" id="salaryHistoryMobileCards"></div>
       </div>
     </div>
     <div class="modal-overlay" id="loanModal">
@@ -3572,6 +3834,7 @@
         loans = [],
         expenses = [],
         debts = [],
+        salaryHistory = [],
         currentUser = null,
         charts = {},
         payrollData = [],
@@ -3753,6 +4016,12 @@
             ...d.data(),
             payments: d.data().payments || [],
           }));
+          const shs = await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("salaryHistory")
+            .get();
+          salaryHistory = shs.docs.map((d) => ({ id: d.id, ...d.data() }));
           await loadAllWorkDays();
           popSelects();
           updateDebtPartyList();
@@ -3863,7 +4132,8 @@
           ded = 0,
           net = 0;
         employees.forEach((e) => {
-          sal += Number(e.salary || 0);
+          const eSal = getEmployeeSalaryForMonth(e.id, m);
+          sal += eSal;
           const alw =
             Number(e.mealAllowance || 0) + Number(e.transportAllowance || 0);
           const el = loans
@@ -3878,7 +4148,7 @@
                 l.empId === e.id && l.targetMonth === m && l.type === "خصم",
             )
             .reduce((s, l) => s + Number(l.amount), 0);
-          net += Number(e.salary || 0) + alw - el - ed;
+          net += eSal + alw - el - ed;
         });
         loans.forEach((l) => {
           if (l.targetMonth === m) {
@@ -4132,10 +4402,10 @@
 <td><span class="badge" style="background:rgba(212,175,55,0.2);color:#b5952f">${e.dept}</span></td>
 <td>${e.position || "-"}</td>
 <td>${e.phone || "-"}</td>
-<td><strong class="text-primary">${Number(e.salary).toLocaleString()} ج.س</strong></td>
+<td><strong class="text-primary">${getCurrentEffectiveSalary(e.id).toLocaleString()} ج.س</strong></td>
 <td>${e.joinDate || "-"}</td>
 <td>${e.suspended ? '<span class="badge" style="background: rgba(220, 53, 69, 0.2); color: var(--danger)"><i class="fas fa-user-slash"></i> معلق من ' + (e.suspensionDate || "-") + "</span>" : '<span class="badge" style="background: rgba(25, 135, 84, 0.2); color: var(--success)"><i class="fas fa-user-check"></i> نشط</span>'}</td>
-<td><div class="flex gap-1" style="flex-wrap:wrap"><button class="btn btn-sm btn-outline" onclick="editEmployee('${e.id}')" title="تعديل"><i class="fas fa-edit"></i></button><button class="btn btn-sm ${e.suspended ? "btn-success" : "btn-warning"}" onclick="toggleSuspension('${e.id}')" title="${e.suspended ? "إلغاء التعليق" : "تعليق الموظف"}"><i class="fas ${e.suspended ? "fa-user-check" : "fa-user-slash"}"></i></button><button class="btn btn-sm btn-primary" onclick="printEmployeeCard('${e.id}')" title="طباعة البطاقة"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-warning" onclick="openStatement('${e.id}','${new Date().toISOString().slice(0, 7)}')" title="كشف الحساب"><i class="fas fa-file-invoice-dollar"></i></button><button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')" title="حذف"><i class="fas fa-trash"></i></button></div></td>
+<td><div class="flex gap-1" style="flex-wrap:wrap"><button class="btn btn-sm btn-outline" onclick="editEmployee('${e.id}')" title="تعديل"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-success" onclick="openSalaryChangeModal('${e.id}')" title="تعديل الراتب"><i class="fas fa-coins"></i></button><button class="btn btn-sm btn-info" onclick="openSalaryHistoryModal('${e.id}')" title="سجل الراتب"><i class="fas fa-history"></i></button><button class="btn btn-sm ${e.suspended ? "btn-success" : "btn-warning"}" onclick="toggleSuspension('${e.id}')" title="${e.suspended ? "إلغاء التعليق" : "تعليق الموظف"}"><i class="fas ${e.suspended ? "fa-user-check" : "fa-user-slash"}"></i></button><button class="btn btn-sm btn-primary" onclick="printEmployeeCard('${e.id}')" title="طباعة البطاقة"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-warning" onclick="openStatement('${e.id}','${new Date().toISOString().slice(0, 7)}')" title="كشف الحساب"><i class="fas fa-file-invoice-dollar"></i></button><button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')" title="حذف"><i class="fas fa-trash"></i></button></div></td>
 </tr>`,
                 )
                 .join("")
@@ -4155,10 +4425,12 @@
 ${e.suspended ? '<span class="badge" style="background: rgba(220, 53, 69, 0.2); color: var(--danger)"><i class="fas fa-user-slash"></i> معلق</span>' : '<span class="badge" style="background: rgba(25, 135, 84, 0.2); color: var(--success)"><i class="fas fa-user-check"></i> نشط</span>'}
 </div>
 <div class="mobile-card-row"><span class="label">الهاتف</span><span class="value">${e.phone || "-"}</span></div>
-<div class="mobile-card-row"><span class="label">الراتب</span><span class="value text-primary">${Number(e.salary).toLocaleString()} ج.س</span></div>
+<div class="mobile-card-row"><span class="label">الراتب الحالي</span><span class="value text-primary">${getCurrentEffectiveSalary(e.id).toLocaleString()} ج.س</span></div>
 ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ التعليق</span><span class="value text-danger">' + (e.suspensionDate || "-") + "</span></div>" : ""}
 <div class="mobile-card-actions">
 <button class="btn btn-sm btn-outline" onclick="editEmployee('${e.id}')"><i class="fas fa-edit"></i> تعديل</button>
+<button class="btn btn-sm btn-success" onclick="openSalaryChangeModal('${e.id}')"><i class="fas fa-coins"></i> الراتب</button>
+<button class="btn btn-sm btn-info" onclick="openSalaryHistoryModal('${e.id}')"><i class="fas fa-history"></i> السجل</button>
 <button class="btn btn-sm ${e.suspended ? "btn-success" : "btn-warning"}" onclick="toggleSuspension('${e.id}')"><i class="fas ${e.suspended ? "fa-user-check" : "fa-user-slash"}"></i> ${e.suspended ? "إلغاء التعليق" : "تعليق"}</button>
 <button class="btn btn-sm btn-warning" onclick="openStatement('${e.id}','${new Date().toISOString().slice(0, 7)}')"><i class="fas fa-file-invoice-dollar"></i> كشف</button>
 <button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')"><i class="fas fa-trash"></i> حذف</button>
@@ -4276,6 +4548,352 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
           }
         }
       }
+      // ========== نظام سجل تغييرات الرواتب (Salary History) ==========
+      function normalizeMonth(m) {
+        if (!m) return "";
+        m = String(m).trim();
+        if (/^\d{4}-\d{2}$/.test(m)) return m;
+        if (/^\d{2}-\d{4}$/.test(m)) {
+          const p = m.split("-");
+          return p[1] + "-" + p[0];
+        }
+        if (/^\d{4}-\d{1}$/.test(m)) return m.slice(0, 5) + "0" + m.slice(5);
+        return m;
+      }
+      function tsMillis(t) {
+        try {
+          return t && t.toMillis ? t.toMillis() : typeof t === "number" ? t : 0;
+        } catch (e) {
+          return 0;
+        }
+      }
+      function prevMonth(m) {
+        const nm = normalizeMonth(m);
+        if (!nm) return "";
+        const parts = nm.split("-");
+        const d = new Date(Number(parts[0]), Number(parts[1]) - 2, 1);
+        return (
+          d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0")
+        );
+      }
+      function getEmployeeSalaryForMonth(employeeId, yearOrMonth, month) {
+        const emp = employees.find((e) => e.id === employeeId);
+        if (!emp) return 0;
+        let ym;
+        if (month === undefined || month === null) {
+          ym = normalizeMonth(yearOrMonth);
+        } else {
+          ym = yearOrMonth + "-" + String(month).padStart(2, "0");
+        }
+        if (!ym) return Number(emp.salary || 0);
+        let best = null;
+        for (const h of salaryHistory) {
+          if (h.employeeId !== employeeId) continue;
+          const hm = normalizeMonth(h.effectiveMonth);
+          if (!hm) continue;
+          if (hm <= ym) {
+            if (!best) {
+              best = h;
+            } else {
+              const bm = normalizeMonth(best.effectiveMonth);
+              if (
+                hm > bm ||
+                (hm === bm && tsMillis(h.createdAt) >= tsMillis(best.createdAt))
+              ) {
+                best = h;
+              }
+            }
+          }
+        }
+        return best ? Number(best.newSalary) : Number(emp.salary || 0);
+      }
+      function getCurrentEffectiveSalary(empId) {
+        return getEmployeeSalaryForMonth(
+          empId,
+          new Date().toISOString().slice(0, 7),
+        );
+      }
+      function openSalaryChangeModal(empId) {
+        document.getElementById("salaryChangeForm").reset();
+        document.getElementById("scId").value = "";
+        const sel = document.getElementById("scEmployee");
+        sel.disabled = false;
+        sel.innerHTML =
+          '<option value="">اختر الموظف</option>' +
+          sortEmployees(employees)
+            .map((e) => `<option value="${e.id}">${e.name}</option>`)
+            .join("");
+        if (empId) sel.value = empId;
+        document.getElementById("salaryChangeModalTitle").innerHTML =
+          '<i class="fas fa-coins text-primary"></i> تعديل راتب موظف';
+        const n = new Date();
+        document.getElementById("scEffectiveDate").value = n
+          .toISOString()
+          .slice(0, 10);
+        document.getElementById("scEffectiveMonth").value = n
+          .toISOString()
+          .slice(0, 7);
+        onScEmployeeChange();
+        openModal("salaryChangeModal");
+      }
+      function onScEmployeeChange() {
+        const sel = document.getElementById("scEmployee");
+        const empId = sel.value;
+        const curEl = document.getElementById("scCurrentSalary");
+        const lastEl = document.getElementById("scLastChange");
+        if (!empId) {
+          curEl.innerText = "-";
+          lastEl.innerText = "";
+          document.getElementById("scNewSalary").value = "";
+          updateScPreview();
+          return;
+        }
+        const cur = getCurrentEffectiveSalary(empId);
+        curEl.innerText = cur.toLocaleString() + " ج.س";
+        document.getElementById("scNewSalary").value = cur;
+        const empChanges = salaryHistory
+          .filter((h) => h.employeeId === empId)
+          .sort(
+            (a, b) =>
+              normalizeMonth(b.effectiveMonth).localeCompare(
+                normalizeMonth(a.effectiveMonth),
+              ) || tsMillis(b.createdAt) - tsMillis(a.createdAt),
+          );
+        if (empChanges.length > 0) {
+          const last = empChanges[0];
+          lastEl.innerHTML = `آخر تعديل: <strong>${last.effectiveMonth}</strong> → <strong>${Number(last.newSalary).toLocaleString()} ج.س</strong>`;
+        } else {
+          lastEl.innerText = "لا توجد تعديلات سابقة";
+        }
+        updateScPreview();
+      }
+      function updateScPreview() {
+        const el = document.getElementById("scPreview");
+        if (!el) return;
+        const ns = Number(document.getElementById("scNewSalary").value) || 0;
+        const m = normalizeMonth(
+          document.getElementById("scEffectiveMonth").value,
+        );
+        if (ns > 0 && m) {
+          el.innerHTML = `<i class="fas fa-check-circle"></i> سيصبح الراتب <strong>${ns.toLocaleString()} ج.س</strong> ابتداءً من شهر <strong>${m}</strong> وكل الأشهر التالية.`;
+          el.style.display = "block";
+        } else {
+          el.style.display = "none";
+        }
+      }
+      document
+        .getElementById("salaryChangeForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          if (isSubmitting) return;
+          setSubmitting("scSubmitBtn", true);
+          const id = document.getElementById("scId").value;
+          const empId = document.getElementById("scEmployee").value;
+          const emp = employees.find((x) => x.id === empId);
+          const newSalary = Number(
+            document.getElementById("scNewSalary").value,
+          );
+          const effectiveDate =
+            document.getElementById("scEffectiveDate").value;
+          const effectiveMonth = normalizeMonth(
+            document.getElementById("scEffectiveMonth").value,
+          );
+          const notes = document.getElementById("scNotes").value.trim();
+          if (!emp) {
+            showToast("يرجى اختيار الموظف", "error");
+            setSubmitting("scSubmitBtn", false);
+            return;
+          }
+          if (!newSalary || newSalary <= 0) {
+            showToast("يرجى إدخال الراتب الجديد", "error");
+            setSubmitting("scSubmitBtn", false);
+            return;
+          }
+          if (!effectiveDate || !effectiveMonth) {
+            showToast("يرجى تحديد تاريخ وشهر التطبيق", "error");
+            setSubmitting("scSubmitBtn", false);
+            return;
+          }
+          try {
+            if (id) {
+              await db
+                .collection("users")
+                .doc(currentUser.uid)
+                .collection("salaryHistory")
+                .doc(id)
+                .update({
+                  newSalary: newSalary,
+                  effectiveDate: effectiveDate,
+                  effectiveMonth: effectiveMonth,
+                  notes: notes,
+                });
+              showToast("✅ تم تحديث سجل التغيير", "success");
+            } else {
+              const oldSalary = getEmployeeSalaryForMonth(
+                empId,
+                prevMonth(effectiveMonth),
+              );
+              const data = {
+                employeeId: empId,
+                employeeName: emp.name,
+                oldSalary: oldSalary,
+                newSalary: newSalary,
+                effectiveDate: effectiveDate,
+                effectiveMonth: effectiveMonth,
+                notes: notes,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                createdBy: currentUser.email || currentUser.uid,
+              };
+              await db
+                .collection("users")
+                .doc(currentUser.uid)
+                .collection("salaryHistory")
+                .add(data);
+              showToast(
+                "✅ تم تعديل الراتب ابتداءً من " + effectiveMonth,
+                "success",
+              );
+            }
+            closeModal("salaryChangeModal");
+            await loadAllData();
+          } catch (err) {
+            showToast("خطأ: " + err.message, "error");
+            setSubmitting("scSubmitBtn", false);
+          }
+        });
+      function editSalaryChange(id) {
+        const h = salaryHistory.find((x) => x.id === id);
+        if (!h) return;
+        openSalaryChangeModal();
+        document.getElementById("scId").value = h.id;
+        document.getElementById("scEmployee").value = h.employeeId;
+        document.getElementById("scEmployee").disabled = true;
+        document.getElementById("salaryChangeModalTitle").innerHTML =
+          '<i class="fas fa-edit text-primary"></i> تعديل سجل تغيير راتب';
+        document.getElementById("scCurrentSalary").innerText =
+          Number(h.oldSalary || 0).toLocaleString() + " ج.س";
+        document.getElementById("scNewSalary").value = h.newSalary;
+        document.getElementById("scEffectiveDate").value =
+          h.effectiveDate || "";
+        document.getElementById("scEffectiveMonth").value =
+          h.effectiveMonth || "";
+        document.getElementById("scNotes").value = h.notes || "";
+        document.getElementById("scLastChange").innerText = "";
+        updateScPreview();
+      }
+      async function deleteSalaryChange(id) {
+        if (
+          !confirm(
+            "حذف سجل تغيير الراتب هذا؟\nسيُعاد احتساب الرواتب حسب السجلات المتبقية.",
+          )
+        )
+          return;
+        try {
+          await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("salaryHistory")
+            .doc(id)
+            .delete();
+          salaryHistory = salaryHistory.filter((h) => h.id !== id);
+          renderSalaryHistory();
+          renderEmployees();
+          calculatePayroll();
+          updateDashboard();
+          showToast("✅ تم حذف السجل", "success");
+        } catch (err) {
+          showToast(err.message, "error");
+        }
+      }
+      function openSalaryHistoryModal(empId) {
+        popSalaryHistoryFilter();
+        document.getElementById("salaryHistoryFilterEmp").value =
+          empId || "all";
+        renderSalaryHistory();
+        openModal("salaryHistoryModal");
+      }
+      function popSalaryHistoryFilter() {
+        const sel = document.getElementById("salaryHistoryFilterEmp");
+        if (!sel) return;
+        const cur = sel.value || "all";
+        sel.innerHTML =
+          '<option value="all">جميع الموظفين</option>' +
+          sortEmployees(employees)
+            .map((e) => `<option value="${e.id}">${e.name}</option>`)
+            .join("");
+        sel.value = cur;
+      }
+      function renderSalaryHistory() {
+        const fe = document.getElementById("salaryHistoryFilterEmp").value;
+        let list = salaryHistory.filter(
+          (h) => fe === "all" || h.employeeId === fe,
+        );
+        list.sort(
+          (a, b) =>
+            (normalizeMonth(b.effectiveMonth) || "").localeCompare(
+              normalizeMonth(a.effectiveMonth) || "",
+            ) || tsMillis(b.createdAt) - tsMillis(a.createdAt),
+        );
+        const tbody = document.getElementById("salaryHistoryTbody");
+        const mob = document.getElementById("salaryHistoryMobileCards");
+        document.getElementById("shCount").innerText = list.length;
+        const lastOne = list[0];
+        document.getElementById("shLast").innerText = lastOne
+          ? `${lastOne.effectiveMonth} → ${Number(lastOne.newSalary).toLocaleString()} ج.س`
+          : "-";
+        if (list.length === 0) {
+          tbody.innerHTML =
+            '<tr><td colspan="8" class="text-center text-muted" style="padding:2rem">لا توجد تغييرات رواتب مسجلة</td></tr>';
+          mob.innerHTML =
+            '<p class="text-center text-muted" style="padding:2rem">لا توجد تغييرات</p>';
+          return;
+        }
+        tbody.innerHTML = list
+          .map((h, i) => {
+            const name =
+              h.employeeName ||
+              (employees.find((e) => e.id === h.employeeId) || {}).name ||
+              "-";
+            const diff = Number(h.newSalary) - Number(h.oldSalary);
+            const diffTxt =
+              diff >= 0
+                ? `<span class="text-success">+${diff.toLocaleString()}</span>`
+                : `<span class="text-danger">${diff.toLocaleString()}</span>`;
+            return `<tr>
+<td>${i + 1}</td>
+<td><strong>${name}</strong></td>
+<td>${Number(h.oldSalary || 0).toLocaleString()}</td>
+<td><strong class="text-primary">${Number(h.newSalary || 0).toLocaleString()}</strong> (${diffTxt})</td>
+<td>${h.effectiveDate || "-"}</td>
+<td><span class="badge badge-loan">${h.effectiveMonth || "-"}</span></td>
+<td>${h.notes || "-"}</td>
+<td><div class="flex gap-1"><button class="btn btn-sm btn-outline" onclick="editSalaryChange('${h.id}')" title="تعديل"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleteSalaryChange('${h.id}')" title="حذف"><i class="fas fa-trash"></i></button></div></td>
+</tr>`;
+          })
+          .join("");
+        mob.innerHTML = list
+          .map((h) => {
+            const name =
+              h.employeeName ||
+              (employees.find((e) => e.id === h.employeeId) || {}).name ||
+              "-";
+            return `<div class="mobile-card">
+<div class="mobile-card-header">
+<div><strong>${name}</strong><br><small class="text-muted">شهر البداية: ${h.effectiveMonth || "-"}</small></div>
+<span class="badge badge-loan">${h.effectiveDate || "-"}</span>
+</div>
+<div class="mobile-card-row"><span class="label">الراتب السابق</span><span class="value">${Number(h.oldSalary || 0).toLocaleString()} ج.س</span></div>
+<div class="mobile-card-row"><span class="label">الراتب الجديد</span><span class="value text-primary">${Number(h.newSalary || 0).toLocaleString()} ج.س</span></div>
+<div class="mobile-card-row"><span class="label">ملاحظات</span><span class="value">${h.notes || "-"}</span></div>
+<div class="mobile-card-actions">
+<button class="btn btn-sm btn-outline" onclick="editSalaryChange('${h.id}')"><i class="fas fa-edit"></i> تعديل</button>
+<button class="btn btn-sm btn-danger" onclick="deleteSalaryChange('${h.id}')"><i class="fas fa-trash"></i> حذف</button>
+</div>
+</div>`;
+          })
+          .join("");
+      }
+      // ========== نهاية نظام سجل تغييرات الرواتب ==========
       function openLoanModal() {
         document.getElementById("loanForm").reset();
         const n = new Date();
@@ -4449,7 +5067,7 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
             const suspDay = parseInt(suspensionDate.split("-")[2]);
             effectiveDays = suspDay - 1;
           }
-          const bs = Number(emp.salary || 0),
+          const bs = getEmployeeSalaryForMonth(emp.id, month),
             ma = Number(emp.mealAllowance || 0),
             ta = Number(emp.transportAllowance || 0),
             wd = getWD(emp.id, month);
@@ -4477,12 +5095,13 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
           const sortedMonths = Array.from(monthSet).sort();
           for (const pm of sortedMonths) {
             if (pm >= month) break;
-            const wd =
+            const bsPM = getEmployeeSalaryForMonth(emp.id, pm);
+            const wdPM =
               (workDaysPerEmployee[pm] && workDaysPerEmployee[pm][emp.id]) ||
               30;
-            const actualBase = Math.round((bs / 30) * wd);
-            const actualMeal = Math.round((ma / 30) * wd);
-            const actualTransport = Math.round((ta / 30) * wd);
+            const actualBase = Math.round((bsPM / 30) * wdPM);
+            const actualMeal = Math.round((ma / 30) * wdPM);
+            const actualTransport = Math.round((ta / 30) * wdPM);
             const actualGross = actualBase + actualMeal + actualTransport;
             const monthLoans = loans.filter((l) => {
               let target = l.targetMonth;
@@ -5260,11 +5879,14 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         if (id === "debtModal") document.getElementById("debtForm").reset();
         if (id === "payDebtModal")
           document.getElementById("payDebtForm").reset();
+        if (id === "salaryChangeModal")
+          document.getElementById("salaryChangeForm").reset();
         setSubmitting("empSubmitBtn", false);
         setSubmitting("loanSubmitBtn", false);
         setSubmitting("expSubmitBtn", false);
         setSubmitting("debtSubmitBtn", false);
         setSubmitting("payDebtSubmitBtn", false);
+        setSubmitting("scSubmitBtn", false);
       }
       function showToast(msg, type = "success") {
         const t = document.createElement("div");
@@ -5291,6 +5913,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           employees
             .map((e) => `<option value="${e.id}">${e.name}</option>`)
             .join("");
+        popSalaryHistoryFilter();
       }
       function toggleTheme() {
         document.body.setAttribute(
@@ -5311,7 +5934,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
       function openStatement(empId, month) {
         const emp = employees.find((e) => e.id === empId);
         if (!emp) return;
-        const bs = Number(emp.salary || 0),
+        const bs = getEmployeeSalaryForMonth(empId, month),
           ma = Number(emp.mealAllowance || 0),
           ta = Number(emp.transportAllowance || 0),
           fs = bs + ma + ta;
@@ -5332,7 +5955,9 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
             (p) => p.empId === empId && p.month === m,
           );
           const wdM = prM ? prM.workDays : 30;
-          const agM = Math.round((fs / 30) * wdM);
+          const bsM = getEmployeeSalaryForMonth(empId, m);
+          const fsM = bsM + ma + ta;
+          const agM = Math.round((fsM / 30) * wdM);
           if (carryOver > 0) {
             rows.push({
               date: `${m}-01`,
@@ -5386,7 +6011,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           r.bal = rb;
         });
         document.getElementById("statementContent").innerHTML =
-          `<div class="statement-header"><h3><i class="fas fa-user-tie"></i> ${emp.name}</h3><div class="statement-info-grid"><div class="statement-info-item"><div class="label">القسم</div><div class="value">${emp.dept}</div></div><div class="statement-info-item"><div class="label">الوظيفة</div><div class="value">${emp.position || "-"}</div></div><div class="statement-info-item"><div class="label">الراتب الأساسي</div><div class="value">${bs.toLocaleString()} ج.س</div></div><div class="statement-info-item"><div class="label">الراتب المستحق</div><div class="value" id="stmtActualSalary">${actualSalary.toLocaleString()} ج.س</div></div><div class="statement-info-item"><div class="label">الفترة المحددة</div><div class="value" id="stmtPeriod">${month}</div></div><div class="statement-info-item"><div class="label">عدد الأشهر</div><div class="value" id="stmtMonthsCount">${allMonths.length} شهر</div></div></div></div><div class="stmt-filter-box"><h4><i class="fas fa-filter"></i> فلترة حسب شهر الخصم</h4><div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:flex-end"><div style="flex:1;min-width:150px"><label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem"><i class="fas fa-calendar-alt"></i> من:</label><input type="month" id="stmtMF" onchange="applyStmtFilters()" style="width:100%"></div><div style="flex:1;min-width:150px"><label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem"><i class="fas fa-calendar-alt"></i> إلى:</label><input type="month" id="stmtMT" onchange="applyStmtFilters()" style="width:100%"></div><button class="btn btn-outline" onclick="resetStmtFilters()" style="height:40px"><i class="fas fa-undo"></i> إعادة</button><button class="btn btn-primary" onclick="printStatement()" style="height:40px"><i class="fas fa-print"></i> طباعة</button></div></div><table class="statement-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>النوع</th><th>شهر الخصم</th><th>البيان</th><th>دائن (+)</th><th>مدين (-)</th><th>الرصيد</th></tr></thead><tbody id="stmtTB"></tbody></table><div class="statement-summary" id="stmtSM"></div>`;
+          `<div class="statement-header"><h3><i class="fas fa-user-tie"></i> ${emp.name}</h3><div class="statement-info-grid"><div class="statement-info-item"><div class="label">القسم</div><div class="value">${emp.dept}</div></div><div class="statement-info-item"><div class="label">الوظيفة</div><div class="value">${emp.position || "-"}</div></div><div class="statement-info-item"><div class="label">الراتب الأساسي للشهر</div><div class="value">${bs.toLocaleString()} ج.س</div></div><div class="statement-info-item"><div class="label">الراتب المستحق</div><div class="value" id="stmtActualSalary">${actualSalary.toLocaleString()} ج.س</div></div><div class="statement-info-item"><div class="label">الفترة المحددة</div><div class="value" id="stmtPeriod">${month}</div></div><div class="statement-info-item"><div class="label">عدد الأشهر</div><div class="value" id="stmtMonthsCount">${allMonths.length} شهر</div></div></div></div><div class="stmt-filter-box"><h4><i class="fas fa-filter"></i> فلترة حسب شهر الخصم</h4><div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:flex-end"><div style="flex:1;min-width:150px"><label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem"><i class="fas fa-calendar-alt"></i> من:</label><input type="month" id="stmtMF" onchange="applyStmtFilters()" style="width:100%"></div><div style="flex:1;min-width:150px"><label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem"><i class="fas fa-calendar-alt"></i> إلى:</label><input type="month" id="stmtMT" onchange="applyStmtFilters()" style="width:100%"></div><button class="btn btn-outline" onclick="resetStmtFilters()" style="height:40px"><i class="fas fa-undo"></i> إعادة</button><button class="btn btn-primary" onclick="printStatement()" style="height:40px"><i class="fas fa-print"></i> طباعة</button></div></div><table class="statement-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>النوع</th><th>شهر الخصم</th><th>البيان</th><th>دائن (+)</th><th>مدين (-)</th><th>الرصيد</th></tr></thead><tbody id="stmtTB"></tbody></table><div class="statement-summary" id="stmtSM"></div>`;
         window._stmt = {
           emp,
           month,
@@ -5507,7 +6132,8 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
             الاسم: e.name,
             القسم: e.dept,
             الوظيفة: e.position || "-",
-            الراتب: e.salary,
+            الراتب_الأساسي: e.salary,
+            الراتب_الحالي: getCurrentEffectiveSalary(e.id),
             الحالة: e.suspended ? "معلق" : "نشط",
           })),
         );
@@ -5657,6 +6283,24 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           ),
           "الديون",
         );
+        XLSX.utils.book_append_sheet(
+          wb,
+          XLSX.utils.json_to_sheet(
+            salaryHistory.map((h, i) => ({
+              "#": i + 1,
+              الموظف:
+                h.employeeName ||
+                (employees.find((e) => e.id === h.employeeId) || {}).name ||
+                "-",
+              الراتب_السابق: h.oldSalary,
+              الراتب_الجديد: h.newSalary,
+              تاريخ_التطبيق: h.effectiveDate,
+              شهر_البداية: h.effectiveMonth,
+              ملاحظات: h.notes || "-",
+            })),
+          ),
+          "تغييرات الرواتب",
+        );
         XLSX.writeFile(
           wb,
           `جميع_البيانات_${new Date().toISOString().slice(0, 10)}.xlsx`,
@@ -5669,13 +6313,14 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         setLoading(true);
         try {
           const backupData = {
-            version: "2.3.0",
+            version: "2.4.0",
             exportDate: new Date().toISOString(),
             user: currentUser.email,
             employees: employees,
             loans: loans,
             expenses: expenses,
             debts: debts,
+            salaryHistory: salaryHistory,
             workDays: workDaysPerEmployee,
           };
           const json = JSON.stringify(backupData, null, 2);
@@ -5707,7 +6352,8 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
               !data.employees &&
               !data.loans &&
               !data.expenses &&
-              !data.debts
+              !data.debts &&
+              !data.salaryHistory
             ) {
               showToast("ملف غير صالح", "error");
               return;
@@ -5718,6 +6364,8 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
             if (data.loans) stats.push(`${data.loans.length} سلفة/خصم`);
             if (data.expenses) stats.push(`${data.expenses.length} مصروف`);
             if (data.debts) stats.push(`${data.debts.length} دين`);
+            if (data.salaryHistory)
+              stats.push(`${data.salaryHistory.length} تغيير راتب`);
             document.getElementById("importStatsInfo").innerHTML =
               `<strong>${stats.join("، ")}</strong>`;
             openModal("importOptionsModal");
@@ -5749,6 +6397,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
               "loans",
               "expenses",
               "debts",
+              "salaryHistory",
               "workDays",
             ];
             for (const col of collections) {
@@ -5850,6 +6499,26 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
             }
             if (count > 0) await batch.commit();
           }
+          // Import salary history
+          if (data.salaryHistory && data.salaryHistory.length > 0) {
+            const batch = db.batch();
+            let count = 0;
+            for (const sh of data.salaryHistory) {
+              const { id, ...shData } = sh;
+              const ref = db
+                .collection("users")
+                .doc(uid)
+                .collection("salaryHistory")
+                .doc();
+              batch.set(ref, shData);
+              count++;
+              if (count >= 400) {
+                await batch.commit();
+                count = 0;
+              }
+            }
+            if (count > 0) await batch.commit();
+          }
           // Import workDays
           if (data.workDays) {
             for (const month in data.workDays) {
@@ -5880,7 +6549,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         if (!currentUser) return;
         if (
           !confirm(
-            "⚠️ تحذير خطير!\n\nسيتم حذف كل البيانات نهائياً:\n- كل الموظفين\n- كل السلفيات والخصومات\n- كل المصروفات\n- كل الديون\n- كل أيام العمل\n\nلا يمكن التراجع عن هذه العملية!\n\nهل أنت متأكد تماماً؟",
+            "⚠️ تحذير خطير!\nسيتم حذف كل البيانات نهائياً:\n- كل الموظفين\n- كل السلفيات والخصومات\n- كل المصروفات\n- كل الديون\n- كل تغييرات الرواتب\n- كل أيام العمل\nلا يمكن التراجع عن هذه العملية!\nهل أنت متأكد تماماً؟",
           )
         )
           return;
@@ -5893,6 +6562,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
             "loans",
             "expenses",
             "debts",
+            "salaryHistory",
             "workDays",
           ];
           for (const col of collections) {
@@ -5909,6 +6579,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           loans = [];
           expenses = [];
           debts = [];
+          salaryHistory = [];
           workDaysPerEmployee = {};
           payrollData = [];
           popSelects();
@@ -5967,7 +6638,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
       function printAllEmployees() {
         if (!employees.length) return showToast("لا بيانات", "error");
         printContent(
-          `${getPrintHeader("كشف الموظفين", `إجمالي: ${employees.length}`)}<table class="payroll-summary-table"><thead><tr><th>#</th><th>الاسم</th><th>القسم</th><th>الوظيفة</th><th>الهاتف</th><th>الراتب</th><th>تاريخ التعيين</th><th>الحالة</th></tr></thead><tbody>${employees.map((e, i) => `<tr><td>${i + 1}</td><td>${e.name}</td><td>${e.dept}</td><td>${e.position || "-"}</td><td>${e.phone || "-"}</td><td>${Number(e.salary).toLocaleString()} ج.س</td><td>${e.joinDate || "-"}</td><td>${e.suspended ? '<span style="color:#dc3545;font-weight:bold">معلق</span>' : '<span style="color:#198754;font-weight:bold">نشط</span>'}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
+          `${getPrintHeader("كشف الموظفين", `إجمالي: ${employees.length}`)}<table class="payroll-summary-table"><thead><tr><th>#</th><th>الاسم</th><th>القسم</th><th>الوظيفة</th><th>الهاتف</th><th>الراتب الحالي</th><th>تاريخ التعيين</th><th>الحالة</th></tr></thead><tbody>${employees.map((e, i) => `<tr><td>${i + 1}</td><td>${e.name}</td><td>${e.dept}</td><td>${e.position || "-"}</td><td>${e.phone || "-"}</td><td>${getCurrentEffectiveSalary(e.id).toLocaleString()} ج.س</td><td>${e.joinDate || "-"}</td><td>${e.suspended ? '<span style="color:#dc3545;font-weight:bold">معلق</span>' : '<span style="color:#198754;font-weight:bold">نشط</span>'}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
           "الموظفين",
         );
       }
@@ -6035,20 +6706,13 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         printDebtStatement(id);
       }
       function exportDashboardToPDF() {
+        const cm = new Date().toISOString().slice(0, 7);
         printContent(
-          `${getPrintHeader("تقرير لوحة التحكم")}<div class="summary-box"><div class="summary-item"><div class="label">الموظفين</div><div class="value">${employees.length}</div></div><div class="summary-item"><div class="label">المرتبات</div><div class="value">${employees.reduce((s, e) => s + Number(e.salary || 0), 0).toLocaleString()}</div></div><div class="summary-item"><div class="label">السلفيات</div><div class="value">${loans
-            .filter(
-              (l) =>
-                l.targetMonth === new Date().toISOString().slice(0, 7) &&
-                l.type === "سلفة",
-            )
+          `${getPrintHeader("تقرير لوحة التحكم")}<div class="summary-box"><div class="summary-item"><div class="label">الموظفين</div><div class="value">${employees.length}</div></div><div class="summary-item"><div class="label">المرتبات</div><div class="value">${employees.reduce((s, e) => s + getEmployeeSalaryForMonth(e.id, cm), 0).toLocaleString()}</div></div><div class="summary-item"><div class="label">السلفيات</div><div class="value">${loans
+            .filter((l) => l.targetMonth === cm && l.type === "سلفة")
             .reduce((s, l) => s + Number(l.amount), 0)
             .toLocaleString()}</div></div><div class="summary-item"><div class="label">الخصومات</div><div class="value">${loans
-            .filter(
-              (l) =>
-                l.targetMonth === new Date().toISOString().slice(0, 7) &&
-                l.type === "خصم",
-            )
+            .filter((l) => l.targetMonth === cm && l.type === "خصم")
             .reduce((s, l) => s + Number(l.amount), 0)
             .toLocaleString()}</div></div></div>${getSignatures()}${getPrintFooter()}`,
           "التقرير",
@@ -6061,8 +6725,9 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           (x) => x.empId === empId && x.month === month,
         );
         if (!p) return;
+        const monthBase = getEmployeeSalaryForMonth(empId, month);
         printContent(
-          `${getPrintHeader("قسيمة راتب", `${e.name} - ${month}`)}<div class="work-days-info"><i class="fas fa-calendar-day"></i> أيام العمل: <strong>${p.workDays}</strong> يوم</div>${p.carryOver > 0 ? `<div style="background:#ffebee;border:2px solid #dc3545;border-radius:8px;padding:10px;margin:15px 0;text-align:center;color:#dc3545"><strong>مرحّل: -${p.carryOver.toLocaleString()} ج.س</strong></div>` : ""}<table class="doc-table"><thead><tr><th>البيان</th><th>الكامل</th><th>الفعلي</th></tr></thead><tbody><tr><td>الراتب الأساسي</td><td>${Number(e.salary).toLocaleString()}</td><td><strong>${p.actualBaseSalary.toLocaleString()}</strong></td></tr><tr><td>البدلات</td><td>${(Number(e.mealAllowance || 0) + Number(e.transportAllowance || 0)).toLocaleString()}</td><td>${p.allowances.toLocaleString()}</td></tr><tr><td>الخصومات</td><td>-</td><td style="color:#dc3545">${p.totalDeductions.toLocaleString()}</td></tr><tr style="background:${p.net < 0 ? "#dc3545" : "#d4af37"};color:#fff;font-size:16pt"><td><strong>الصافي</strong></td><td colspan="2"><strong>${p.net.toLocaleString()} ج.س</strong></td></tr></tbody></table>${getSignatures()}${getPrintFooter()}`,
+          `${getPrintHeader("قسيمة راتب", `${e.name} - ${month}`)}<div class="work-days-info"><i class="fas fa-calendar-day"></i> أيام العمل: <strong>${p.workDays}</strong> يوم</div>${p.carryOver > 0 ? `<div style="background:#ffebee;border:2px solid #dc3545;border-radius:8px;padding:10px;margin:15px 0;text-align:center;color:#dc3545"><strong>مرحّل: -${p.carryOver.toLocaleString()} ج.س</strong></div>` : ""}<table class="doc-table"><thead><tr><th>البيان</th><th>الكامل</th><th>الفعلي</th></tr></thead><tbody><tr><td>الراتب الأساسي</td><td>${monthBase.toLocaleString()}</td><td><strong>${p.actualBaseSalary.toLocaleString()}</strong></td></tr><tr><td>البدلات</td><td>${(Number(e.mealAllowance || 0) + Number(e.transportAllowance || 0)).toLocaleString()}</td><td>${p.allowances.toLocaleString()}</td></tr><tr><td>الخصومات</td><td>-</td><td style="color:#dc3545">${p.totalDeductions.toLocaleString()}</td></tr><tr style="background:${p.net < 0 ? "#dc3545" : "#d4af37"};color:#fff;font-size:16pt"><td><strong>الصافي</strong></td><td colspan="2"><strong>${p.net.toLocaleString()} ج.س</strong></td></tr></tbody></table>${getSignatures()}${getPrintFooter()}`,
           "قسيمة",
         );
       }
@@ -6083,6 +6748,12 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           "سند",
         );
       }
+      document
+        .getElementById("scNewSalary")
+        .addEventListener("input", updateScPreview);
+      document
+        .getElementById("scEffectiveMonth")
+        .addEventListener("change", updateScPreview);
       if ("serviceWorker" in navigator)
         window.addEventListener("load", () =>
           navigator.serviceWorker
