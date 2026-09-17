@@ -2236,6 +2236,156 @@
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
         }
       }
+      @media (max-width: 768px) {
+        html,
+        body {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+        #app-container {
+          display: block;
+          width: 100%;
+          min-height: 100vh;
+        }
+        #userInfo {
+          display: none !important;
+        }
+        .main-content,
+        .view-section,
+        .card,
+        .filter-bar {
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+        }
+        .header {
+          width: calc(100% + 1.4rem);
+          max-width: none;
+        }
+        .header > div {
+          min-width: 0;
+        }
+        .header .flex {
+          min-width: 0;
+        }
+        .page-title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .card {
+          overflow: hidden;
+        }
+        .flex,
+        .items-center,
+        .justify-between {
+          min-width: 0;
+        }
+        .filter-bar .flex {
+          width: 100%;
+        }
+        .filter-bar .flex > * {
+          max-width: 100%;
+        }
+        .filter-bar .work-days-box,
+        .filter-bar .carryover-info,
+        .filter-bar .filter-summary {
+          width: 100%;
+        }
+        .work-days-box {
+          overflow: hidden;
+        }
+        .work-days-box .box-header,
+        .filter-summary,
+        .export-buttons {
+          width: 100%;
+        }
+        .export-buttons .btn {
+          min-width: 0;
+          width: 100%;
+        }
+        .mobile-cards {
+          width: 100%;
+          min-width: 0;
+          overflow: visible;
+        }
+        .mobile-card {
+          width: 100%;
+          min-width: 0;
+          overflow: hidden;
+        }
+        .mobile-card-header > div {
+          min-width: 0;
+          overflow: hidden;
+        }
+        .mobile-card-header strong,
+        .mobile-card-header small {
+          overflow-wrap: anywhere;
+        }
+        .mobile-card-row .label {
+          flex: 0 0 auto;
+        }
+        .mobile-card-row .value {
+          min-width: 0;
+          max-width: 68%;
+          overflow-wrap: anywhere;
+        }
+        .mobile-card-actions {
+          width: 100%;
+        }
+        .mobile-card-actions .btn {
+          min-width: 0;
+          white-space: normal;
+        }
+        .btn,
+        button,
+        input,
+        select,
+        textarea {
+          max-width: 100%;
+        }
+        .modal-overlay {
+          overflow: hidden;
+        }
+        .modal {
+          overflow-y: auto;
+          overscroll-behavior: contain;
+        }
+        .statement-info-grid,
+        .statement-summary,
+        .debt-stmt-info,
+        .debt-stmt-summary,
+        .customer-stmt-summary {
+          width: 100%;
+          min-width: 0;
+        }
+        .statement-info-item,
+        .statement-summary-item,
+        .customer-stmt-summary-item {
+          min-width: 0;
+          overflow-wrap: anywhere;
+        }
+        .expense-tabs {
+          width: 100%;
+          overflow: hidden;
+        }
+        .expense-tab {
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .pagination {
+          width: 100%;
+        }
+        .pagination-info {
+          white-space: nowrap;
+        }
+        .bottom-nav {
+          max-width: calc(100% - 1.3rem);
+        }
+      }
       @media (max-width: 380px) {
         .stats-grid {
           grid-template-columns: 1fr !important;
@@ -2276,7 +2426,7 @@
         <h1 class="splash-title">كفتة <span>على الفحم</span></h1>
         <p class="splash-tagline">نظام إدارة الموارد البشرية</p>
         <div class="splash-meta">
-          <i class="fas fa-circle"></i><span>Dev. by Ammar Konna 📲</span
+          <i class="fas fa-circle"></i><span>📲 Dev. by Ammar Konna</span
           ><i class="fas fa-circle"></i>
         </div>
         <div class="splash-loader"><div class="splash-loader-bar"></div></div>
