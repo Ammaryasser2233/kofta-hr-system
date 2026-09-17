@@ -2486,6 +2486,59 @@
           z-index: 1200;
         }
       }
+      @media (max-width: 768px) {
+        /* Fixed iPhone app chrome: header and bottom navigation stay visible while scrolling. */
+        .main-content {
+          padding-top: calc(
+            62px + env(safe-area-inset-top) + 0.7rem
+          ) !important;
+          padding-bottom: calc(
+            78px + env(safe-area-inset-bottom) + 1.25rem
+          ) !important;
+        }
+        .header {
+          position: fixed !important;
+          top: env(safe-area-inset-top) !important;
+          right: 0 !important;
+          left: 0 !important;
+          width: 100% !important;
+          height: 62px !important;
+          margin: 0 !important;
+          padding: 0 0.85rem !important;
+          z-index: 1100 !important;
+          border-radius: 0 !important;
+        }
+        .bottom-nav {
+          position: fixed !important;
+          right: 0 !important;
+          left: 0 !important;
+          bottom: 0 !important;
+          width: 100% !important;
+          max-width: none !important;
+          height: calc(64px + env(safe-area-inset-bottom)) !important;
+          padding: 0 0 env(safe-area-inset-bottom) !important;
+          border-radius: 20px 20px 0 0 !important;
+          z-index: 1200 !important;
+        }
+        .bottom-nav-items {
+          height: 64px !important;
+          width: 100%;
+        }
+        .bottom-nav-item {
+          height: 64px !important;
+          min-height: 64px !important;
+        }
+        .fab {
+          z-index: 1250 !important;
+          bottom: calc(64px + env(safe-area-inset-bottom) + 0.9rem) !important;
+        }
+        .sidebar-overlay {
+          z-index: 1150;
+        }
+        .sidebar {
+          z-index: 1160;
+        }
+      }
       @media (max-width: 380px) {
         .stats-grid {
           grid-template-columns: 1fr !important;
