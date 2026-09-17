@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
     />
-    <title>كفتة على الفحم - نظام إدارة الموارد البشرية | iPhone v4</title>
+    <title>كفتة على الفحم - نظام إدارة الموارد البشرية</title>
     <meta name="theme-color" content="#151515" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
@@ -2472,6 +2472,18 @@
         .splash-screen {
           padding-top: env(safe-area-inset-top);
           padding-bottom: env(safe-area-inset-bottom);
+        }
+      }
+      @media (max-width: 768px) {
+        /* Keep application controls hidden until the user enters the app. */
+        body:has(#login-section:not(.hidden)) .bottom-nav,
+        body:has(#login-section:not(.hidden)) .fab,
+        body:has(#login-section:not(.hidden)) #installBanner {
+          display: none !important;
+        }
+        #login-section {
+          position: relative;
+          z-index: 1200;
         }
       }
       @media (max-width: 380px) {
