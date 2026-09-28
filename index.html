@@ -128,9 +128,6 @@
         --info-soft: rgba(14, 165, 233, 0.18);
       }
 
-      /* ============================================================
-         الأساسيات
-         ============================================================ */
       * {
         margin: 0;
         padding: 0;
@@ -201,9 +198,6 @@
         font-size: 16px !important;
       }
 
-      /* ============================================================
-         أدوات
-         ============================================================ */
       .hidden {
         display: none !important;
       }
@@ -256,9 +250,6 @@
         margin-bottom: 1rem;
       }
 
-      /* ============================================================
-         الأزرار — Native Feel
-         ============================================================ */
       .btn {
         padding: 0.75rem 1.15rem;
         border-radius: var(--radius-sm);
@@ -383,9 +374,6 @@
         border-radius: 14px;
       }
 
-      /* ============================================================
-         البطاقات — Glassmorphism
-         ============================================================ */
       .card {
         background: var(--bg-card);
         border-radius: var(--radius);
@@ -415,9 +403,6 @@
         opacity: 0.6;
       }
 
-      /* ============================================================
-         الحقول
-         ============================================================ */
       input,
       select,
       textarea {
@@ -469,9 +454,6 @@
         line-height: 1.7;
       }
 
-      /* ============================================================
-         شاشة البداية — Native App Splash
-         ============================================================ */
       .splash-screen {
         position: fixed;
         inset: 0;
@@ -487,14 +469,11 @@
         padding-top: var(--safe-top);
         padding-bottom: var(--safe-bottom);
       }
-
       .splash-screen.hide {
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
       }
-
-      /* خلفية متدرجة متحركة */
       .splash-bg {
         position: absolute;
         inset: -20%;
@@ -512,8 +491,6 @@
           transform: translate(-3%, -2%) scale(1.08);
         }
       }
-
-      /* نسيج نقطي خفيف */
       .splash-noise {
         position: absolute;
         inset: 0;
@@ -534,8 +511,6 @@
           transparent 75%
         );
       }
-
-      /* جزيئات ذهبية طائرة */
       .splash-particles {
         position: absolute;
         inset: 0;
@@ -613,8 +588,6 @@
           transform: translateX(-15px) scale(0.6);
         }
       }
-
-      /* محتوى الشاشة */
       .splash-content {
         position: relative;
         z-index: 2;
@@ -634,15 +607,12 @@
           transform: scale(1) translateY(0);
         }
       }
-
-      /* حلقة اللوجو مع التقدم */
       .logo-stage {
         position: relative;
         width: 170px;
         height: 170px;
         margin: 0 auto 1.8rem;
       }
-
       .logo-ring {
         position: absolute;
         inset: 0;
@@ -671,7 +641,6 @@
           transform: rotate(360deg);
         }
       }
-
       .logo-ring-static {
         position: absolute;
         inset: 8px;
@@ -684,7 +653,6 @@
           transform: rotate(360deg);
         }
       }
-
       .logo-halo {
         position: absolute;
         inset: 20px;
@@ -709,7 +677,6 @@
           opacity: 1;
         }
       }
-
       .logo-core {
         position: absolute;
         inset: 26px;
@@ -741,8 +708,6 @@
           transform: scale(1) rotate(0);
         }
       }
-
-      /* النصوص */
       .splash-title {
         font-size: 2.35rem;
         font-weight: 900;
@@ -772,7 +737,6 @@
           background-position: 100% 50%;
         }
       }
-
       .splash-tagline {
         color: #8b8b9a;
         font-size: 0.95rem;
@@ -791,7 +755,6 @@
           transform: translateY(0);
         }
       }
-
       .splash-chips {
         display: flex;
         justify-content: center;
@@ -814,7 +777,6 @@
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
       }
-
       .splash-progress {
         width: 100%;
         height: 3px;
@@ -851,7 +813,6 @@
           background-position: -200% 0;
         }
       }
-
       .splash-footer {
         display: flex;
         flex-direction: column;
@@ -876,9 +837,6 @@
         letter-spacing: 0.3px;
       }
 
-      /* ============================================================
-         شاشة تسجيل الدخول
-         ============================================================ */
       #login-section {
         min-height: 100vh;
         min-height: 100dvh;
@@ -891,7 +849,6 @@
         overflow: hidden;
         background: #050508;
       }
-
       .login-bg {
         position: absolute;
         inset: 0;
@@ -927,7 +884,6 @@
           transparent 72%
         );
       }
-
       .login-box {
         position: relative;
         z-index: 2;
@@ -961,7 +917,6 @@
         );
         opacity: 0.7;
       }
-
       .login-logo-wrap {
         width: 96px;
         height: 96px;
@@ -983,16 +938,11 @@
         filter: drop-shadow(0 4px 16px rgba(212, 175, 55, 0.55));
       }
 
-      /* ============================================================
-         التخطيط العام
-         ============================================================ */
       #app-container {
         display: flex;
         min-height: 100vh;
         min-height: 100dvh;
       }
-
-      /* الشريط الجانبي */
       .sidebar {
         width: var(--sidebar-width);
         background: linear-gradient(180deg, #0c0c14 0%, #050508 100%);
@@ -1025,7 +975,6 @@
         );
         pointer-events: none;
       }
-
       .brand {
         position: relative;
         font-size: 1.2rem;
@@ -1047,7 +996,6 @@
         font-size: 1.2rem;
         filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.7));
       }
-
       .nav-links {
         list-style: none;
         flex: 1;
@@ -1108,8 +1056,6 @@
         background: var(--gold);
         box-shadow: 0 0 14px rgba(212, 175, 55, 0.95);
       }
-
-      /* المحتوى الرئيسي */
       .main-content {
         flex: 1;
         margin-right: var(--sidebar-width);
@@ -1117,7 +1063,6 @@
         transition: margin 0.3s ease;
         min-width: 0;
       }
-
       .header {
         display: flex;
         justify-content: space-between;
@@ -1145,7 +1090,6 @@
         background: linear-gradient(180deg, var(--gold-2), var(--gold-3));
         box-shadow: 0 0 12px rgba(212, 175, 55, 0.75);
       }
-
       #userInfo {
         background: var(--bg-card);
         border: 1px solid var(--border);
@@ -1153,7 +1097,6 @@
         padding: 0.35rem 0.5rem 0.35rem 1rem;
         box-shadow: var(--shadow-xs);
       }
-
       .mobile-menu-btn {
         display: none;
         background: linear-gradient(135deg, var(--gold-2), var(--gold));
@@ -1168,7 +1111,6 @@
         justify-content: center;
         box-shadow: 0 10px 24px -10px var(--gold-glow);
       }
-
       .sidebar-overlay {
         display: none;
         position: fixed;
@@ -1191,9 +1133,6 @@
         }
       }
 
-      /* ============================================================
-         شريط التنقل السفلي — Floating Tab Bar
-         ============================================================ */
       .bottom-nav {
         display: none;
         position: fixed;
@@ -1269,8 +1208,6 @@
       .bottom-nav-item:active {
         transform: scale(0.92);
       }
-
-      /* زر عائم */
       .fab {
         position: fixed;
         bottom: calc(var(--bottom-nav-height) + 18px + var(--safe-bottom));
@@ -1301,9 +1238,6 @@
         transform: scale(0.9) rotate(90deg);
       }
 
-      /* ============================================================
-         بطاقات الإحصائيات
-         ============================================================ */
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -1373,9 +1307,6 @@
         color: var(--gold);
       }
 
-      /* ============================================================
-         الجداول
-         ============================================================ */
       .table-container {
         overflow-x: auto;
         border-radius: var(--radius-sm);
@@ -1419,9 +1350,6 @@
         background: var(--gold-soft);
       }
 
-      /* ============================================================
-         بطاقات الجوال
-         ============================================================ */
       .mobile-cards {
         display: none;
       }
@@ -1497,9 +1425,6 @@
         flex-wrap: wrap;
       }
 
-      /* ============================================================
-         الصور الرمزية
-         ============================================================ */
       .avatar {
         width: 40px;
         height: 40px;
@@ -1509,9 +1434,6 @@
         box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
       }
 
-      /* ============================================================
-         ترقيم الصفحات
-         ============================================================ */
       .pagination {
         display: flex;
         justify-content: center;
@@ -1556,9 +1478,6 @@
         font-weight: 600;
       }
 
-      /* ============================================================
-         التنبيهات
-         ============================================================ */
       .toast-container {
         position: fixed;
         bottom: calc(var(--bottom-nav-height) + 20px + var(--safe-bottom));
@@ -1605,9 +1524,6 @@
         }
       }
 
-      /* ============================================================
-         النوافذ المنبثقة
-         ============================================================ */
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -1649,9 +1565,6 @@
         max-width: 980px;
       }
 
-      /* ============================================================
-         شريط الفلترة
-         ============================================================ */
       .filter-bar {
         background: var(--bg-card);
         border: 1px solid var(--border);
@@ -1676,7 +1589,6 @@
       .filter-bar select {
         max-width: 180px;
       }
-
       .filter-summary {
         background: linear-gradient(135deg, var(--gold-soft), transparent 85%);
         border: 1px solid rgba(212, 175, 55, 0.35);
@@ -1706,7 +1618,6 @@
         color: var(--text-muted);
         font-weight: 600;
       }
-
       .filter-toggle {
         background: var(--bg-input);
         border: 1.5px solid var(--border);
@@ -1738,9 +1649,6 @@
         max-height: 1600px;
       }
 
-      /* ============================================================
-         الشارات
-         ============================================================ */
       .badge {
         display: inline-flex;
         align-items: center;
@@ -1796,14 +1704,15 @@
         gap: 0.3rem;
         white-space: nowrap;
       }
+      .payroll-carryover.positive {
+        background: var(--success-soft);
+        color: var(--success);
+      }
       .negative-salary {
         color: var(--danger) !important;
         font-weight: 800;
       }
 
-      /* ============================================================
-         أزرار التصدير
-         ============================================================ */
       .export-buttons {
         display: flex;
         gap: 0.55rem;
@@ -1817,9 +1726,6 @@
         min-width: 140px;
       }
 
-      /* ============================================================
-         تحذيرات ومؤشرات
-         ============================================================ */
       .file-warning {
         position: fixed;
         top: calc(12px + var(--safe-top));
@@ -1851,7 +1757,6 @@
         font-family: var(--font);
         font-weight: 700;
       }
-
       .top-progress {
         position: fixed;
         top: 0;
@@ -1880,9 +1785,6 @@
         }
       }
 
-      /* ============================================================
-         أيام العمل
-         ============================================================ */
       .work-days-box {
         background: linear-gradient(
           135deg,
@@ -1923,7 +1825,6 @@
         font-weight: 800;
         box-shadow: 0 8px 18px -8px var(--gold-glow);
       }
-
       .carryover-info {
         background: var(--danger-soft);
         border: 1.5px solid rgba(239, 68, 68, 0.4);
@@ -1945,7 +1846,6 @@
         color: var(--danger);
         font-weight: 600;
       }
-
       .work-days-input {
         width: 72px;
         padding: 0.35rem;
@@ -1967,9 +1867,6 @@
         background: var(--bg-card);
       }
 
-      /* ============================================================
-         كشوف الحساب
-         ============================================================ */
       .statement-header {
         background: linear-gradient(
           135deg,
@@ -1988,6 +1885,7 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        flex-wrap: wrap;
       }
       .statement-info-grid {
         display: grid;
@@ -2011,7 +1909,6 @@
         font-size: 1.05rem;
         font-variant-numeric: tabular-nums;
       }
-
       .statement-table {
         width: 100%;
         border-collapse: collapse;
@@ -2040,7 +1937,6 @@
         color: var(--success);
         font-weight: 800;
       }
-
       .statement-summary {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -2076,7 +1972,6 @@
       .statement-summary-item .value.negative {
         color: var(--danger);
       }
-
       .stmt-filter-box {
         background: linear-gradient(
           135deg,
@@ -2096,7 +1991,6 @@
         align-items: center;
         gap: 0.4rem;
       }
-
       .stmt-info-badge {
         display: inline-block;
         padding: 0.2rem 0.55rem;
@@ -2117,7 +2011,6 @@
         background: var(--danger-soft);
         color: var(--danger);
       }
-
       .active-filter-badge {
         display: inline-flex;
         align-items: center;
@@ -2131,7 +2024,6 @@
         margin-top: 0.5rem;
         border: 1px solid rgba(212, 175, 55, 0.35);
       }
-
       .salary-actions {
         display: inline-flex;
         gap: 0.5rem;
@@ -2139,9 +2031,6 @@
         flex-wrap: wrap;
       }
 
-      /* ============================================================
-         زر الإضافة
-         ============================================================ */
       .add-btn {
         background: linear-gradient(
           135deg,
@@ -2176,9 +2065,6 @@
         transform: scale(0.97);
       }
 
-      /* ============================================================
-         تبويبات المصروفات
-         ============================================================ */
       .expense-tabs {
         display: flex;
         gap: 0.4rem;
@@ -2219,7 +2105,6 @@
         color: var(--gold);
         background: var(--gold-soft);
       }
-
       .expense-category-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
@@ -2253,9 +2138,6 @@
         display: block;
       }
 
-      /* ============================================================
-         حالات الديون
-         ============================================================ */
       .debt-status-paid {
         background: var(--success-soft);
         color: var(--success);
@@ -2283,7 +2165,6 @@
         font-weight: 700;
         display: inline-block;
       }
-
       .debt-stmt-header {
         background: linear-gradient(
           135deg,
@@ -2377,9 +2258,6 @@
         background: rgba(14, 165, 233, 0.06);
       }
 
-      /* ============================================================
-         النسخ الاحتياطي
-         ============================================================ */
       .backup-section {
         background: linear-gradient(
           135deg,
@@ -2447,9 +2325,6 @@
         box-shadow: 0 16px 30px -14px rgba(239, 68, 68, 0.9);
       }
 
-      /* ============================================================
-         كشف حساب العميل
-         ============================================================ */
       .customer-stmt-summary {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -2483,9 +2358,6 @@
         color: var(--gold);
       }
 
-      /* ============================================================
-         زر التثبيت وحالة الاتصال
-         ============================================================ */
       #installBanner {
         display: none;
         position: fixed;
@@ -2532,7 +2404,6 @@
         align-items: center;
         justify-content: center;
       }
-
       #connectionStatus {
         position: fixed;
         top: calc(10px + var(--safe-top));
@@ -2553,15 +2424,11 @@
         display: block;
       }
 
-      /* ============================================================
-         استجابة الشاشات — Mobile Native
-         ============================================================ */
       @media (min-width: 769px) {
         body {
           padding-bottom: 0;
         }
       }
-
       @media (max-width: 768px) {
         .table-container {
           display: none !important;
@@ -2590,7 +2457,6 @@
         .mobile-menu-btn {
           display: flex;
         }
-
         body {
           font-size: 15px;
         }
@@ -2604,7 +2470,6 @@
         #userInfo {
           padding: 0.3rem 0.4rem 0.3rem 0.8rem;
         }
-
         .stat-value {
           font-size: 1.35rem;
         }
@@ -2706,8 +2571,6 @@
           min-width: 100%;
           justify-content: center;
         }
-
-        /* Bottom Sheet Modals */
         .modal-overlay {
           align-items: flex-end;
           padding: 0;
@@ -2744,7 +2607,6 @@
           flex-direction: column;
           gap: 0.6rem;
         }
-
         .work-days-box .box-header {
           flex-direction: column;
           align-items: stretch;
@@ -2757,7 +2619,6 @@
         .work-days-box .box-title {
           font-size: 0.98rem;
         }
-
         .statement-info-grid {
           grid-template-columns: repeat(2, 1fr);
         }
@@ -2809,7 +2670,6 @@
           font-size: 0.84rem;
           padding: 0.8rem 1rem;
         }
-
         .logo-stage {
           width: 140px;
           height: 140px;
@@ -2825,7 +2685,6 @@
           font-size: 0.7rem;
           padding: 0.3rem 0.75rem;
         }
-
         .mobile-card {
           padding: 0.9rem;
         }
@@ -2840,7 +2699,6 @@
           padding: 0.4rem 0.6rem;
           min-height: 40px;
         }
-
         #dashboardCharts {
           flex-direction: column;
         }
@@ -2874,7 +2732,6 @@
           padding: 1.9rem 1.4rem 1.7rem;
         }
       }
-
       @media (max-width: 380px) {
         .stats-grid {
           grid-template-columns: 1fr !important;
@@ -2901,7 +2758,6 @@
           font-size: 1.7rem;
         }
       }
-
       @media (prefers-reduced-motion: reduce) {
         *,
         *::before,
@@ -2914,7 +2770,6 @@
     </style>
   </head>
   <body>
-    <!-- ================= شاشة البداية ================= -->
     <div class="splash-screen" id="splashScreen">
       <div class="splash-bg"></div>
       <div class="splash-noise"></div>
@@ -2961,7 +2816,7 @@
         </div>
 
         <div class="splash-footer">
-          <div class="splash-version">Version 2.4.1</div>
+          <div class="splash-version">Version 2.5.0</div>
           <div class="splash-developer">
             Developed by <strong>Ammar Konna</strong>
           </div>
@@ -3030,7 +2885,6 @@
       </button>
     </div>
 
-    <!-- ================= تسجيل الدخول ================= -->
     <section id="login-section">
       <div class="login-bg"></div>
       <div class="login-grid"></div>
@@ -3111,7 +2965,6 @@
       </div>
     </section>
 
-    <!-- ================= التطبيق ================= -->
     <div id="app-container" class="hidden">
       <aside class="sidebar" id="sidebar">
         <div class="brand"><i class="fas fa-fire-alt"></i> كفتة على الفحم</div>
@@ -3442,6 +3295,21 @@
         </section>
 
         <section id="payroll" class="view-section hidden">
+          <div class="expense-tabs" id="payrollModeTabs">
+            <div
+              class="expense-tab active"
+              onclick="switchPayrollMode('monthly', this)"
+            >
+              <i class="fas fa-calendar-alt"></i> رواتب شهرية
+            </div>
+            <div
+              class="expense-tab"
+              onclick="switchPayrollMode('weekly', this)"
+            >
+              <i class="fas fa-calendar-week"></i> رواتب أسبوعية
+            </div>
+          </div>
+
           <div class="card mb-4 filter-bar">
             <div class="flex gap-4 items-center flex-wrap justify-between">
               <div class="flex gap-4 items-center flex-wrap">
@@ -3454,6 +3322,18 @@
                     id="payrollMonth"
                     onchange="onPayrollMonthChange()"
                   />
+                </div>
+                <div
+                  class="flex items-center gap-2 hidden"
+                  id="weekSelectorWrap"
+                >
+                  <label><i class="fas fa-calendar-week"></i> الأسبوع:</label>
+                  <select id="payrollWeek" onchange="calculatePayroll()">
+                    <option value="1">الأسبوع 1 (1-7)</option>
+                    <option value="2">الأسبوع 2 (8-14)</option>
+                    <option value="3">الأسبوع 3 (15-21)</option>
+                    <option value="4">الأسبوع 4 (22-نهاية الشهر)</option>
+                  </select>
                 </div>
                 <div class="flex items-center gap-2">
                   <label><i class="fas fa-user"></i> الموظف:</label>
@@ -3521,14 +3401,6 @@
               <div class="stat">
                 <div class="stat-value" id="payrollFilterDeductions">0</div>
                 <div class="stat-label">إجمالي الخصومات</div>
-              </div>
-              <div class="stat" style="display: none">
-                <div class="stat-value" id="payrollFilterCurrentDue">0</div>
-                <div class="stat-label">مستحق الشهر الحالي</div>
-              </div>
-              <div class="stat" style="display: none">
-                <div class="stat-value" id="payrollFilterCarryOver">0</div>
-                <div class="stat-label">المتبقي من الأشهر السابقة</div>
               </div>
               <div class="stat">
                 <div class="stat-value" id="payrollFilterNet">0</div>
@@ -3968,7 +3840,7 @@
                 >بدل وجبة (ج.س)</label
               ><input type="number" id="empMeal" value="0" />
             </div>
-            <div style="grid-column: 1 / -1">
+            <div>
               <label
                 style="
                   font-size: 0.88rem;
@@ -3978,6 +3850,21 @@
                 "
                 >بدل مواصلات (ج.س)</label
               ><input type="number" id="empTransport" value="0" />
+            </div>
+            <div>
+              <label
+                style="
+                  font-size: 0.88rem;
+                  font-weight: 700;
+                  display: block;
+                  margin-bottom: 0.5rem;
+                "
+                >نوع الراتب *</label
+              >
+              <select id="empPaymentType">
+                <option value="monthly">شهري</option>
+                <option value="weekly">أسبوعي (يقسم على 4 أسابيع)</option>
+              </select>
             </div>
           </div>
           <div
@@ -4426,6 +4313,24 @@
               ><i class="fas fa-calendar-check"></i> يخصم من شهر</label
             >
             <input type="month" id="loanTargetMonth" required />
+            <div id="loanWeekWrap" class="hidden" style="margin-top: 0.6rem">
+              <label
+                style="
+                  font-size: 0.85rem;
+                  font-weight: 700;
+                  display: block;
+                  margin-bottom: 0.4rem;
+                  color: var(--gold);
+                "
+                ><i class="fas fa-calendar-week"></i> يخصم من الأسبوع</label
+              >
+              <select id="loanTargetWeek">
+                <option value="1">الأسبوع 1 (1-7)</option>
+                <option value="2">الأسبوع 2 (8-14)</option>
+                <option value="3">الأسبوع 3 (15-21)</option>
+                <option value="4">الأسبوع 4 (22-نهاية الشهر)</option>
+              </select>
+            </div>
           </div>
           <div class="mb-4">
             <label
@@ -5007,6 +4912,8 @@
         currentSection = "dashboard",
         currentExpTab = "expenses";
       let workDaysPerEmployee = {};
+      let workDaysWeekly = {};
+      let payrollMode = "monthly";
       let pendingImportData = null;
       const LOGO_URL =
         "https://www.dropbox.com/scl/fi/fprczdxu04y7hi4ysqdqk/unnamed__4_-removebg-preview-1.png?rlkey=3f9ysoqw95oeeoc77i6jbs8h1&st=z82tk790&dl=1";
@@ -5068,6 +4975,63 @@
           });
         } catch (e) {
           console.warn("[WorkDays] Load all error:", e);
+        }
+      }
+      async function saveWeeklyWD() {
+        if (!currentUser) return;
+        try {
+          const m =
+            document.getElementById("payrollMonth").value ||
+            new Date().toISOString().slice(0, 7);
+          const w = document.getElementById("payrollWeek").value || "1";
+          const key = `${m}-W${w}`;
+          await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("weeklyWorkDays")
+            .doc(key)
+            .set({
+              weekKey: key,
+              month: m,
+              week: w,
+              days: workDaysWeekly[key] || {},
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+        } catch (e) {
+          console.warn("[WeeklyWD] Save error:", e);
+        }
+      }
+      async function loadWeeklyWD(month, week) {
+        if (!currentUser) return;
+        const key = `${month}-W${week}`;
+        try {
+          const d = await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("weeklyWorkDays")
+            .doc(key)
+            .get();
+          workDaysWeekly[key] = d.exists ? d.data().days || {} : {};
+        } catch (e) {
+          console.warn("[WeeklyWD] Load error:", e);
+          workDaysWeekly[key] = {};
+        }
+      }
+      async function loadAllWeeklyWD() {
+        if (!currentUser) return;
+        try {
+          const snap = await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("weeklyWorkDays")
+            .get();
+          workDaysWeekly = {};
+          snap.forEach((doc) => {
+            const data = doc.data();
+            workDaysWeekly[data.weekKey] = data.days || {};
+          });
+        } catch (e) {
+          console.warn("[WeeklyWD] Load all error:", e);
         }
       }
       if (window.location.protocol === "file:")
@@ -5177,6 +5141,7 @@
             .get();
           salaryHistory = shs.docs.map((d) => ({ id: d.id, ...d.data() }));
           await loadAllWorkDays();
+          await loadAllWeeklyWD();
           popSelects();
           updateDebtPartyList();
           updateDashboard();
@@ -5192,6 +5157,7 @@
           document.getElementById("loanTime").value = tm;
           document.getElementById("loanTargetMonth").value = cm;
           await loadWD(cm);
+          await loadWeeklyWD(cm, "1");
           updateMonthBadge(cm);
           renderEmployees();
           renderLoans();
@@ -5240,7 +5206,12 @@
       async function onPayrollMonthChange() {
         const m = document.getElementById("payrollMonth").value;
         if (!m) return;
-        await loadWD(m);
+        if (payrollMode === "weekly") {
+          const w = document.getElementById("payrollWeek").value || "1";
+          await loadWeeklyWD(m, w);
+        } else {
+          await loadWD(m);
+        }
         updateMonthBadge(m);
         calculatePayroll();
       }
@@ -5390,6 +5361,17 @@
           .classList.toggle("hidden", tab !== "expDash");
         if (tab === "expDash") updateExpDash();
       }
+      function switchPayrollMode(mode, el) {
+        payrollMode = mode;
+        document
+          .querySelectorAll("#payrollModeTabs .expense-tab")
+          .forEach((t) => t.classList.remove("active"));
+        el.classList.add("active");
+        document
+          .getElementById("weekSelectorWrap")
+          .classList.toggle("hidden", mode !== "weekly");
+        calculatePayroll();
+      }
       function updateExpDash() {
         const today = new Date().toISOString().slice(0, 10),
           cm = new Date().toISOString().slice(0, 7);
@@ -5518,6 +5500,8 @@
             transportAllowance: Number(
               document.getElementById("empTransport").value,
             ),
+            paymentType:
+              document.getElementById("empPaymentType").value || "monthly",
             suspended: isSuspended,
             suspensionDate: suspensionDate,
           };
@@ -5574,7 +5558,7 @@
                 .map(
                   (e, idx) => `<tr>
 <td><strong>${start + idx + 1}</strong></td>
-<td><div class="flex items-center gap-2"><img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.name)}&background=D4AF37&color=151515&bold=true" class="avatar" style="width:36px;height:36px"><div><div style="font-weight:700">${e.name}</div><small class="text-muted">${e.nationalId || "-"}</small></div></div></td>
+<td><div class="flex items-center gap-2"><img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.name)}&background=D4AF37&color=151515&bold=true" class="avatar" style="width:36px;height:36px"><div><div style="font-weight:700">${e.name}${e.paymentType === "weekly" ? ' <span class="badge" style="background:rgba(14,165,233,0.2);color:var(--info);font-size:0.62rem">أسبوعي</span>' : ""}</div><small class="text-muted">${e.nationalId || "-"}</small></div></div></td>
 <td><span class="badge" style="background:rgba(212,175,55,0.2);color:#b5952f">${e.dept}</span></td>
 <td>${e.position || "-"}</td>
 <td>${e.phone || "-"}</td>
@@ -5597,7 +5581,7 @@
                 .map(
                   (e, idx) => `<div class="mobile-card">
 <div class="mobile-card-header">
-<div><strong>${e.name}</strong><br><small class="text-muted">${e.dept} - ${e.position || "-"}</small></div>
+<div><strong>${e.name}</strong>${e.paymentType === "weekly" ? ' <span class="badge" style="background:rgba(14,165,233,0.2);color:var(--info);font-size:0.62rem">أسبوعي</span>' : ""}<br><small class="text-muted">${e.dept} - ${e.position || "-"}</small></div>
 ${e.suspended ? '<span class="badge" style="background: rgba(220, 53, 69, 0.2); color: var(--danger)"><i class="fas fa-user-slash"></i> معلق</span>' : '<span class="badge" style="background: rgba(25, 135, 84, 0.2); color: var(--success)"><i class="fas fa-user-check"></i> نشط</span>'}
 </div>
 <div class="mobile-card-row"><span class="label">الهاتف</span><span class="value">${e.phone || "-"}</span></div>
@@ -5636,6 +5620,7 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
         document.getElementById("empSuspended").checked = false;
         document.getElementById("suspensionDateField").style.display = "none";
         document.getElementById("empSuspensionDate").value = "";
+        document.getElementById("empPaymentType").value = "monthly";
         openModal("employeeModal");
         setTimeout(() => document.getElementById("empName").focus(), 300);
       }
@@ -5653,6 +5638,8 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
         document.getElementById("empMeal").value = e.mealAllowance || 0;
         document.getElementById("empTransport").value =
           e.transportAllowance || 0;
+        document.getElementById("empPaymentType").value =
+          e.paymentType || "monthly";
         const isSuspended = e.suspended || false;
         document.getElementById("empSuspended").checked = isSuspended;
         document.getElementById("suspensionDateField").style.display =
@@ -6079,6 +6066,14 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
         document.getElementById("loanTargetMonth").value = n
           .toISOString()
           .slice(0, 7);
+        document.getElementById("loanWeekWrap").classList.add("hidden");
+        const empSel = document.getElementById("loanEmpSelect");
+        empSel.onchange = () => {
+          const emp = employees.find((e) => e.id === empSel.value);
+          document
+            .getElementById("loanWeekWrap")
+            .classList.toggle("hidden", !emp || emp.paymentType !== "weekly");
+        };
         openModal("loanModal");
       }
       document
@@ -6087,6 +6082,9 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
           e.preventDefault();
           if (isSubmitting) return;
           setSubmitting("loanSubmitBtn", true);
+          const selectedEmp = employees.find(
+            (x) => x.id === document.getElementById("loanEmpSelect").value,
+          );
           const data = {
             empId: document.getElementById("loanEmpSelect").value,
             empName:
@@ -6098,6 +6096,10 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
             date: document.getElementById("loanDate").value,
             time: document.getElementById("loanTime").value,
             targetMonth: document.getElementById("loanTargetMonth").value,
+            targetWeek:
+              selectedEmp && selectedEmp.paymentType === "weekly"
+                ? document.getElementById("loanTargetWeek").value
+                : null,
             note: document.getElementById("loanNote").value,
           };
           try {
@@ -6160,7 +6162,7 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
             : pg
                 .map(
                   (l) =>
-                    `<tr><td>${l.empName}</td><td><span class="badge ${l.type === "سلفة" ? "badge-loan" : "badge-deduction"}">${l.type}</span></td><td>${Number(l.amount).toLocaleString()}</td><td>${l.date}</td><td>${l.time || "--:--"}</td><td><strong>${l.targetMonth || "-"}</strong></td><td>${l.note || "-"}</td><td><button class="btn btn-sm btn-outline" onclick="printLoanVoucher('${l.id}')"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-danger" onclick="deleteLoan('${l.id}')"><i class="fas fa-trash"></i></button></td></tr>`,
+                    `<tr><td>${l.empName}</td><td><span class="badge ${l.type === "سلفة" ? "badge-loan" : "badge-deduction"}">${l.type}</span></td><td>${Number(l.amount).toLocaleString()}</td><td>${l.date}</td><td>${l.time || "--:--"}</td><td><strong>${l.targetMonth || "-"}${l.targetWeek ? " - أسبوع " + l.targetWeek : ""}</strong></td><td>${l.note || "-"}</td><td><button class="btn btn-sm btn-outline" onclick="printLoanVoucher('${l.id}')"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-danger" onclick="deleteLoan('${l.id}')"><i class="fas fa-trash"></i></button></td></tr>`,
                 )
                 .join("");
         document.getElementById("loansMobileCards").innerHTML =
@@ -6169,7 +6171,7 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
             : pg
                 .map(
                   (l) =>
-                    `<div class="mobile-card"><div class="mobile-card-header"><div><strong>${l.empName}</strong><br><small class="text-muted">${l.date} ${l.time || ""}</small></div><span class="badge ${l.type === "سلفة" ? "badge-loan" : "badge-deduction"}">${l.type}</span></div><div class="mobile-card-row"><span class="label">المبلغ</span><span class="value">${Number(l.amount).toLocaleString()} ج.س</span></div><div class="mobile-card-row"><span class="label">الشهر</span><span class="value">${l.targetMonth || "-"}</span></div><div class="mobile-card-actions"><button class="btn btn-sm btn-outline" onclick="printLoanVoucher('${l.id}')"><i class="fas fa-print"></i> طباعة</button><button class="btn btn-sm btn-danger" onclick="deleteLoan('${l.id}')"><i class="fas fa-trash"></i> حذف</button></div></div>`,
+                    `<div class="mobile-card"><div class="mobile-card-header"><div><strong>${l.empName}</strong><br><small class="text-muted">${l.date} ${l.time || ""}</small></div><span class="badge ${l.type === "سلفة" ? "badge-loan" : "badge-deduction"}">${l.type}</span></div><div class="mobile-card-row"><span class="label">المبلغ</span><span class="value">${Number(l.amount).toLocaleString()} ج.س</span></div><div class="mobile-card-row"><span class="label">الشهر</span><span class="value">${l.targetMonth || "-"}${l.targetWeek ? " (أسبوع " + l.targetWeek + ")" : ""}</span></div><div class="mobile-card-actions"><button class="btn btn-sm btn-outline" onclick="printLoanVoucher('${l.id}')"><i class="fas fa-print"></i> طباعة</button><button class="btn btn-sm btn-danger" onclick="deleteLoan('${l.id}')"><i class="fas fa-trash"></i> حذف</button></div></div>`,
                 )
                 .join("");
         renderPagination(
@@ -6223,11 +6225,26 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
       function getWD(id, m) {
         return (workDaysPerEmployee[m] && workDaysPerEmployee[m][id]) || 30;
       }
+      function getWeeklyWD(id, m, w) {
+        const key = `${m}-W${w}`;
+        return workDaysWeekly[key] && workDaysWeekly[key][id] !== undefined
+          ? workDaysWeekly[key][id]
+          : 7;
+      }
       async function updateEmployeeDays(id, days, m) {
-        const d = Math.max(1, Math.min(31, Number(days) || 30));
-        if (!workDaysPerEmployee[m]) workDaysPerEmployee[m] = {};
-        workDaysPerEmployee[m][id] = d;
-        await saveWD();
+        if (payrollMode === "weekly") {
+          const week = document.getElementById("payrollWeek").value || "1";
+          const key = `${m}-W${week}`;
+          const d = Math.max(0, Math.min(7, Number(days) || 7));
+          if (!workDaysWeekly[key]) workDaysWeekly[key] = {};
+          workDaysWeekly[key][id] = d;
+          await saveWeeklyWD();
+        } else {
+          const d = Math.max(1, Math.min(31, Number(days) || 30));
+          if (!workDaysPerEmployee[m]) workDaysPerEmployee[m] = {};
+          workDaysPerEmployee[m][id] = d;
+          await saveWD();
+        }
         calculatePayroll();
       }
       function calculatePayroll() {
@@ -6238,75 +6255,178 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
         if (!month) return;
         updateMonthBadge(month);
         payrollData = [];
-        const emps =
-          fe === "all" ? employees : employees.filter((e) => e.id === fe);
         let hasCO = false;
-        emps.forEach((emp) => {
-          const isSuspended = emp.suspended || false;
-          if (isSuspended) return;
-          const suspensionDate = emp.suspensionDate;
-          const monthStart = month + "-01";
-          let effectiveDays = 30;
-          if (isSuspended && suspensionDate && suspensionDate > monthStart) {
-            const suspDay = parseInt(suspensionDate.split("-")[2]);
-            effectiveDays = suspDay - 1;
-          }
-          const bs = getEmployeeSalaryForMonth(emp.id, month),
-            ma = Number(emp.mealAllowance || 0),
-            ta = Number(emp.transportAllowance || 0),
-            wd = getWD(emp.id, month);
-          const actualDays = Math.max(0, Math.min(wd, effectiveDays));
-          const ab = Math.round((bs / 30) * actualDays),
-            am = Math.round((ma / 30) * actualDays),
-            at = Math.round((ta / 30) * actualDays),
-            al = am + at,
-            gs = ab + al;
-          let previousBalance = 0;
-          const previousMonths = new Set();
-          loans.forEach((l) => {
-            if (l.empId !== emp.id) return;
-            const target = normalizePayrollMonth(
-              l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
-            );
-            if (target && target < month) previousMonths.add(target);
-          });
-          for (const pm of Array.from(previousMonths).sort()) {
-            const bsPM = getEmployeeSalaryForMonth(emp.id, pm);
-            const wdPM = getWD(emp.id, pm);
-            const actualGross =
-              Math.round((bsPM / 30) * wdPM) +
-              Math.round((ma / 30) * wdPM) +
-              Math.round((ta / 30) * wdPM);
-            const previousLoans = loans.filter((l) => {
-              const target = normalizePayrollMonth(
+
+        // ============ الوضع الأسبوعي ============
+        if (payrollMode === "weekly") {
+          const week = document.getElementById("payrollWeek").value || "1";
+          const weeklyEmps = employees.filter(
+            (e) => e.paymentType === "weekly" && !e.suspended,
+          );
+          const filteredEmps =
+            fe === "all" ? weeklyEmps : weeklyEmps.filter((e) => e.id === fe);
+
+          filteredEmps.forEach((emp) => {
+            const ma = Number(emp.mealAllowance || 0);
+            const ta = Number(emp.transportAllowance || 0);
+            const monthlySalary = getEmployeeSalaryForMonth(emp.id, month);
+
+            const weeklyBase = Math.round(monthlySalary / 4);
+            const weeklyMeal = Math.round(ma / 4);
+            const weeklyTransport = Math.round(ta / 4);
+
+            const wd = getWeeklyWD(emp.id, month, week);
+            const actualDays = Math.max(0, Math.min(7, wd));
+
+            const ab = Math.round((weeklyBase / 7) * actualDays);
+            const am = Math.round((weeklyMeal / 7) * actualDays);
+            const at = Math.round((weeklyTransport / 7) * actualDays);
+            const gs = ab + am + at;
+
+            const weekLoans = loans.filter((l) => {
+              if (l.empId !== emp.id) return false;
+              const t = normalizePayrollMonth(
                 l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
               );
-              return l.empId === emp.id && target === pm;
+              return t === month && String(l.targetWeek || "") === week;
             });
-            const previousDebits = previousLoans.reduce(
-              (sum, l) => sum + Number(l.amount || 0),
+
+            const currentLoans = weekLoans
+              .filter((l) => l.type === "سلفة")
+              .reduce((s, l) => s + Number(l.amount), 0);
+            const currentDeductions = weekLoans
+              .filter((l) => l.type === "خصم")
+              .reduce((s, l) => s + Number(l.amount), 0);
+
+            const net = gs - currentLoans - currentDeductions;
+
+            payrollData.push({
+              empId: emp.id,
+              name: emp.name,
+              dept: emp.dept,
+              position: emp.position || "-",
+              baseSalary: weeklyBase,
+              actualBaseSalary: ab,
+              allowances: am + at,
+              grossSalary: gs,
+              currentLoans: currentLoans,
+              currentDeductions: currentDeductions,
+              carryOver: 0,
+              previousBalance: 0,
+              currentMonthDue: gs - currentLoans - currentDeductions,
+              totalDeductions: currentLoans + currentDeductions,
+              net: net,
+              netDue: net,
+              newCarryOver: 0,
+              month: month,
+              week: week,
+              workDays: wd,
+              isWeekly: true,
+              monthlySalary: monthlySalary,
+            });
+          });
+
+          payrollData.sort((a, b) => a.name.localeCompare(b.name, "ar"));
+          document.getElementById("carryoverInfo").style.display = "none";
+          payrollPage = 1;
+          renderPayrollTable();
+          return;
+        }
+
+        // ============ الوضع الشهري ============
+        const emps =
+          fe === "all"
+            ? employees.filter((e) => e.paymentType !== "weekly")
+            : employees.filter(
+                (e) => e.id === fe && e.paymentType !== "weekly",
+              );
+
+        emps.forEach((emp) => {
+          if (emp.suspended) return;
+
+          const ma = Number(emp.mealAllowance || 0);
+          const ta = Number(emp.transportAllowance || 0);
+          const wd = getWD(emp.id, month);
+
+          const bs = getEmployeeSalaryForMonth(emp.id, month);
+          const ab = Math.round((bs / 30) * wd);
+          const al = Math.round((ma / 30) * wd) + Math.round((ta / 30) * wd);
+          const gs = ab + al;
+
+          const relevant = new Set();
+
+          Object.keys(workDaysPerEmployee).forEach((m) => {
+            if (
+              workDaysPerEmployee[m] &&
+              workDaysPerEmployee[m][emp.id] !== undefined &&
+              m <= month
+            ) {
+              relevant.add(m);
+            }
+          });
+
+          loans.forEach((l) => {
+            if (l.empId !== emp.id) return;
+            const t = normalizePayrollMonth(
+              l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
+            );
+            if (t && t <= month) relevant.add(t);
+          });
+
+          relevant.add(month);
+
+          const sorted = [...relevant].sort();
+          const first = sorted[0];
+          const allMonths = [];
+          let [y, mo] = first.split("-").map(Number);
+          const [ey, em2] = month.split("-").map(Number);
+          while (y < ey || (y === ey && mo <= em2)) {
+            allMonths.push(`${y}-${String(mo).padStart(2, "0")}`);
+            mo++;
+            if (mo > 12) {
+              mo = 1;
+              y++;
+            }
+          }
+
+          let runningBalance = 0;
+          let previousBalance = 0;
+          let currentLoans = 0;
+          let currentDeductions = 0;
+
+          for (const m of allMonths) {
+            const wdM = getWD(emp.id, m);
+            const bsM = getEmployeeSalaryForMonth(emp.id, m);
+            const monthSalary = Math.round(((bsM + ma + ta) / 30) * wdM);
+
+            const monthLoans = loans.filter((l) => {
+              if (l.empId !== emp.id) return false;
+              const t = normalizePayrollMonth(
+                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
+              );
+              return t === m;
+            });
+
+            const monthDebits = monthLoans.reduce(
+              (s, l) => s + Number(l.amount),
               0,
             );
-            const balance = previousBalance + actualGross - previousDebits;
-            previousBalance = Math.max(balance, 0);
+
+            if (m === month) {
+              previousBalance = runningBalance;
+              currentLoans = monthLoans
+                .filter((l) => l.type === "سلفة")
+                .reduce((s, l) => s + Number(l.amount), 0);
+              currentDeductions = monthLoans
+                .filter((l) => l.type === "خصم")
+                .reduce((s, l) => s + Number(l.amount), 0);
+            }
+
+            runningBalance = runningBalance + monthSalary - monthDebits;
           }
-          if (previousBalance > 0) hasCO = true;
-          const ct = loans.filter(
-            (l) =>
-              l.empId === emp.id &&
-              normalizePayrollMonth(
-                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
-              ) === month,
-          );
-          const cl = ct
-            .filter((l) => l.type === "سلفة")
-            .reduce((s, l) => s + Number(l.amount), 0);
-          const cd = ct
-            .filter((l) => l.type === "خصم")
-            .reduce((s, l) => s + Number(l.amount), 0);
-          const td = cl + cd;
-          let net = gs - cl - cd + previousBalance;
-          let nco = net < 0 ? Math.abs(net) : 0;
+
+          if (runningBalance !== 0) hasCO = true;
+
           payrollData.push({
             empId: emp.id,
             name: emp.name,
@@ -6316,24 +6436,29 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
             actualBaseSalary: ab,
             allowances: al,
             grossSalary: gs,
-            currentLoans: cl,
-            currentDeductions: cd,
+            currentLoans: currentLoans,
+            currentDeductions: currentDeductions,
             carryOver: previousBalance,
-            previousBalance,
-            currentMonthDue: gs - cl - cd,
-            totalDeductions: td,
-            net,
-            netDue: net,
-            newCarryOver: nco,
-            month,
+            previousBalance: previousBalance,
+            currentMonthDue: gs - currentLoans - currentDeductions,
+            totalDeductions: currentLoans + currentDeductions,
+            net: runningBalance,
+            netDue: runningBalance,
+            newCarryOver: runningBalance < 0 ? runningBalance : 0,
+            month: month,
             workDays: wd,
+            isWeekly: false,
           });
         });
+
         payrollData.sort((a, b) => {
-          const at = a.currentLoans + a.currentDeductions + a.carryOver,
-            bt = b.currentLoans + b.currentDeductions + b.carryOver;
+          const at =
+            a.currentLoans + a.currentDeductions + Math.abs(a.carryOver || 0);
+          const bt =
+            b.currentLoans + b.currentDeductions + Math.abs(b.carryOver || 0);
           return bt !== at ? bt - at : a.name.localeCompare(b.name, "ar");
         });
+
         document.getElementById("carryoverInfo").style.display = hasCO
           ? "flex"
           : "none";
@@ -6342,6 +6467,8 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
       }
       function renderPayrollTable() {
         const month = document.getElementById("payrollMonth").value;
+        const isWeekly = payrollMode === "weekly";
+        const week = document.getElementById("payrollWeek").value || "1";
         const tp = Math.ceil(payrollData.length / ITEMS_PER_PAGE);
         if (payrollPage > tp && tp > 0) payrollPage = tp;
         if (payrollPage < 1) payrollPage = 1;
@@ -6349,68 +6476,121 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
           (payrollPage - 1) * ITEMS_PER_PAGE,
           payrollPage * ITEMS_PER_PAGE,
         );
+
         document.querySelector("#payrollTable tbody").innerHTML =
           payrollData.length === 0
-            ? '<tr><td colspan="10" class="text-center text-muted">لا يوجد موظفين</td></tr>'
+            ? `<tr><td colspan="10" class="text-center text-muted">${
+                isWeekly
+                  ? "لا يوجد موظفين بنظام أسبوعي — أضف موظفاً واختر نوع الراتب (أسبوعي)"
+                  : "لا يوجد موظفين"
+              }</td></tr>`
             : pg
                 .map((e) => {
                   let st = "";
-                  if (e.net < 0)
-                    st = `<span class="payroll-carryover"><i class="fas fa-exclamation-triangle"></i> عجز: ${Math.abs(e.net).toLocaleString()}</span>`;
-                  else if (e.newCarryOver > 0)
-                    st = `<span class="payroll-carryover"><i class="fas fa-exclamation-triangle"></i> مرحل: ${e.newCarryOver.toLocaleString()}</span>`;
-                  else
-                    st = `<span class="text-success"><i class="fas fa-check-circle"></i> مستحق</span>`;
+                  if (e.netDue < 0) {
+                    st = `<span class="payroll-carryover"><i class="fas fa-exclamation-triangle"></i> عجز: ${Math.abs(e.netDue).toLocaleString()}</span>`;
+                  } else if (e.netDue > 0) {
+                    st = `<span class="payroll-carryover positive"><i class="fas fa-check-circle"></i> مستحق</span>`;
+                  } else {
+                    st = `<span class="text-muted"><i class="fas fa-equals"></i> مسوّى</span>`;
+                  }
+
                   const nc =
-                    e.net < 0 ? "negative-salary" : "font-bold text-primary";
-                  return `<tr><td><strong>${e.name}</strong></td><td><input type="number" class="work-days-input" min="1" max="31" value="${e.workDays}" onchange="updateEmployeeDays('${e.empId}',this.value,'${month}')"/></td><td>${e.actualBaseSalary.toLocaleString()}</td><td>${e.allowances.toLocaleString()}</td><td>${e.currentLoans > 0 ? '<span class="text-danger">' + e.currentLoans.toLocaleString() + "</span>" : "0"}</td><td>${e.currentDeductions > 0 ? '<span class="text-danger">' + e.currentDeductions.toLocaleString() + "</span>" : "0"}</td><td class="${nc}"><strong>${e.netDue.toLocaleString()} ج.س</strong></td><td>${st}</td><td><button class="btn btn-sm btn-warning" onclick="openStatement('${e.empId}','${e.month}')"><i class="fas fa-file-invoice-dollar"></i></button><button class="btn btn-sm btn-outline" onclick="printPayslip('${e.empId}','${e.month}')"><i class="fas fa-print"></i></button></td></tr>`;
+                    e.netDue < 0 ? "negative-salary" : "font-bold text-primary";
+
+                  const carryoverHtml =
+                    !isWeekly && e.previousBalance !== 0
+                      ? `<br><small class="${e.previousBalance > 0 ? "text-success" : "text-danger"}" style="font-size:0.7rem">
+                     (${e.previousBalance > 0 ? "+" : ""}${e.previousBalance.toLocaleString()} رصيد سابق)
+                   </small>`
+                      : "";
+
+                  const salaryNote = isWeekly
+                    ? `<br><small class="text-muted" style="font-size:0.7rem">(شهري: ${(e.monthlySalary || 0).toLocaleString()} ÷ 4)</small>`
+                    : "";
+
+                  const stmtBtn = isWeekly
+                    ? `<button class="btn btn-sm btn-warning" onclick="openWeeklyStatement('${e.empId}','${e.month}')"><i class="fas fa-file-invoice-dollar"></i></button>`
+                    : `<button class="btn btn-sm btn-warning" onclick="openStatement('${e.empId}','${e.month}')"><i class="fas fa-file-invoice-dollar"></i></button>`;
+
+                  return `<tr>
+              <td><strong>${e.name}</strong>${isWeekly ? ' <span class="badge" style="background:rgba(14,165,233,0.2);color:var(--info);font-size:0.65rem">أسبوعي</span>' : ""}</td>
+              <td><input type="number" class="work-days-input" min="${isWeekly ? 0 : 1}" max="${isWeekly ? 7 : 31}" value="${e.workDays}" onchange="updateEmployeeDays('${e.empId}',this.value,'${month}')"/></td>
+              <td>${e.actualBaseSalary.toLocaleString()}${salaryNote}</td>
+              <td>${e.allowances.toLocaleString()}</td>
+              <td>${e.currentLoans > 0 ? '<span class="text-danger">' + e.currentLoans.toLocaleString() + "</span>" : "0"}</td>
+              <td>${e.currentDeductions > 0 ? '<span class="text-danger">' + e.currentDeductions.toLocaleString() + "</span>" : "0"}</td>
+              <td class="${nc}"><strong>${e.netDue.toLocaleString()} ج.س</strong>${carryoverHtml}</td>
+              <td>${st}</td>
+              <td>
+                ${stmtBtn}
+                <button class="btn btn-sm btn-outline" onclick="printPayslip('${e.empId}','${e.month}')"><i class="fas fa-print"></i></button>
+              </td>
+            </tr>`;
                 })
                 .join("");
+
         document.getElementById("payrollMobileCards").innerHTML = pg
           .map((e) => {
             let st = "";
-            if (e.net < 0) st = `<span class="payroll-carryover">عجز</span>`;
-            else if (e.newCarryOver > 0)
-              st = `<span class="payroll-carryover">مرحل</span>`;
-            else st = `<span class="text-success">مستحق</span>`;
-            const nc = e.net < 0 ? "text-danger" : "text-primary";
-            return `<div class="mobile-card"><div class="mobile-card-header"><div><strong>${e.name}</strong><br><small class="text-muted">${e.dept} - ${e.position}</small></div>${st}</div><div class="mobile-card-row"><span class="label">أيام العمل</span><span class="value"><input type="number" class="work-days-input" value="${e.workDays}" onchange="updateEmployeeDays('${e.empId}',this.value,'${month}')"/></span></div><div class="mobile-card-row"><span class="label">الصافي</span><span class="value ${nc}">${e.net.toLocaleString()} ج.س</span></div><div class="mobile-card-actions"><button class="btn btn-sm btn-warning" onclick="openStatement('${e.empId}','${e.month}')"><i class="fas fa-file-invoice-dollar"></i> كشف</button><button class="btn btn-sm btn-outline" onclick="printPayslip('${e.empId}','${e.month}')"><i class="fas fa-print"></i> طباعة</button></div></div>`;
+            if (e.netDue < 0) st = `<span class="payroll-carryover">عجز</span>`;
+            else if (e.netDue > 0)
+              st = `<span class="payroll-carryover positive">مستحق</span>`;
+            else st = `<span class="text-muted">مسوّى</span>`;
+
+            const nc = e.netDue < 0 ? "text-danger" : "text-primary";
+
+            const stmtBtnMobile = isWeekly
+              ? `<button class="btn btn-sm btn-warning" onclick="openWeeklyStatement('${e.empId}','${e.month}')"><i class="fas fa-file-invoice-dollar"></i> كشف</button>`
+              : `<button class="btn btn-sm btn-warning" onclick="openStatement('${e.empId}','${e.month}')"><i class="fas fa-file-invoice-dollar"></i> كشف</button>`;
+
+            return `<div class="mobile-card">
+        <div class="mobile-card-header">
+          <div><strong>${e.name}</strong>${isWeekly ? ' <span class="badge" style="background:rgba(14,165,233,0.2);color:var(--info);font-size:0.62rem">أسبوعي</span>' : ""}<br><small class="text-muted">${e.dept} - ${e.position}</small></div>
+          ${st}
+        </div>
+        <div class="mobile-card-row">
+          <span class="label">أيام العمل</span>
+          <span class="value"><input type="number" class="work-days-input" min="${isWeekly ? 0 : 1}" max="${isWeekly ? 7 : 31}" value="${e.workDays}" onchange="updateEmployeeDays('${e.empId}',this.value,'${month}')"/></span>
+        </div>
+        <div class="mobile-card-row">
+          <span class="label">الصافي المستحق</span>
+          <span class="value ${nc}"><strong>${e.netDue.toLocaleString()} ج.س</strong></span>
+        </div>
+        ${
+          !isWeekly && e.previousBalance !== 0
+            ? `<div class="mobile-card-row"><span class="label">رصيد سابق مرحّل</span><span class="value ${e.previousBalance > 0 ? "text-success" : "text-danger"}">${e.previousBalance > 0 ? "+" : ""}${e.previousBalance.toLocaleString()} ج.س</span></div>`
+            : ""
+        }
+        <div class="mobile-card-actions">
+          ${stmtBtnMobile}
+          <button class="btn btn-sm btn-outline" onclick="printPayslip('${e.empId}','${e.month}')"><i class="fas fa-print"></i> طباعة</button>
+        </div>
+      </div>`;
           })
           .join("");
-        const gt = payrollData.reduce((s, p) => s + p.net, 0);
+
+        const gt = payrollData.reduce((s, p) => s + p.netDue, 0);
         document.getElementById("payrollGrandTotal").innerText =
           gt.toLocaleString() + " ج.س";
         document.getElementById("payrollGrandTotal").className =
           gt < 0 ? "text-danger" : "text-primary";
+
         document.getElementById("payrollFilterEmpCount").innerText =
           payrollData.length;
+
         document.getElementById("payrollFilterGross").innerText =
           payrollData.reduce((s, p) => s + p.grossSalary, 0).toLocaleString() +
           " ج.س";
+
         document.getElementById("payrollFilterDeductions").innerText =
           payrollData
             .reduce((s, p) => s + p.totalDeductions, 0)
             .toLocaleString() + " ج.س";
-        const totalCurrentDue = payrollData.reduce(
-          (s, p) => s + p.currentMonthDue,
-          0,
-        );
-        const currentDueEl = document.getElementById("payrollFilterCurrentDue");
-        if (currentDueEl)
-          currentDueEl.innerText = totalCurrentDue.toLocaleString() + " ج.س";
-        const totalPreviousBalance = payrollData.reduce(
-          (s, p) => s + p.previousBalance,
-          0,
-        );
-        const carryOverEl = document.getElementById("payrollFilterCarryOver");
-        if (carryOverEl) {
-          carryOverEl.innerText =
-            totalPreviousBalance.toLocaleString() + " ج.س";
-          carryOverEl.className =
-            totalPreviousBalance > 0 ? "stat-value text-danger" : "stat-value";
-        }
+
         document.getElementById("payrollFilterNet").innerText =
           gt.toLocaleString() + " ج.س";
+
         renderPagination(
           "payrollPagination",
           payrollData.length,
@@ -7146,14 +7326,18 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
             )
             .filter(Boolean),
         );
+        Object.keys(workDaysPerEmployee).forEach((m) => {
+          if (
+            workDaysPerEmployee[m] &&
+            workDaysPerEmployee[m][empId] !== undefined
+          )
+            allMonthsSet.add(m);
+        });
         allMonthsSet.add(normalizePayrollMonth(month));
         const allMonths = [...allMonthsSet].sort();
         let carryOver = 0;
         const rows = [];
         for (const m of allMonths) {
-          const prM = payrollData.find(
-            (p) => p.empId === empId && p.month === m,
-          );
           const wdM = getWD(empId, m);
           const bsM = getEmployeeSalaryForMonth(empId, m);
           const fsM = bsM + ma + ta;
@@ -7228,6 +7412,290 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         };
         applyStmtFilters();
         openModal("statementModal");
+      }
+      function openWeeklyStatement(empId, month) {
+        const emp = employees.find((e) => e.id === empId);
+        if (!emp) return;
+
+        const ma = Number(emp.mealAllowance || 0);
+        const ta = Number(emp.transportAllowance || 0);
+        const monthlySalary = getEmployeeSalaryForMonth(empId, month);
+        const weeklyBase = Math.round(monthlySalary / 4);
+        const weeklyMeal = Math.round(ma / 4);
+        const weeklyTransport = Math.round(ta / 4);
+
+        const weeks = ["1", "2", "3", "4"];
+        let totalNet = 0,
+          totalGross = 0,
+          totalDeductions = 0,
+          totalDays = 0,
+          totalLoans = 0,
+          totalDeduct = 0;
+
+        const rows = weeks.map((w) => {
+          const wd = getWeeklyWD(empId, month, w);
+          const actualDays = Math.max(0, Math.min(7, wd));
+
+          const ab = Math.round((weeklyBase / 7) * actualDays);
+          const am = Math.round((weeklyMeal / 7) * actualDays);
+          const at = Math.round((weeklyTransport / 7) * actualDays);
+          const gs = ab + am + at;
+
+          const weekLoans = loans.filter((l) => {
+            if (l.empId !== empId) return false;
+            const t = normalizePayrollMonth(
+              l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
+            );
+            return t === month && String(l.targetWeek || "") === w;
+          });
+
+          const wLoans = weekLoans
+            .filter((l) => l.type === "سلفة")
+            .reduce((s, l) => s + Number(l.amount), 0);
+          const wDeduct = weekLoans
+            .filter((l) => l.type === "خصم")
+            .reduce((s, l) => s + Number(l.amount), 0);
+          const net = gs - wLoans - wDeduct;
+
+          totalNet += net;
+          totalGross += gs;
+          totalDeductions += wLoans + wDeduct;
+          totalDays += actualDays;
+          totalLoans += wLoans;
+          totalDeduct += wDeduct;
+
+          return {
+            week: w,
+            days: actualDays,
+            base: ab,
+            allowances: am + at,
+            loans: wLoans,
+            deductions: wDeduct,
+            gross: gs,
+            net: net,
+          };
+        });
+
+        const rowsHtml = rows
+          .map((r) => {
+            const weekLoansList = loans.filter((l) => {
+              if (l.empId !== empId) return false;
+              const t = normalizePayrollMonth(
+                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
+              );
+              return t === month && String(l.targetWeek || "") === r.week;
+            });
+
+            const loansDetail =
+              weekLoansList.length > 0
+                ? `<div style="font-size:0.72rem;color:var(--text-muted);margin-top:0.2rem">${weekLoansList.map((l) => `${l.type} ${Number(l.amount).toLocaleString()} (${l.date})`).join(" • ")}</div>`
+                : "";
+
+            return `<tr>
+        <td><strong>الأسبوع ${r.week}</strong>${loansDetail}</td>
+        <td>${r.days} / 7</td>
+        <td>${r.base.toLocaleString()}</td>
+        <td>${r.allowances.toLocaleString()}</td>
+        <td>${r.loans > 0 ? '<span class="negative">' + r.loans.toLocaleString() + "</span>" : "0"}</td>
+        <td>${r.deductions > 0 ? '<span class="negative">' + r.deductions.toLocaleString() + "</span>" : "0"}</td>
+        <td class="${r.net < 0 ? "negative" : "positive"}"><strong>${r.net.toLocaleString()}</strong></td>
+      </tr>`;
+          })
+          .join("");
+
+        const [y, mo] = month.split("-");
+        const monthNames = [
+          "يناير",
+          "فبراير",
+          "مارس",
+          "أبريل",
+          "مايو",
+          "يونيو",
+          "يوليو",
+          "أغسطس",
+          "سبتمبر",
+          "أكتوبر",
+          "نوفمبر",
+          "ديسمبر",
+        ];
+        const monthText = `${monthNames[parseInt(mo) - 1]} ${y}`;
+
+        document.getElementById("statementContent").innerHTML =
+          `<div class="statement-header">
+      <h3><i class="fas fa-calendar-week"></i> ${emp.name}
+        <span class="badge" style="background:rgba(14,165,233,0.2);color:var(--info);font-size:0.7rem">أسبوعي</span>
+      </h3>
+      <div class="statement-info-grid">
+        <div class="statement-info-item"><div class="label">القسم</div><div class="value">${emp.dept}</div></div>
+        <div class="statement-info-item"><div class="label">الوظيفة</div><div class="value">${emp.position || "-"}</div></div>
+        <div class="statement-info-item"><div class="label">الشهر</div><div class="value">${monthText}</div></div>
+        <div class="statement-info-item"><div class="label">الراتب الشهري</div><div class="value">${monthlySalary.toLocaleString()} ج.س</div></div>
+        <div class="statement-info-item"><div class="label">الراتب الأسبوعي (÷4)</div><div class="value text-primary">${weeklyBase.toLocaleString()} ج.س</div></div>
+        <div class="statement-info-item"><div class="label">إجمالي أيام العمل</div><div class="value">${totalDays} يوم</div></div>
+      </div>
+    </div>
+
+    <div style="background:var(--gold-soft);border:1.5px solid rgba(212,175,55,.45);border-radius:12px;padding:0.9rem;margin-bottom:1rem;font-size:0.85rem">
+      <i class="fas fa-info-circle" style="color:var(--gold)"></i>
+      <strong>كيفية الحساب:</strong>
+      الراتب الأسبوعي = (الراتب الشهري ÷ 4) × (أيام العمل ÷ 7)
+    </div>
+
+    <div style="overflow-x:auto">
+      <table class="statement-table">
+        <thead>
+          <tr>
+            <th>الأسبوع</th>
+            <th>الأيام</th>
+            <th>الراتب الأسبوعي</th>
+            <th>البدلات</th>
+            <th>سلفيات</th>
+            <th>خصومات</th>
+            <th>الصافي</th>
+          </tr>
+        </thead>
+        <tbody>${rowsHtml}</tbody>
+        <tfoot>
+          <tr style="background:linear-gradient(135deg,var(--gold-soft),transparent);font-weight:800">
+            <td>الإجمالي</td>
+            <td>${totalDays} يوم</td>
+            <td>${rows.reduce((s, r) => s + r.base, 0).toLocaleString()}</td>
+            <td>${rows.reduce((s, r) => s + r.allowances, 0).toLocaleString()}</td>
+            <td class="negative">${totalLoans.toLocaleString()}</td>
+            <td class="negative">${totalDeduct.toLocaleString()}</td>
+            <td class="${totalNet < 0 ? "negative" : "positive"}"><strong>${totalNet.toLocaleString()}</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="statement-summary">
+      <div class="statement-summary-item">
+        <div class="label">إجمالي الراتب الأسبوعي</div>
+        <div class="value">${rows.reduce((s, r) => s + r.base, 0).toLocaleString()} ج.س</div>
+      </div>
+      <div class="statement-summary-item">
+        <div class="label">إجمالي البدلات</div>
+        <div class="value">${rows.reduce((s, r) => s + r.allowances, 0).toLocaleString()} ج.س</div>
+      </div>
+      <div class="statement-summary-item">
+        <div class="label">إجمالي الخصومات</div>
+        <div class="value negative">${totalDeductions.toLocaleString()} ج.س</div>
+      </div>
+      <div class="statement-summary-item">
+        <div class="label">الصافي المستحق للشهر</div>
+        <div class="value ${totalNet < 0 ? "negative" : "positive"}">${totalNet.toLocaleString()} ج.س</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="printWeeklyStatement('${empId}','${month}')"><i class="fas fa-print"></i> طباعة الكشف</button>
+      <button class="btn btn-outline" onclick="closeModal('statementModal')"><i class="fas fa-times"></i> إغلاق</button>
+    </div>`;
+
+        window._weeklyStmt = { emp, month, rows, totalNet, totalDays };
+        openModal("statementModal");
+      }
+      function printWeeklyStatement(empId, month) {
+        const s = window._weeklyStmt;
+        if (!s) return;
+        const emp = s.emp;
+        const monthlySalary = getEmployeeSalaryForMonth(empId, month);
+        const weeklyBase = Math.round(monthlySalary / 4);
+
+        const rowsHtml = s.rows
+          .map((r) => {
+            const weekLoansList = loans.filter((l) => {
+              if (l.empId !== empId) return false;
+              const t = normalizePayrollMonth(
+                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
+              );
+              return t === month && String(l.targetWeek || "") === r.week;
+            });
+            const loansDetail =
+              weekLoansList.length > 0
+                ? `<br><small style="color:#666;font-size:8pt">${weekLoansList.map((l) => `${l.type} ${Number(l.amount).toLocaleString()}`).join(" • ")}</small>`
+                : "";
+
+            return `<tr>
+        <td><strong>الأسبوع ${r.week}</strong>${loansDetail}</td>
+        <td>${r.days} / 7</td>
+        <td>${r.base.toLocaleString()}</td>
+        <td>${r.allowances.toLocaleString()}</td>
+        <td style="color:#dc3545">${r.loans.toLocaleString()}</td>
+        <td style="color:#dc3545">${r.deductions.toLocaleString()}</td>
+        <td style="color:${r.net < 0 ? "#dc3545" : "#198754"};font-weight:bold">${r.net.toLocaleString()}</td>
+      </tr>`;
+          })
+          .join("");
+
+        const [y, mo] = month.split("-");
+        const monthNames = [
+          "يناير",
+          "فبراير",
+          "مارس",
+          "أبريل",
+          "مايو",
+          "يونيو",
+          "يوليو",
+          "أغسطس",
+          "سبتمبر",
+          "أكتوبر",
+          "نوفمبر",
+          "ديسمبر",
+        ];
+        const monthText = `${monthNames[parseInt(mo) - 1]} ${y}`;
+
+        printContent(
+          `${getPrintHeader("كشف حساب أسبوعي", `${emp.name} - ${monthText}`)}
+    <div class="summary-box">
+      <div class="summary-item"><div class="label">الراتب الشهري</div><div class="value">${monthlySalary.toLocaleString()}</div></div>
+      <div class="summary-item"><div class="label">الراتب الأسبوعي (÷4)</div><div class="value">${weeklyBase.toLocaleString()}</div></div>
+      <div class="summary-item"><div class="label">إجمالي الأيام</div><div class="value">${s.totalDays}</div></div>
+      <div class="summary-item"><div class="label">الصافي للشهر</div><div class="value" style="color:${s.totalNet < 0 ? "#dc3545" : "#d4af37"}">${s.totalNet.toLocaleString()}</div></div>
+    </div>
+    <div style="background:#f9f9f9;padding:15px;border-radius:8px;margin-bottom:20px;border:1px solid #e0e0e0">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+        <div><strong>الموظف:</strong> ${emp.name}</div>
+        <div><strong>القسم:</strong> ${emp.dept}</div>
+        <div><strong>الوظيفة:</strong> ${emp.position || "-"}</div>
+        <div><strong>نوع الراتب:</strong> أسبوعي</div>
+        <div><strong>الشهر:</strong> ${monthText}</div>
+        <div><strong>عدد الأسابيع:</strong> 4</div>
+      </div>
+    </div>
+    <table class="payroll-summary-table">
+      <thead>
+        <tr>
+          <th>الأسبوع</th>
+          <th>الأيام</th>
+          <th>الراتب الأسبوعي</th>
+          <th>البدلات</th>
+          <th>سلفيات</th>
+          <th>خصومات</th>
+          <th>الصافي</th>
+        </tr>
+      </thead>
+      <tbody>${rowsHtml}</tbody>
+      <tfoot>
+        <tr style="background:#fff9e6;font-weight:bold">
+          <td>الإجمالي</td>
+          <td>${s.totalDays} يوم</td>
+          <td>${s.rows.reduce((a, r) => a + r.base, 0).toLocaleString()}</td>
+          <td>${s.rows.reduce((a, r) => a + r.allowances, 0).toLocaleString()}</td>
+          <td style="color:#dc3545">${s.rows.reduce((a, r) => a + r.loans, 0).toLocaleString()}</td>
+          <td style="color:#dc3545">${s.rows.reduce((a, r) => a + r.deductions, 0).toLocaleString()}</td>
+          <td style="color:${s.totalNet < 0 ? "#dc3545" : "#198754"}"><strong>${s.totalNet.toLocaleString()}</strong></td>
+        </tr>
+      </tfoot>
+    </table>
+    <div style="margin-top:20px;padding:15px;background:#fff9e6;border:2px solid #d4af37;border-radius:8px;text-align:center">
+      <div style="font-size:12pt;color:#666;margin-bottom:10px">الصافي الإجمالي المستحق للشهر</div>
+      <div style="font-size:22pt;font-weight:bold;color:${s.totalNet < 0 ? "#dc3545" : "#198754"}">${s.totalNet.toLocaleString()} ج.س</div>
+    </div>
+    ${getSignatures()}${getPrintFooter()}`,
+          `كشف أسبوعي ${emp.name}`,
+        );
       }
       function applyStmtFilters() {
         const s = window._stmt;
@@ -7340,6 +7808,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
             الوظيفة: e.position || "-",
             الراتب_الأساسي: e.salary,
             الراتب_الحالي: getCurrentEffectiveSalary(e.id),
+            نوع_الراتب: e.paymentType === "weekly" ? "أسبوعي" : "شهري",
             الحالة: e.suspended ? "معلق" : "نشط",
           })),
         );
@@ -7361,6 +7830,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
             المبلغ: l.amount,
             التاريخ: l.date,
             الشهر: l.targetMonth,
+            الأسبوع: l.targetWeek || "-",
           })),
         );
         const wb = XLSX.utils.book_new();
@@ -7374,6 +7844,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
       function exportPayrollToExcel() {
         if (!payrollData.length) return showToast("لا بيانات", "error");
         const m = payrollData[0].month;
+        const isWeekly = payrollMode === "weekly";
         const ws = XLSX.utils.json_to_sheet(
           payrollData.map((p, i) => ({
             "#": i + 1,
@@ -7383,14 +7854,14 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
             البدلات: p.allowances,
             سلفيات: p.currentLoans,
             خصومات: p.currentDeductions,
-            مستحق_الشهر_الحالي: p.currentMonthDue,
-            متبقي_الأشهر_السابقة: p.previousBalance,
-            الصافي_المستحق: p.netDue,
+            الصافي: p.netDue,
+            النوع: isWeekly ? "أسبوعي" : "شهري",
           })),
         );
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, `رواتب_${m}`);
-        XLSX.writeFile(wb, `رواتب_${m}.xlsx`);
+        const sheetName = isWeekly ? `رواتب_أسبوعي_${m}` : `رواتب_${m}`;
+        XLSX.utils.book_append_sheet(wb, ws, sheetName);
+        XLSX.writeFile(wb, `${sheetName}.xlsx`);
         showToast("✅ تم التصدير");
       }
       function exportExpensesToExcel() {
@@ -7447,6 +7918,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
               الاسم: e.name,
               القسم: e.dept,
               الراتب: e.salary,
+              نوع_الراتب: e.paymentType === "weekly" ? "أسبوعي" : "شهري",
             })),
           ),
           "الموظفين",
@@ -7460,6 +7932,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
               النوع: l.type,
               المبلغ: l.amount,
               الشهر: l.targetMonth,
+              الأسبوع: l.targetWeek || "-",
             })),
           ),
           "السلفيات",
@@ -7519,7 +7992,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         setLoading(true);
         try {
           const backupData = {
-            version: "2.4.1",
+            version: "2.5.0",
             exportDate: new Date().toISOString(),
             user: currentUser.email,
             employees: employees,
@@ -7528,6 +8001,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
             debts: debts,
             salaryHistory: salaryHistory,
             workDays: workDaysPerEmployee,
+            workDaysWeekly: workDaysWeekly,
           };
           const json = JSON.stringify(backupData, null, 2);
           const blob = new Blob([json], { type: "application/json" });
@@ -7604,6 +8078,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
               "debts",
               "salaryHistory",
               "workDays",
+              "weeklyWorkDays",
             ];
             for (const col of collections) {
               const snap = await db
@@ -7726,6 +8201,20 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
                 });
             }
           }
+          if (data.workDaysWeekly) {
+            for (const key in data.workDaysWeekly) {
+              await db
+                .collection("users")
+                .doc(uid)
+                .collection("weeklyWorkDays")
+                .doc(key)
+                .set({
+                  weekKey: key,
+                  days: data.workDaysWeekly[key],
+                  updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                });
+            }
+          }
           pendingImportData = null;
           await loadAllData();
           showToast(
@@ -7756,6 +8245,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
             "debts",
             "salaryHistory",
             "workDays",
+            "weeklyWorkDays",
           ];
           for (const col of collections) {
             const snap = await db
@@ -7773,6 +8263,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           debts = [];
           salaryHistory = [];
           workDaysPerEmployee = {};
+          workDaysWeekly = {};
           payrollData = [];
           popSelects();
           updateDebtPartyList();
@@ -7829,7 +8320,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
       function printAllEmployees() {
         if (!employees.length) return showToast("لا بيانات", "error");
         printContent(
-          `${getPrintHeader("كشف الموظفين", `إجمالي: ${employees.length}`)}<table class="payroll-summary-table"><thead><tr><th>#</th><th>الاسم</th><th>القسم</th><th>الوظيفة</th><th>الهاتف</th><th>الراتب الحالي</th><th>تاريخ التعيين</th><th>الحالة</th></tr></thead><tbody>${employees.map((e, i) => `<tr><td>${i + 1}</td><td>${e.name}</td><td>${e.dept}</td><td>${e.position || "-"}</td><td>${e.phone || "-"}</td><td>${getCurrentEffectiveSalary(e.id).toLocaleString()} ج.س</td><td>${e.joinDate || "-"}</td><td>${e.suspended ? '<span style="color:#dc3545;font-weight:bold">معلق</span>' : '<span style="color:#198754;font-weight:bold">نشط</span>'}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
+          `${getPrintHeader("كشف الموظفين", `إجمالي: ${employees.length}`)}<table class="payroll-summary-table"><thead><tr><th>#</th><th>الاسم</th><th>القسم</th><th>الوظيفة</th><th>الهاتف</th><th>الراتب الحالي</th><th>نوع الراتب</th><th>الحالة</th></tr></thead><tbody>${employees.map((e, i) => `<tr><td>${i + 1}</td><td>${e.name}</td><td>${e.dept}</td><td>${e.position || "-"}</td><td>${e.phone || "-"}</td><td>${getCurrentEffectiveSalary(e.id).toLocaleString()} ج.س</td><td>${e.paymentType === "weekly" ? "أسبوعي" : "شهري"}</td><td>${e.suspended ? '<span style="color:#dc3545;font-weight:bold">معلق</span>' : '<span style="color:#198754;font-weight:bold">نشط</span>'}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
           "الموظفين",
         );
       }
@@ -7843,22 +8334,233 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           .reduce((s, l) => s + Number(l.amount), 0);
         const grandTotal = totalLoans + totalDeductions;
         printContent(
-          `${getPrintHeader("كشف السلفيات", `عدد: ${filteredLoans.length}`)}<div class="summary-box"><div class="summary-item"><div class="label">عدد المعاملات</div><div class="value">${filteredLoans.length}</div></div><div class="summary-item"><div class="label">إجمالي السلفيات</div><div class="value" style="color:#d4af37">${totalLoans.toLocaleString()} ج.س</div></div><div class="summary-item"><div class="label">إجمالي الخصومات</div><div class="value" style="color:#dc3545">${totalDeductions.toLocaleString()} ج.س</div></div><div class="summary-item"><div class="label">الإجمالي الكلي</div><div class="value">${grandTotal.toLocaleString()} ج.س</div></div></div><table class="payroll-summary-table"><thead><tr><th>#</th><th>الموظف</th><th>النوع</th><th>المبلغ</th><th>التاريخ</th><th>الشهر</th></tr></thead><tbody>${filteredLoans.map((l, i) => `<tr><td>${i + 1}</td><td>${l.empName}</td><td>${l.type}</td><td>${Number(l.amount).toLocaleString()}</td><td>${l.date}</td><td>${l.targetMonth || "-"}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
+          `${getPrintHeader("كشف السلفيات", `عدد: ${filteredLoans.length}`)}<div class="summary-box"><div class="summary-item"><div class="label">عدد المعاملات</div><div class="value">${filteredLoans.length}</div></div><div class="summary-item"><div class="label">إجمالي السلفيات</div><div class="value" style="color:#d4af37">${totalLoans.toLocaleString()} ج.س</div></div><div class="summary-item"><div class="label">إجمالي الخصومات</div><div class="value" style="color:#dc3545">${totalDeductions.toLocaleString()} ج.س</div></div><div class="summary-item"><div class="label">الإجمالي الكلي</div><div class="value">${grandTotal.toLocaleString()} ج.س</div></div></div><table class="payroll-summary-table"><thead><tr><th>#</th><th>الموظف</th><th>النوع</th><th>المبلغ</th><th>التاريخ</th><th>الشهر</th><th>الأسبوع</th></tr></thead><tbody>${filteredLoans.map((l, i) => `<tr><td>${i + 1}</td><td>${l.empName}</td><td>${l.type}</td><td>${Number(l.amount).toLocaleString()}</td><td>${l.date}</td><td>${l.targetMonth || "-"}</td><td>${l.targetWeek || "-"}</td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
           "السلفيات",
         );
       }
       function printAllPayroll() {
-        if (!payrollData.length) return showToast("لا بيانات", "error");
-        const m = payrollData[0].month;
-        const totalGross = payrollData.reduce((s, p) => s + p.grossSalary, 0);
-        const totalDeductions = payrollData.reduce(
+        const month = normalizePayrollMonth(
+          document.getElementById("payrollMonth").value,
+        );
+        if (!month) return showToast("يرجى تحديد الشهر", "error");
+
+        const fe = document.getElementById("payrollFilterEmp").value;
+
+        // ========== 1. حساب الموظفين الشهريين ==========
+        const monthlyEmps =
+          fe === "all"
+            ? employees.filter(
+                (e) => e.paymentType !== "weekly" && !e.suspended,
+              )
+            : employees.filter(
+                (e) =>
+                  e.id === fe && e.paymentType !== "weekly" && !e.suspended,
+              );
+
+        const monthlyData = [];
+        monthlyEmps.forEach((emp) => {
+          const ma = Number(emp.mealAllowance || 0);
+          const ta = Number(emp.transportAllowance || 0);
+          const wd = getWD(emp.id, month);
+          const bs = getEmployeeSalaryForMonth(emp.id, month);
+          const ab = Math.round((bs / 30) * wd);
+          const al = Math.round((ma / 30) * wd) + Math.round((ta / 30) * wd);
+          const gs = ab + al;
+
+          const relevant = new Set();
+          Object.keys(workDaysPerEmployee).forEach((m) => {
+            if (
+              workDaysPerEmployee[m] &&
+              workDaysPerEmployee[m][emp.id] !== undefined &&
+              m <= month
+            ) {
+              relevant.add(m);
+            }
+          });
+          loans.forEach((l) => {
+            if (l.empId !== emp.id) return;
+            const t = normalizePayrollMonth(
+              l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
+            );
+            if (t && t <= month) relevant.add(t);
+          });
+          relevant.add(month);
+
+          const sorted = [...relevant].sort();
+          const allMonths = [];
+          let [y, mo] = sorted[0].split("-").map(Number);
+          const [ey, em2] = month.split("-").map(Number);
+          while (y < ey || (y === ey && mo <= em2)) {
+            allMonths.push(`${y}-${String(mo).padStart(2, "0")}`);
+            mo++;
+            if (mo > 12) {
+              mo = 1;
+              y++;
+            }
+          }
+
+          let runningBalance = 0;
+          let currentLoans = 0;
+          let currentDeductions = 0;
+
+          for (const m of allMonths) {
+            const wdM = getWD(emp.id, m);
+            const bsM = getEmployeeSalaryForMonth(emp.id, m);
+            const monthSalary = Math.round(((bsM + ma + ta) / 30) * wdM);
+            const monthLoans = loans.filter((l) => {
+              if (l.empId !== emp.id) return false;
+              const t = normalizePayrollMonth(
+                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
+              );
+              return t === m;
+            });
+            const monthDebits = monthLoans.reduce(
+              (s, l) => s + Number(l.amount),
+              0,
+            );
+            if (m === month) {
+              currentLoans = monthLoans
+                .filter((l) => l.type === "سلفة")
+                .reduce((s, l) => s + Number(l.amount), 0);
+              currentDeductions = monthLoans
+                .filter((l) => l.type === "خصم")
+                .reduce((s, l) => s + Number(l.amount), 0);
+            }
+            runningBalance = runningBalance + monthSalary - monthDebits;
+          }
+
+          monthlyData.push({
+            name: emp.name,
+            type: "شهري",
+            workDays: wd,
+            grossSalary: gs,
+            totalDeductions: currentLoans + currentDeductions,
+            netDue: runningBalance,
+          });
+        });
+
+        // ========== 2. حساب الموظفين الأسبوعيين (4 أسابيع) ==========
+        const weeklyEmps =
+          fe === "all"
+            ? employees.filter(
+                (e) => e.paymentType === "weekly" && !e.suspended,
+              )
+            : employees.filter(
+                (e) =>
+                  e.id === fe && e.paymentType === "weekly" && !e.suspended,
+              );
+
+        const weeklyData = [];
+        weeklyEmps.forEach((emp) => {
+          const ma = Number(emp.mealAllowance || 0);
+          const ta = Number(emp.transportAllowance || 0);
+          const monthlySalary = getEmployeeSalaryForMonth(emp.id, month);
+          const weeklyBase = Math.round(monthlySalary / 4);
+
+          let totalGross = 0;
+          let totalDeductions = 0;
+          let totalNet = 0;
+          let totalDays = 0;
+
+          ["1", "2", "3", "4"].forEach((w) => {
+            const wd = getWeeklyWD(emp.id, month, w);
+            const actualDays = Math.max(0, Math.min(7, wd));
+            const ab = Math.round((weeklyBase / 7) * actualDays);
+            const am = Math.round((Math.round(ma / 4) / 7) * actualDays);
+            const at = Math.round((Math.round(ta / 4) / 7) * actualDays);
+            const gs = ab + am + at;
+
+            const weekLoans = loans.filter((l) => {
+              if (l.empId !== emp.id) return false;
+              const t = normalizePayrollMonth(
+                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
+              );
+              return t === month && String(l.targetWeek || "") === w;
+            });
+            const wLoans = weekLoans
+              .filter((l) => l.type === "سلفة")
+              .reduce((s, l) => s + Number(l.amount), 0);
+            const wDeduct = weekLoans
+              .filter((l) => l.type === "خصم")
+              .reduce((s, l) => s + Number(l.amount), 0);
+
+            totalGross += gs;
+            totalDeductions += wLoans + wDeduct;
+            totalNet += gs - wLoans - wDeduct;
+            totalDays += actualDays;
+          });
+
+          weeklyData.push({
+            name: emp.name,
+            type: "أسبوعي",
+            workDays: totalDays,
+            grossSalary: totalGross,
+            totalDeductions: totalDeductions,
+            netDue: totalNet,
+          });
+        });
+
+        const allData = [...monthlyData, ...weeklyData];
+
+        if (!allData.length)
+          return showToast("لا توجد بيانات للطباعة", "error");
+
+        const totalGross = allData.reduce((s, p) => s + p.grossSalary, 0);
+        const totalDeductions = allData.reduce(
           (s, p) => s + p.totalDeductions,
           0,
         );
-        const totalNet = payrollData.reduce((s, p) => s + p.net, 0);
+        const totalNet = allData.reduce((s, p) => s + p.netDue, 0);
+
         printContent(
-          `${getPrintHeader("كشف الرواتب", `شهر: ${m}`)}<div class="summary-box"><div class="summary-item"><div class="label">عدد الموظفين</div><div class="value">${payrollData.length}</div></div><div class="summary-item"><div class="label">إجمالي الاستحقاقات</div><div class="value">${totalGross.toLocaleString()} ج.س</div></div><div class="summary-item"><div class="label">إجمالي الخصومات</div><div class="value" style="color:#dc3545">${totalDeductions.toLocaleString()} ج.س</div></div><div class="summary-item"><div class="label">الصافي المستحق</div><div class="value" style="color:${totalNet < 0 ? "#dc3545" : "#d4af37"}">${totalNet.toLocaleString()} ج.س</div></div></div><table class="payroll-summary-table"><thead><tr><th>#</th><th>الموظف</th><th>الأيام</th><th>الإجمالي</th><th>الخصومات</th><th>الصافي المستحق</th></tr></thead><tbody>${payrollData.map((p, i) => `<tr><td>${i + 1}</td><td>${p.name}</td><td>${p.workDays}</td><td>${p.grossSalary.toLocaleString()}</td><td style="color:#dc3545">${p.totalDeductions.toLocaleString()}</td><td style="color:${p.netDue < 0 ? "#dc3545" : "#d4af37"}"><strong>${p.netDue.toLocaleString()}</strong></td></tr>`).join("")}</tbody></table>${getSignatures()}${getPrintFooter()}`,
-          "الرواتب",
+          `${getPrintHeader("كشف الرواتب الكامل", `شهر: ${month}`)}
+    <div class="summary-box">
+      <div class="summary-item"><div class="label">عدد الموظفين</div><div class="value">${allData.length}</div></div>
+      <div class="summary-item"><div class="label">إجمالي الاستحقاقات</div><div class="value">${totalGross.toLocaleString()} ج.س</div></div>
+      <div class="summary-item"><div class="label">إجمالي الخصومات</div><div class="value" style="color:#dc3545">${totalDeductions.toLocaleString()} ج.س</div></div>
+      <div class="summary-item"><div class="label">الصافي المستحق</div><div class="value" style="color:${totalNet < 0 ? "#dc3545" : "#d4af37"}">${totalNet.toLocaleString()} ج.س</div></div>
+    </div>
+    <div style="background:#f9f9f9;padding:12px;border-radius:8px;margin-bottom:15px;border:1px solid #e0e0e0;font-size:10pt">
+      <strong>ملاحظة:</strong> الراتب الأسبوعي = (الراتب الشهري ÷ 4) × (أيام العمل ÷ 7)
+    </div>
+    <table class="payroll-summary-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>الموظف</th>
+          <th>النوع</th>
+          <th>الأيام</th>
+          <th>الإجمالي</th>
+          <th>الخصومات</th>
+          <th>الصافي المستحق</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${allData
+          .map(
+            (p, i) => `<tr>
+          <td>${i + 1}</td>
+          <td>${p.name}</td>
+          <td>${p.type === "أسبوعي" ? '<span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:10px;font-size:9pt;font-weight:bold">أسبوعي</span>' : '<span style="background:#fff9e6;color:#8a6a12;padding:2px 8px;border-radius:10px;font-size:9pt;font-weight:bold">شهري</span>'}</td>
+          <td>${p.workDays}</td>
+          <td>${p.grossSalary.toLocaleString()}</td>
+          <td style="color:#dc3545">${p.totalDeductions.toLocaleString()}</td>
+          <td style="color:${p.netDue < 0 ? "#dc3545" : "#d4af37"}"><strong>${p.netDue.toLocaleString()}</strong></td>
+        </tr>`,
+          )
+          .join("")}
+      </tbody>
+      <tfoot>
+        <tr style="background:#fff9e6;font-weight:bold">
+          <td colspan="4">الإجمالي الكلي</td>
+          <td>${totalGross.toLocaleString()}</td>
+          <td style="color:#dc3545">${totalDeductions.toLocaleString()}</td>
+          <td style="color:${totalNet < 0 ? "#dc3545" : "#d4af37"}"><strong>${totalNet.toLocaleString()}</strong></td>
+        </tr>
+      </tfoot>
+    </table>
+    ${getSignatures()}${getPrintFooter()}`,
+          `كشف الرواتب ${month}`,
         );
       }
       function printExpenses() {
@@ -7917,8 +8619,10 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         );
         if (!p) return;
         const monthBase = getEmployeeSalaryForMonth(empId, month);
+        const isWeekly = p.isWeekly;
+        const week = document.getElementById("payrollWeek").value || "1";
         printContent(
-          `${getPrintHeader("قسيمة راتب", `${e.name} - ${month}`)}<div class="work-days-info"><i class="fas fa-calendar-day"></i> أيام العمل: <strong>${p.workDays}</strong> يوم</div>${p.previousBalance > 0 ? `<div style="background:#ffebee;border:2px solid #dc3545;border-radius:8px;padding:10px;margin:15px 0;text-align:center;color:#dc3545"><strong>متبقي من الأشهر السابقة: -${p.previousBalance.toLocaleString()} ج.س</strong></div>` : ""}<table class="doc-table"><thead><tr><th>البيان</th><th>الكامل</th><th>الفعلي</th></tr></thead><tbody><tr><td>الراتب الأساسي</td><td>${monthBase.toLocaleString()}</td><td><strong>${p.actualBaseSalary.toLocaleString()}</strong></td></tr><tr><td>البدلات</td><td>${(Number(e.mealAllowance || 0) + Number(e.transportAllowance || 0)).toLocaleString()}</td><td>${p.allowances.toLocaleString()}</td></tr><tr><td>الخصومات</td><td>-</td><td style="color:#dc3545">${p.totalDeductions.toLocaleString()}</td></tr><tr style="background:${p.netDue < 0 ? "#dc3545" : "#d4af37"};color:#fff;font-size:16pt"><td><strong>الصافي المستحق</strong></td><td colspan="2"><strong>${p.netDue.toLocaleString()} ج.س</strong></td></tr></tbody></table>${getSignatures()}${getPrintFooter()}`,
+          `${getPrintHeader(isWeekly ? "قسيمة راتب أسبوعي" : "قسيمة راتب", `${e.name} - ${month}${isWeekly ? " - أسبوع " + week : ""}`)}<div class="work-days-info"><i class="fas fa-calendar-day"></i> أيام العمل: <strong>${p.workDays}</strong> يوم</div>${!isWeekly && p.previousBalance > 0 ? `<div style="background:#ffebee;border:2px solid #dc3545;border-radius:8px;padding:10px;margin:15px 0;text-align:center;color:#dc3545"><strong>متبقي من الأشهر السابقة: -${p.previousBalance.toLocaleString()} ج.س</strong></div>` : ""}<table class="doc-table"><thead><tr><th>البيان</th><th>الكامل</th><th>الفعلي</th></tr></thead><tbody><tr><td>${isWeekly ? "الراتب الأسبوعي (الشهري ÷ 4)" : "الراتب الأساسي"}</td><td>${(isWeekly ? p.baseSalary : monthBase).toLocaleString()}</td><td><strong>${p.actualBaseSalary.toLocaleString()}</strong></td></tr><tr><td>البدلات</td><td>${(Number(e.mealAllowance || 0) + Number(e.transportAllowance || 0)).toLocaleString()}</td><td>${p.allowances.toLocaleString()}</td></tr><tr><td>الخصومات</td><td>-</td><td style="color:#dc3545">${p.totalDeductions.toLocaleString()}</td></tr><tr style="background:${p.netDue < 0 ? "#dc3545" : "#d4af37"};color:#fff;font-size:16pt"><td><strong>${isWeekly ? "الصافي الأسبوعي" : "الرصيد التراكمي المستحق"}</strong></td><td colspan="2"><strong>${p.netDue.toLocaleString()} ج.س</strong></td></tr></tbody></table>${getSignatures()}${getPrintFooter()}`,
           "قسيمة",
         );
       }
@@ -7935,7 +8639,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         if (!l) return;
         const e = employees.find((x) => x.id === l.empId);
         printContent(
-          `${getPrintHeader(`سند ${l.type}`, `رقم: #${loanId.slice(-6).toUpperCase()}`)}<div style="border:2px solid #d4af37;padding:20px;border-radius:8px"><div style="display:flex;justify-content:space-between;margin-bottom:20px;padding:12px;background:#fff;border-radius:6px"><div><p><strong>الموظف:</strong> ${l.empName}</p><p><strong>القسم:</strong> ${e ? e.dept : "-"}</p></div><div style="text-align:left"><p><strong>التاريخ:</strong> ${l.date}</p><p><strong>الوقت:</strong> ${l.time || "--:--"}</p></div></div><table class="doc-table"><tr><th>البيان</th><th>المبلغ</th></tr><tr><td>${l.type}</td><td><strong>${Number(l.amount).toLocaleString()} ج.س</strong></td></tr></table><div style="font-size:24px;font-weight:bold;color:#d4af37;margin:10px 0;text-align:center">${Number(l.amount).toLocaleString()} ج.س</div></div>${getSignatures()}${getPrintFooter()}`,
+          `${getPrintHeader(`سند ${l.type}`, `رقم: #${loanId.slice(-6).toUpperCase()}`)}<div style="border:2px solid #d4af37;padding:20px;border-radius:8px"><div style="display:flex;justify-content:space-between;margin-bottom:20px;padding:12px;background:#fff;border-radius:6px"><div><p><strong>الموظف:</strong> ${l.empName}</p><p><strong>القسم:</strong> ${e ? e.dept : "-"}</p></div><div style="text-align:left"><p><strong>التاريخ:</strong> ${l.date}</p><p><strong>الوقت:</strong> ${l.time || "--:--"}</p></div></div><table class="doc-table"><tr><th>البيان</th><th>المبلغ</th></tr><tr><td>${l.type}</td><td><strong>${Number(l.amount).toLocaleString()} ج.س</strong></td></tr>${l.targetWeek ? `<tr><td>يخصم من الأسبوع</td><td>${l.targetWeek}</td></tr>` : ""}</table><div style="font-size:24px;font-weight:bold;color:#d4af37;margin:10px 0;text-align:center">${Number(l.amount).toLocaleString()} ج.س</div></div>${getSignatures()}${getPrintFooter()}`,
           "سند",
         );
       }
