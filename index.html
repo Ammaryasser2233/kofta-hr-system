@@ -3386,7 +3386,7 @@
             >
               <i class="fas fa-exclamation-triangle"></i>
               <div class="info-text">
-                <strong>تنبيه:</strong> يوجد مبالغ مرحّلة من أشهر سابقة.
+                <strong>تنبيه:</strong> يوجد رصيد مرحّل من أسابيع أو أشهر سابقة.
               </div>
             </div>
             <div class="filter-summary">
@@ -6231,6 +6231,113 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
           ? workDaysWeekly[key][id]
           : 7;
       }
+      function getWeeklyLoanWeek(loan, month) {
+        const loanMonth = normalizePayrollMonth(
+          loan.targetMonth || (loan.date ? loan.date.substring(0, 7) : ""),
+        );
+        if (loanMonth !== month) return "";
+
+        const explicitWeek = String(loan.targetWeek || "").trim();
+        const explicitMatch = explicitWeek.match(/[1-4]/);
+        if (explicitMatch) return explicitMatch[0];
+
+        // Older records may not have a week: use the transaction date, or week 4
+        // for month-only records so they are not silently omitted.
+        const dateMonth = loan.date ? loan.date.substring(0, 7) : "";
+        if (dateMonth === month && loan.date.length >= 10) {
+          const day = Number(loan.date.substring(8, 10));
+          if (day >= 1 && day <= 31) return String(Math.min(4, Math.ceil(day / 7)));
+        }
+        return "4";
+      }
+      function calculateWeeklyPayroll(emp, throughMonth, throughWeek = "4") {
+        const selectedWeek = Math.max(1, Math.min(4, Number(throughWeek) || 1));
+        const relevantMonths = new Set([throughMonth]);
+
+        Object.keys(workDaysWeekly).forEach((key) => {
+          const match = key.match(/^(\d{4}-\d{2})-W[1-4]$/);
+          if (
+            match &&
+            match[1] <= throughMonth &&
+            workDaysWeekly[key] &&
+            workDaysWeekly[key][emp.id] !== undefined
+          ) {
+            relevantMonths.add(match[1]);
+          }
+        });
+        loans.forEach((loan) => {
+          if (loan.empId !== emp.id) return;
+          const loanMonth = normalizePayrollMonth(
+            loan.targetMonth || (loan.date ? loan.date.substring(0, 7) : ""),
+          );
+          if (loanMonth && loanMonth <= throughMonth) relevantMonths.add(loanMonth);
+        });
+
+        const firstMonth = [...relevantMonths].sort()[0];
+        const [startYear, startMonth] = firstMonth.split("-").map(Number);
+        const [endYear, endMonth] = throughMonth.split("-").map(Number);
+        const months = [];
+        let year = startYear;
+        let monthNumber = startMonth;
+        while (year < endYear || (year === endYear && monthNumber <= endMonth)) {
+          months.push(`${year}-${String(monthNumber).padStart(2, "0")}`);
+          monthNumber++;
+          if (monthNumber > 12) {
+            monthNumber = 1;
+            year++;
+          }
+        }
+
+        const mealAllowance = Number(emp.mealAllowance || 0);
+        const transportAllowance = Number(emp.transportAllowance || 0);
+        let balance = 0;
+        const currentMonthRows = [];
+
+        months.forEach((m) => {
+          const monthlySalary = getEmployeeSalaryForMonth(emp.id, m);
+          const weeklyBase = Math.round(monthlySalary / 4);
+          const weeklyMeal = Math.round(mealAllowance / 4);
+          const weeklyTransport = Math.round(transportAllowance / 4);
+          const lastWeek = m === throughMonth ? selectedWeek : 4;
+
+          for (let weekNumber = 1; weekNumber <= lastWeek; weekNumber++) {
+            const week = String(weekNumber);
+            const days = Math.max(0, Math.min(7, getWeeklyWD(emp.id, m, week)));
+            const base = Math.round((weeklyBase / 7) * days);
+            const meal = Math.round((weeklyMeal / 7) * days);
+            const transport = Math.round((weeklyTransport / 7) * days);
+            const gross = base + meal + transport;
+            const weekLoans = loans.filter(
+              (loan) =>
+                loan.empId === emp.id && getWeeklyLoanWeek(loan, m) === week,
+            );
+            const loanAmount = weekLoans
+              .filter((loan) => loan.type === "سلفة")
+              .reduce((sum, loan) => sum + Number(loan.amount || 0), 0);
+            const deductionAmount = weekLoans
+              .filter((loan) => loan.type === "خصم")
+              .reduce((sum, loan) => sum + Number(loan.amount || 0), 0);
+            const previousBalance = balance;
+            balance = balance + gross - loanAmount - deductionAmount;
+
+            if (m === throughMonth) {
+              currentMonthRows.push({
+                week,
+                days,
+                base,
+                allowances: meal + transport,
+                loans: loanAmount,
+                deductions: deductionAmount,
+                gross,
+                previousBalance,
+                net: balance,
+              });
+            }
+          }
+        });
+
+        return { rows: currentMonthRows, endingBalance: balance };
+      }
       async function updateEmployeeDays(id, days, m) {
         if (payrollMode === "weekly") {
           const week = document.getElementById("payrollWeek").value || "1";
@@ -6267,67 +6374,45 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
             fe === "all" ? weeklyEmps : weeklyEmps.filter((e) => e.id === fe);
 
           filteredEmps.forEach((emp) => {
-            const ma = Number(emp.mealAllowance || 0);
-            const ta = Number(emp.transportAllowance || 0);
             const monthlySalary = getEmployeeSalaryForMonth(emp.id, month);
-
-            const weeklyBase = Math.round(monthlySalary / 4);
-            const weeklyMeal = Math.round(ma / 4);
-            const weeklyTransport = Math.round(ta / 4);
-
-            const wd = getWeeklyWD(emp.id, month, week);
-            const actualDays = Math.max(0, Math.min(7, wd));
-
-            const ab = Math.round((weeklyBase / 7) * actualDays);
-            const am = Math.round((weeklyMeal / 7) * actualDays);
-            const at = Math.round((weeklyTransport / 7) * actualDays);
-            const gs = ab + am + at;
-
-            const weekLoans = loans.filter((l) => {
-              if (l.empId !== emp.id) return false;
-              const t = normalizePayrollMonth(
-                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
-              );
-              return t === month && String(l.targetWeek || "") === week;
-            });
-
-            const currentLoans = weekLoans
-              .filter((l) => l.type === "سلفة")
-              .reduce((s, l) => s + Number(l.amount), 0);
-            const currentDeductions = weekLoans
-              .filter((l) => l.type === "خصم")
-              .reduce((s, l) => s + Number(l.amount), 0);
-
-            const net = gs - currentLoans - currentDeductions;
+            const ledger = calculateWeeklyPayroll(emp, month, week);
+            const currentWeek = ledger.rows.find((row) => row.week === String(week));
+            if (!currentWeek) return;
+            const monthEndBalance = calculateWeeklyPayroll(emp, month, "4").endingBalance;
 
             payrollData.push({
               empId: emp.id,
               name: emp.name,
               dept: emp.dept,
               position: emp.position || "-",
-              baseSalary: weeklyBase,
-              actualBaseSalary: ab,
-              allowances: am + at,
-              grossSalary: gs,
-              currentLoans: currentLoans,
-              currentDeductions: currentDeductions,
-              carryOver: 0,
-              previousBalance: 0,
-              currentMonthDue: gs - currentLoans - currentDeductions,
-              totalDeductions: currentLoans + currentDeductions,
-              net: net,
-              netDue: net,
-              newCarryOver: 0,
-              month: month,
-              week: week,
-              workDays: wd,
+              baseSalary: Math.round(monthlySalary / 4),
+              actualBaseSalary: currentWeek.base,
+              allowances: currentWeek.allowances,
+              grossSalary: currentWeek.gross,
+              currentLoans: currentWeek.loans,
+              currentDeductions: currentWeek.deductions,
+              carryOver: currentWeek.previousBalance,
+              previousBalance: currentWeek.previousBalance,
+              currentMonthDue: currentWeek.gross - currentWeek.loans - currentWeek.deductions,
+              totalDeductions: currentWeek.loans + currentWeek.deductions,
+              weekNetDue: currentWeek.net,
+              monthEndBalance,
+              net: monthEndBalance,
+              netDue: monthEndBalance,
+              newCarryOver: monthEndBalance,
+              month,
+              week,
+              workDays: currentWeek.days,
               isWeekly: true,
-              monthlySalary: monthlySalary,
+              monthlySalary,
             });
+            if (monthEndBalance !== 0) hasCO = true;
           });
 
           payrollData.sort((a, b) => a.name.localeCompare(b.name, "ar"));
-          document.getElementById("carryoverInfo").style.display = "none";
+          document.getElementById("carryoverInfo").style.display = hasCO
+            ? "flex"
+            : "none";
           payrollPage = 1;
           renderPayrollTable();
           return;
@@ -6469,6 +6554,12 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
         const month = document.getElementById("payrollMonth").value;
         const isWeekly = payrollMode === "weekly";
         const week = document.getElementById("payrollWeek").value || "1";
+        const payrollHeaders = document.querySelectorAll("#payrollTable thead th");
+        if (payrollHeaders.length >= 7) {
+          payrollHeaders[4].innerText = isWeekly ? "سلفيات الأسبوع" : "سلفيات الشهر";
+          payrollHeaders[5].innerText = isWeekly ? "خصومات الأسبوع" : "خصومات الشهر";
+          payrollHeaders[6].innerText = isWeekly ? "رصيد نهاية الشهر" : "الصافي المستحق";
+        }
         const tp = Math.ceil(payrollData.length / ITEMS_PER_PAGE);
         if (payrollPage > tp && tp > 0) payrollPage = tp;
         if (payrollPage < 1) payrollPage = 1;
@@ -6499,14 +6590,17 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
                     e.netDue < 0 ? "negative-salary" : "font-bold text-primary";
 
                   const carryoverHtml =
-                    !isWeekly && e.previousBalance !== 0
+                    e.previousBalance !== 0
                       ? `<br><small class="${e.previousBalance > 0 ? "text-success" : "text-danger"}" style="font-size:0.7rem">
-                     (${e.previousBalance > 0 ? "+" : ""}${e.previousBalance.toLocaleString()} رصيد سابق)
+                     (${e.previousBalance > 0 ? "+" : ""}${e.previousBalance.toLocaleString()} رصيد سابق مرحّل)
                    </small>`
                       : "";
 
                   const salaryNote = isWeekly
                     ? `<br><small class="text-muted" style="font-size:0.7rem">(شهري: ${(e.monthlySalary || 0).toLocaleString()} ÷ 4)</small>`
+                    : "";
+                  const weekBalanceHtml = isWeekly
+                    ? `<br><small class="${e.weekNetDue < 0 ? "text-danger" : "text-success"}" style="font-size:0.7rem">رصيد الأسبوع ${week}: ${e.weekNetDue > 0 ? "+" : ""}${e.weekNetDue.toLocaleString()}</small>`
                     : "";
 
                   const stmtBtn = isWeekly
@@ -6520,7 +6614,7 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
               <td>${e.allowances.toLocaleString()}</td>
               <td>${e.currentLoans > 0 ? '<span class="text-danger">' + e.currentLoans.toLocaleString() + "</span>" : "0"}</td>
               <td>${e.currentDeductions > 0 ? '<span class="text-danger">' + e.currentDeductions.toLocaleString() + "</span>" : "0"}</td>
-              <td class="${nc}"><strong>${e.netDue.toLocaleString()} ج.س</strong>${carryoverHtml}</td>
+              <td class="${nc}"><strong>${e.netDue.toLocaleString()} ج.س</strong>${carryoverHtml}${weekBalanceHtml}</td>
               <td>${st}</td>
               <td>
                 ${stmtBtn}
@@ -6554,11 +6648,11 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
           <span class="value"><input type="number" class="work-days-input" min="${isWeekly ? 0 : 1}" max="${isWeekly ? 7 : 31}" value="${e.workDays}" onchange="updateEmployeeDays('${e.empId}',this.value,'${month}')"/></span>
         </div>
         <div class="mobile-card-row">
-          <span class="label">الصافي المستحق</span>
-          <span class="value ${nc}"><strong>${e.netDue.toLocaleString()} ج.س</strong></span>
+          <span class="label">${isWeekly ? "رصيد نهاية الشهر" : "الصافي المستحق"}</span>
+          <span class="value ${nc}"><strong>${e.netDue.toLocaleString()} ج.س</strong>${isWeekly ? `<br><small>رصيد الأسبوع ${week}: ${e.weekNetDue > 0 ? "+" : ""}${e.weekNetDue.toLocaleString()} ج.س</small>` : ""}</span>
         </div>
         ${
-          !isWeekly && e.previousBalance !== 0
+          e.previousBalance !== 0
             ? `<div class="mobile-card-row"><span class="label">رصيد سابق مرحّل</span><span class="value ${e.previousBalance > 0 ? "text-success" : "text-danger"}">${e.previousBalance > 0 ? "+" : ""}${e.previousBalance.toLocaleString()} ج.س</span></div>`
             : ""
         }
@@ -7417,78 +7511,26 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         const emp = employees.find((e) => e.id === empId);
         if (!emp) return;
 
-        const ma = Number(emp.mealAllowance || 0);
-        const ta = Number(emp.transportAllowance || 0);
         const monthlySalary = getEmployeeSalaryForMonth(empId, month);
         const weeklyBase = Math.round(monthlySalary / 4);
-        const weeklyMeal = Math.round(ma / 4);
-        const weeklyTransport = Math.round(ta / 4);
-
-        const weeks = ["1", "2", "3", "4"];
-        let totalNet = 0,
-          totalGross = 0,
-          totalDeductions = 0,
-          totalDays = 0,
-          totalLoans = 0,
-          totalDeduct = 0;
-
-        const rows = weeks.map((w) => {
-          const wd = getWeeklyWD(empId, month, w);
-          const actualDays = Math.max(0, Math.min(7, wd));
-
-          const ab = Math.round((weeklyBase / 7) * actualDays);
-          const am = Math.round((weeklyMeal / 7) * actualDays);
-          const at = Math.round((weeklyTransport / 7) * actualDays);
-          const gs = ab + am + at;
-
-          const weekLoans = loans.filter((l) => {
-            if (l.empId !== empId) return false;
-            const t = normalizePayrollMonth(
-              l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
-            );
-            return t === month && String(l.targetWeek || "") === w;
-          });
-
-          const wLoans = weekLoans
-            .filter((l) => l.type === "سلفة")
-            .reduce((s, l) => s + Number(l.amount), 0);
-          const wDeduct = weekLoans
-            .filter((l) => l.type === "خصم")
-            .reduce((s, l) => s + Number(l.amount), 0);
-          const net = gs - wLoans - wDeduct;
-
-          totalNet += net;
-          totalGross += gs;
-          totalDeductions += wLoans + wDeduct;
-          totalDays += actualDays;
-          totalLoans += wLoans;
-          totalDeduct += wDeduct;
-
-          return {
-            week: w,
-            days: actualDays,
-            base: ab,
-            allowances: am + at,
-            loans: wLoans,
-            deductions: wDeduct,
-            gross: gs,
-            net: net,
-          };
-        });
+        const ledger = calculateWeeklyPayroll(emp, month, "4");
+        const rows = ledger.rows;
+        const totalDays = rows.reduce((sum, row) => sum + row.days, 0);
+        const totalGross = rows.reduce((sum, row) => sum + row.gross, 0);
+        const totalLoans = rows.reduce((sum, row) => sum + row.loans, 0);
+        const totalDeduct = rows.reduce((sum, row) => sum + row.deductions, 0);
+        const totalDeductions = totalLoans + totalDeduct;
+        const totalNet = ledger.endingBalance;
 
         const rowsHtml = rows
           .map((r) => {
-            const weekLoansList = loans.filter((l) => {
-              if (l.empId !== empId) return false;
-              const t = normalizePayrollMonth(
-                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
-              );
-              return t === month && String(l.targetWeek || "") === r.week;
-            });
-
+            const weekLoansList = loans.filter(
+              (loan) =>
+                loan.empId === empId && getWeeklyLoanWeek(loan, month) === r.week,
+            );
             const loansDetail =
               weekLoansList.length > 0
-                ? `<div style="font-size:0.72rem;color:var(--text-muted);margin-top:0.2rem">${weekLoansList.map((l) => `${l.type} ${Number(l.amount).toLocaleString()} (${l.date})`).join(" • ")}</div>`
+                ? `<div style="font-size:0.72rem;color:var(--text-muted);margin-top:0.2rem">${weekLoansList.map((loan) => `${loan.type} ${Number(loan.amount).toLocaleString()} (${loan.date})`).join(" • ")}</div>`
                 : "";
 
             return `<tr>
@@ -7498,6 +7540,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         <td>${r.allowances.toLocaleString()}</td>
         <td>${r.loans > 0 ? '<span class="negative">' + r.loans.toLocaleString() + "</span>" : "0"}</td>
         <td>${r.deductions > 0 ? '<span class="negative">' + r.deductions.toLocaleString() + "</span>" : "0"}</td>
+        <td class="${r.previousBalance < 0 ? "negative" : "positive"}">${r.previousBalance > 0 ? "+" : ""}${r.previousBalance.toLocaleString()}</td>
         <td class="${r.net < 0 ? "negative" : "positive"}"><strong>${r.net.toLocaleString()}</strong></td>
       </tr>`;
           })
@@ -7505,18 +7548,8 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
 
         const [y, mo] = month.split("-");
         const monthNames = [
-          "يناير",
-          "فبراير",
-          "مارس",
-          "أبريل",
-          "مايو",
-          "يونيو",
-          "يوليو",
-          "أغسطس",
-          "سبتمبر",
-          "أكتوبر",
-          "نوفمبر",
-          "ديسمبر",
+          "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+          "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر",
         ];
         const monthText = `${monthNames[parseInt(mo) - 1]} ${y}`;
 
@@ -7537,21 +7570,15 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
 
     <div style="background:var(--gold-soft);border:1.5px solid rgba(212,175,55,.45);border-radius:12px;padding:0.9rem;margin-bottom:1rem;font-size:0.85rem">
       <i class="fas fa-info-circle" style="color:var(--gold)"></i>
-      <strong>كيفية الحساب:</strong>
-      الراتب الأسبوعي = (الراتب الشهري ÷ 4) × (أيام العمل ÷ 7)
+      <strong>ترحيل الرصيد:</strong> رصيد كل أسبوع (موجبًا أو سالبًا) يُرحّل إلى الأسبوع التالي.
     </div>
 
     <div style="overflow-x:auto">
       <table class="statement-table">
         <thead>
           <tr>
-            <th>الأسبوع</th>
-            <th>الأيام</th>
-            <th>الراتب الأسبوعي</th>
-            <th>البدلات</th>
-            <th>سلفيات</th>
-            <th>خصومات</th>
-            <th>الصافي</th>
+            <th>الأسبوع</th><th>الأيام</th><th>الراتب الأسبوعي</th><th>البدلات</th>
+            <th>سلفيات</th><th>خصومات</th><th>الرصيد السابق</th><th>الرصيد بعد الترحيل</th>
           </tr>
         </thead>
         <tbody>${rowsHtml}</tbody>
@@ -7559,10 +7586,11 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           <tr style="background:linear-gradient(135deg,var(--gold-soft),transparent);font-weight:800">
             <td>الإجمالي</td>
             <td>${totalDays} يوم</td>
-            <td>${rows.reduce((s, r) => s + r.base, 0).toLocaleString()}</td>
-            <td>${rows.reduce((s, r) => s + r.allowances, 0).toLocaleString()}</td>
+            <td>${rows.reduce((sum, row) => sum + row.base, 0).toLocaleString()}</td>
+            <td>${rows.reduce((sum, row) => sum + row.allowances, 0).toLocaleString()}</td>
             <td class="negative">${totalLoans.toLocaleString()}</td>
             <td class="negative">${totalDeduct.toLocaleString()}</td>
+            <td>-</td>
             <td class="${totalNet < 0 ? "negative" : "positive"}"><strong>${totalNet.toLocaleString()}</strong></td>
           </tr>
         </tfoot>
@@ -7570,22 +7598,10 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
     </div>
 
     <div class="statement-summary">
-      <div class="statement-summary-item">
-        <div class="label">إجمالي الراتب الأسبوعي</div>
-        <div class="value">${rows.reduce((s, r) => s + r.base, 0).toLocaleString()} ج.س</div>
-      </div>
-      <div class="statement-summary-item">
-        <div class="label">إجمالي البدلات</div>
-        <div class="value">${rows.reduce((s, r) => s + r.allowances, 0).toLocaleString()} ج.س</div>
-      </div>
-      <div class="statement-summary-item">
-        <div class="label">إجمالي الخصومات</div>
-        <div class="value negative">${totalDeductions.toLocaleString()} ج.س</div>
-      </div>
-      <div class="statement-summary-item">
-        <div class="label">الصافي المستحق للشهر</div>
-        <div class="value ${totalNet < 0 ? "negative" : "positive"}">${totalNet.toLocaleString()} ج.س</div>
-      </div>
+      <div class="statement-summary-item"><div class="label">إجمالي الراتب الأسبوعي</div><div class="value">${rows.reduce((sum, row) => sum + row.base, 0).toLocaleString()} ج.س</div></div>
+      <div class="statement-summary-item"><div class="label">إجمالي البدلات</div><div class="value">${rows.reduce((sum, row) => sum + row.allowances, 0).toLocaleString()} ج.س</div></div>
+      <div class="statement-summary-item"><div class="label">إجمالي السلف والخصومات</div><div class="value negative">${totalDeductions.toLocaleString()} ج.س</div></div>
+      <div class="statement-summary-item"><div class="label">الرصيد المرحّل حتى نهاية الشهر</div><div class="value ${totalNet < 0 ? "negative" : "positive"}">${totalNet.toLocaleString()} ج.س</div></div>
     </div>
 
     <div style="display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap">
@@ -7593,7 +7609,10 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
       <button class="btn btn-outline" onclick="closeModal('statementModal')"><i class="fas fa-times"></i> إغلاق</button>
     </div>`;
 
-        window._weeklyStmt = { emp, month, rows, totalNet, totalDays };
+        window._weeklyStmt = {
+          emp, month, rows, totalNet, totalDays, totalGross, totalDeductions,
+          totalLoans, totalDeduct,
+        };
         openModal("statementModal");
       }
       function printWeeklyStatement(empId, month) {
@@ -7607,10 +7626,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           .map((r) => {
             const weekLoansList = loans.filter((l) => {
               if (l.empId !== empId) return false;
-              const t = normalizePayrollMonth(
-                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
-              );
-              return t === month && String(l.targetWeek || "") === r.week;
+              return getWeeklyLoanWeek(l, month) === r.week;
             });
             const loansDetail =
               weekLoansList.length > 0
@@ -7624,6 +7640,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         <td>${r.allowances.toLocaleString()}</td>
         <td style="color:#dc3545">${r.loans.toLocaleString()}</td>
         <td style="color:#dc3545">${r.deductions.toLocaleString()}</td>
+        <td style="color:${r.previousBalance < 0 ? "#dc3545" : "#198754"}">${r.previousBalance > 0 ? "+" : ""}${r.previousBalance.toLocaleString()}</td>
         <td style="color:${r.net < 0 ? "#dc3545" : "#198754"};font-weight:bold">${r.net.toLocaleString()}</td>
       </tr>`;
           })
@@ -7673,7 +7690,8 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           <th>البدلات</th>
           <th>سلفيات</th>
           <th>خصومات</th>
-          <th>الصافي</th>
+          <th>الرصيد السابق</th>
+          <th>الرصيد بعد الترحيل</th>
         </tr>
       </thead>
       <tbody>${rowsHtml}</tbody>
@@ -7684,13 +7702,14 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           <td>${s.rows.reduce((a, r) => a + r.base, 0).toLocaleString()}</td>
           <td>${s.rows.reduce((a, r) => a + r.allowances, 0).toLocaleString()}</td>
           <td style="color:#dc3545">${s.rows.reduce((a, r) => a + r.loans, 0).toLocaleString()}</td>
-          <td style="color:#dc3545">${s.rows.reduce((a, r) => a + r.deductions, 0).toLocaleString()}</td>
+          <td style="color:#dc3545">${s.totalDeduct.toLocaleString()}</td>
+          <td>-</td>
           <td style="color:${s.totalNet < 0 ? "#dc3545" : "#198754"}"><strong>${s.totalNet.toLocaleString()}</strong></td>
         </tr>
       </tfoot>
     </table>
     <div style="margin-top:20px;padding:15px;background:#fff9e6;border:2px solid #d4af37;border-radius:8px;text-align:center">
-      <div style="font-size:12pt;color:#666;margin-bottom:10px">الصافي الإجمالي المستحق للشهر</div>
+      <div style="font-size:12pt;color:#666;margin-bottom:10px">الرصيد المرحّل حتى نهاية الشهر (موجب أو سالب)</div>
       <div style="font-size:22pt;font-weight:bold;color:${s.totalNet < 0 ? "#dc3545" : "#198754"}">${s.totalNet.toLocaleString()} ج.س</div>
     </div>
     ${getSignatures()}${getPrintFooter()}`,
@@ -7852,9 +7871,10 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
             الأيام: p.workDays,
             الراتب_الفعلي: p.actualBaseSalary,
             البدلات: p.allowances,
-            سلفيات: p.currentLoans,
-            خصومات: p.currentDeductions,
-            الصافي: p.netDue,
+            [isWeekly ? "سلفيات الأسبوع" : "سلفيات الشهر"]: p.currentLoans,
+            [isWeekly ? "خصومات الأسبوع" : "خصومات الشهر"]: p.currentDeductions,
+            [isWeekly ? "رصيد نهاية الشهر" : "الصافي المستحق"]: p.netDue,
+            ...(isWeekly ? { "رصيد الأسبوع المحدد": p.weekNetDue } : {}),
             النوع: isWeekly ? "أسبوعي" : "شهري",
           })),
         );
@@ -8345,10 +8365,14 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         if (!month) return showToast("يرجى تحديد الشهر", "error");
 
         const fe = document.getElementById("payrollFilterEmp").value;
+        const selectedWeek =
+          document.getElementById("payrollWeek").value || "1";
 
         // ========== 1. حساب الموظفين الشهريين ==========
         const monthlyEmps =
-          fe === "all"
+          payrollMode !== "monthly"
+            ? []
+            : fe === "all"
             ? employees.filter(
                 (e) => e.paymentType !== "weekly" && !e.suspended,
               )
@@ -8441,7 +8465,9 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
 
         // ========== 2. حساب الموظفين الأسبوعيين (4 أسابيع) ==========
         const weeklyEmps =
-          fe === "all"
+          payrollMode !== "weekly"
+            ? []
+            : fe === "all"
             ? employees.filter(
                 (e) => e.paymentType === "weekly" && !e.suspended,
               )
@@ -8452,55 +8478,25 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
 
         const weeklyData = [];
         weeklyEmps.forEach((emp) => {
-          const ma = Number(emp.mealAllowance || 0);
-          const ta = Number(emp.transportAllowance || 0);
-          const monthlySalary = getEmployeeSalaryForMonth(emp.id, month);
-          const weeklyBase = Math.round(monthlySalary / 4);
-
-          let totalGross = 0;
-          let totalDeductions = 0;
-          let totalNet = 0;
-          let totalDays = 0;
-
-          ["1", "2", "3", "4"].forEach((w) => {
-            const wd = getWeeklyWD(emp.id, month, w);
-            const actualDays = Math.max(0, Math.min(7, wd));
-            const ab = Math.round((weeklyBase / 7) * actualDays);
-            const am = Math.round((Math.round(ma / 4) / 7) * actualDays);
-            const at = Math.round((Math.round(ta / 4) / 7) * actualDays);
-            const gs = ab + am + at;
-
-            const weekLoans = loans.filter((l) => {
-              if (l.empId !== emp.id) return false;
-              const t = normalizePayrollMonth(
-                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
-              );
-              return t === month && String(l.targetWeek || "") === w;
-            });
-            const wLoans = weekLoans
-              .filter((l) => l.type === "سلفة")
-              .reduce((s, l) => s + Number(l.amount), 0);
-            const wDeduct = weekLoans
-              .filter((l) => l.type === "خصم")
-              .reduce((s, l) => s + Number(l.amount), 0);
-
-            totalGross += gs;
-            totalDeductions += wLoans + wDeduct;
-            totalNet += gs - wLoans - wDeduct;
-            totalDays += actualDays;
-          });
+          const ledger = calculateWeeklyPayroll(emp, month, selectedWeek);
+          const weekRow = ledger.rows.find((row) => row.week === String(selectedWeek));
+          if (!weekRow) return;
 
           weeklyData.push({
             name: emp.name,
             type: "أسبوعي",
-            workDays: totalDays,
-            grossSalary: totalGross,
-            totalDeductions: totalDeductions,
-            netDue: totalNet,
+            workDays: weekRow.days,
+            grossSalary: weekRow.gross,
+            totalDeductions: weekRow.loans + weekRow.deductions,
+            previousBalance: weekRow.previousBalance,
+            weekNetDue: weekRow.net,
+            monthEndBalance: calculateWeeklyPayroll(emp, month, "4").endingBalance,
+            netDue: calculateWeeklyPayroll(emp, month, "4").endingBalance,
           });
         });
 
-        const allData = [...monthlyData, ...weeklyData];
+        // اطبع بيانات التبويب النشط فقط حتى لا تختلط الرواتب الأسبوعية بالشهرية.
+        const allData = payrollMode === "weekly" ? weeklyData : monthlyData;
 
         if (!allData.length)
           return showToast("لا توجد بيانات للطباعة", "error");
@@ -8513,16 +8509,17 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         const totalNet = allData.reduce((s, p) => s + p.netDue, 0);
 
         printContent(
-          `${getPrintHeader("كشف الرواتب الكامل", `شهر: ${month}`)}
+          `${getPrintHeader(
+            payrollMode === "weekly" ? "كشف الرواتب الأسبوعي" : "كشف الرواتب الشهري",
+            `شهر: ${month}${payrollMode === "weekly" ? ` | الأسبوع: ${selectedWeek}` : ""}`,
+          )}
     <div class="summary-box">
       <div class="summary-item"><div class="label">عدد الموظفين</div><div class="value">${allData.length}</div></div>
       <div class="summary-item"><div class="label">إجمالي الاستحقاقات</div><div class="value">${totalGross.toLocaleString()} ج.س</div></div>
       <div class="summary-item"><div class="label">إجمالي الخصومات</div><div class="value" style="color:#dc3545">${totalDeductions.toLocaleString()} ج.س</div></div>
       <div class="summary-item"><div class="label">الصافي المستحق</div><div class="value" style="color:${totalNet < 0 ? "#dc3545" : "#d4af37"}">${totalNet.toLocaleString()} ج.س</div></div>
     </div>
-    <div style="background:#f9f9f9;padding:12px;border-radius:8px;margin-bottom:15px;border:1px solid #e0e0e0;font-size:10pt">
-      <strong>ملاحظة:</strong> الراتب الأسبوعي = (الراتب الشهري ÷ 4) × (أيام العمل ÷ 7)
-    </div>
+    ${payrollMode === "weekly" ? `<div style="background:#f9f9f9;padding:12px;border-radius:8px;margin-bottom:15px;border:1px solid #e0e0e0;font-size:10pt"><strong>ملاحظة:</strong> الصافي المستحق هو رصيد نهاية الشهر؛ ورصيد الأسبوع المحدد ظاهر أسفله للمقارنة.</div>` : ""}
     <table class="payroll-summary-table">
       <thead>
         <tr>
@@ -8532,7 +8529,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           <th>الأيام</th>
           <th>الإجمالي</th>
           <th>الخصومات</th>
-          <th>الصافي المستحق</th>
+          <th>${payrollMode === "weekly" ? "رصيد نهاية الشهر" : "الصافي المستحق"}</th>
         </tr>
       </thead>
       <tbody>
@@ -8545,7 +8542,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           <td>${p.workDays}</td>
           <td>${p.grossSalary.toLocaleString()}</td>
           <td style="color:#dc3545">${p.totalDeductions.toLocaleString()}</td>
-          <td style="color:${p.netDue < 0 ? "#dc3545" : "#d4af37"}"><strong>${p.netDue.toLocaleString()}</strong></td>
+          <td style="color:${p.netDue < 0 ? "#dc3545" : "#d4af37"}"><strong>${p.netDue.toLocaleString()}</strong>${p.type === "أسبوعي" ? `<br><small>رصيد الأسبوع ${selectedWeek}: ${p.weekNetDue > 0 ? "+" : ""}${p.weekNetDue.toLocaleString()}</small>` : ""}</td>
         </tr>`,
           )
           .join("")}
@@ -8560,7 +8557,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
       </tfoot>
     </table>
     ${getSignatures()}${getPrintFooter()}`,
-          `كشف الرواتب ${month}`,
+          `${payrollMode === "weekly" ? `كشف الرواتب الأسبوعي ${month} - الأسبوع ${selectedWeek}` : `كشف الرواتب الشهري ${month}`}`,
         );
       }
       function printExpenses() {
@@ -8614,15 +8611,13 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
       function printPayslip(empId, month) {
         const e = employees.find((x) => x.id === empId);
         if (!e) return;
-        const p = payrollData.find(
-          (x) => x.empId === empId && x.month === month,
-        );
+        const p = payrollData.find((x) => x.empId === empId && x.month === month);
         if (!p) return;
         const monthBase = getEmployeeSalaryForMonth(empId, month);
         const isWeekly = p.isWeekly;
-        const week = document.getElementById("payrollWeek").value || "1";
+        const week = p.week || document.getElementById("payrollWeek").value || "1";
         printContent(
-          `${getPrintHeader(isWeekly ? "قسيمة راتب أسبوعي" : "قسيمة راتب", `${e.name} - ${month}${isWeekly ? " - أسبوع " + week : ""}`)}<div class="work-days-info"><i class="fas fa-calendar-day"></i> أيام العمل: <strong>${p.workDays}</strong> يوم</div>${!isWeekly && p.previousBalance > 0 ? `<div style="background:#ffebee;border:2px solid #dc3545;border-radius:8px;padding:10px;margin:15px 0;text-align:center;color:#dc3545"><strong>متبقي من الأشهر السابقة: -${p.previousBalance.toLocaleString()} ج.س</strong></div>` : ""}<table class="doc-table"><thead><tr><th>البيان</th><th>الكامل</th><th>الفعلي</th></tr></thead><tbody><tr><td>${isWeekly ? "الراتب الأسبوعي (الشهري ÷ 4)" : "الراتب الأساسي"}</td><td>${(isWeekly ? p.baseSalary : monthBase).toLocaleString()}</td><td><strong>${p.actualBaseSalary.toLocaleString()}</strong></td></tr><tr><td>البدلات</td><td>${(Number(e.mealAllowance || 0) + Number(e.transportAllowance || 0)).toLocaleString()}</td><td>${p.allowances.toLocaleString()}</td></tr><tr><td>الخصومات</td><td>-</td><td style="color:#dc3545">${p.totalDeductions.toLocaleString()}</td></tr><tr style="background:${p.netDue < 0 ? "#dc3545" : "#d4af37"};color:#fff;font-size:16pt"><td><strong>${isWeekly ? "الصافي الأسبوعي" : "الرصيد التراكمي المستحق"}</strong></td><td colspan="2"><strong>${p.netDue.toLocaleString()} ج.س</strong></td></tr></tbody></table>${getSignatures()}${getPrintFooter()}`,
+          `${getPrintHeader(isWeekly ? "قسيمة راتب أسبوعي" : "قسيمة راتب", `${e.name} - ${month}${isWeekly ? " - أسبوع " + week : ""}`)}<div class="work-days-info"><i class="fas fa-calendar-day"></i> أيام العمل: <strong>${p.workDays}</strong> يوم</div>${p.previousBalance !== 0 ? `<div style="background:#f9f9f9;border:2px solid ${p.previousBalance < 0 ? "#dc3545" : "#198754"};border-radius:8px;padding:10px;margin:15px 0;text-align:center;color:${p.previousBalance < 0 ? "#dc3545" : "#198754"}"><strong>الرصيد المرحّل من الفترات السابقة: ${p.previousBalance > 0 ? "+" : ""}${p.previousBalance.toLocaleString()} ج.س</strong></div>` : ""}<table class="doc-table"><thead><tr><th>البيان</th><th>الكامل</th><th>الفعلي</th></tr></thead><tbody><tr><td>${isWeekly ? "الراتب الأسبوعي (الشهري ÷ 4)" : "الراتب الأساسي"}</td><td>${(isWeekly ? p.baseSalary : monthBase).toLocaleString()}</td><td><strong>${p.actualBaseSalary.toLocaleString()}</strong></td></tr><tr><td>البدلات</td><td>-</td><td>${p.allowances.toLocaleString()}</td></tr><tr><td>${isWeekly ? "السلف والخصومات لهذا الأسبوع" : "الخصومات"}</td><td>-</td><td style="color:#dc3545">${p.totalDeductions.toLocaleString()}</td></tr>${isWeekly ? `<tr><td>رصيد الأسبوع ${week}</td><td colspan="2"><strong>${p.weekNetDue > 0 ? "+" : ""}${p.weekNetDue.toLocaleString()} ج.س</strong></td></tr>` : ""}<tr style="background:${p.netDue < 0 ? "#dc3545" : "#d4af37"};color:#fff;font-size:16pt"><td><strong>${isWeekly ? "الصافي المستحق لنهاية الشهر" : "الرصيد التراكمي المستحق"}</strong></td><td colspan="2"><strong>${p.netDue.toLocaleString()} ج.س</strong></td></tr></tbody></table>${getSignatures()}${getPrintFooter()}`,
           "قسيمة",
         );
       }
