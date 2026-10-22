@@ -6246,7 +6246,8 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
         const dateMonth = loan.date ? loan.date.substring(0, 7) : "";
         if (dateMonth === month && loan.date.length >= 10) {
           const day = Number(loan.date.substring(8, 10));
-          if (day >= 1 && day <= 31) return String(Math.min(4, Math.ceil(day / 7)));
+          if (day >= 1 && day <= 31)
+            return String(Math.min(4, Math.ceil(day / 7)));
         }
         return "4";
       }
@@ -6270,7 +6271,8 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
           const loanMonth = normalizePayrollMonth(
             loan.targetMonth || (loan.date ? loan.date.substring(0, 7) : ""),
           );
-          if (loanMonth && loanMonth <= throughMonth) relevantMonths.add(loanMonth);
+          if (loanMonth && loanMonth <= throughMonth)
+            relevantMonths.add(loanMonth);
         });
 
         const firstMonth = [...relevantMonths].sort()[0];
@@ -6279,7 +6281,10 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
         const months = [];
         let year = startYear;
         let monthNumber = startMonth;
-        while (year < endYear || (year === endYear && monthNumber <= endMonth)) {
+        while (
+          year < endYear ||
+          (year === endYear && monthNumber <= endMonth)
+        ) {
           months.push(`${year}-${String(monthNumber).padStart(2, "0")}`);
           monthNumber++;
           if (monthNumber > 12) {
@@ -6360,6 +6365,7 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
         );
         const fe = document.getElementById("payrollFilterEmp").value;
         if (!month) return;
+
         updateMonthBadge(month);
         payrollData = [];
         let hasCO = false;
@@ -6376,9 +6382,17 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
           filteredEmps.forEach((emp) => {
             const monthlySalary = getEmployeeSalaryForMonth(emp.id, month);
             const ledger = calculateWeeklyPayroll(emp, month, week);
-            const currentWeek = ledger.rows.find((row) => row.week === String(week));
+            const currentWeek = ledger.rows.find(
+              (row) => row.week === String(week),
+            );
+
             if (!currentWeek) return;
-            const monthEndBalance = calculateWeeklyPayroll(emp, month, "4").endingBalance;
+
+            const monthEndBalance = calculateWeeklyPayroll(
+              emp,
+              month,
+              "4",
+            ).endingBalance;
 
             payrollData.push({
               empId: emp.id,
@@ -6393,11 +6407,12 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
               currentDeductions: currentWeek.deductions,
               carryOver: currentWeek.previousBalance,
               previousBalance: currentWeek.previousBalance,
-              currentMonthDue: currentWeek.gross - currentWeek.loans - currentWeek.deductions,
+              currentMonthDue:
+                currentWeek.gross - currentWeek.loans - currentWeek.deductions,
               totalDeductions: currentWeek.loans + currentWeek.deductions,
               weekNetDue: currentWeek.net,
               monthEndBalance,
-              net: monthEndBalance,
+              net: monthEndBalance, // هذا هو الرصيد النهائي المطابق للكشف
               netDue: monthEndBalance,
               newCarryOver: monthEndBalance,
               month,
@@ -6418,7 +6433,7 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
           return;
         }
 
-        // ============ الوضع الشهري ============
+        // ============ الوضع الشهري (التعديل الجوهري هنا) ============
         const emps =
           fe === "all"
             ? employees.filter((e) => e.paymentType !== "weekly")
@@ -6429,61 +6444,55 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
         emps.forEach((emp) => {
           if (emp.suspended) return;
 
-          const ma = Number(emp.mealAllowance || 0);
-          const ta = Number(emp.transportAllowance || 0);
-          const wd = getWD(emp.id, month);
+          // نجمع كل الشهور التي لها علاقة بالموظف (شهور العمل + شهور السلف)
+          const relevantMonths = new Set();
 
-          const bs = getEmployeeSalaryForMonth(emp.id, month);
-          const ab = Math.round((bs / 30) * wd);
-          const al = Math.round((ma / 30) * wd) + Math.round((ta / 30) * wd);
-          const gs = ab + al;
-
-          const relevant = new Set();
-
+          // إضافة شهور أيام العمل المسجلة
           Object.keys(workDaysPerEmployee).forEach((m) => {
             if (
               workDaysPerEmployee[m] &&
               workDaysPerEmployee[m][emp.id] !== undefined &&
               m <= month
             ) {
-              relevant.add(m);
+              relevantMonths.add(m);
             }
           });
 
+          // إضافة شهور السلف والخصومات
           loans.forEach((l) => {
             if (l.empId !== emp.id) return;
             const t = normalizePayrollMonth(
               l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
             );
-            if (t && t <= month) relevant.add(t);
+            if (t && t <= month) relevantMonths.add(t);
           });
 
-          relevant.add(month);
+          // تأكد من إضافة الشهر الحالي حتى لو لم يكن هناك عمل مسجل
+          relevantMonths.add(month);
 
-          const sorted = [...relevant].sort();
-          const first = sorted[0];
-          const allMonths = [];
-          let [y, mo] = first.split("-").map(Number);
-          const [ey, em2] = month.split("-").map(Number);
-          while (y < ey || (y === ey && mo <= em2)) {
-            allMonths.push(`${y}-${String(mo).padStart(2, "0")}`);
-            mo++;
-            if (mo > 12) {
-              mo = 1;
-              y++;
-            }
-          }
+          // ترتيب الشهور زمنياً
+          const sortedMonths = [...relevantMonths].sort();
 
-          let runningBalance = 0;
-          let previousBalance = 0;
+          // إذا لم تكن هناك شهور سابقة، نبدأ من الشهر الحالي
+          if (sortedMonths.length === 0) sortedMonths.push(month);
+
+          let runningBalance = 0; // الرصيد التراكمي (مطابق لكشف الحساب)
           let currentLoans = 0;
           let currentDeductions = 0;
+          let lastCalculatedGross = 0;
+          let lastWorkDays = 30;
 
-          for (const m of allMonths) {
+          // نقوم بالحركة عبر كل شهر من البداية حتى الشهر المختار
+          for (const m of sortedMonths) {
             const wdM = getWD(emp.id, m);
             const bsM = getEmployeeSalaryForMonth(emp.id, m);
+            const ma = Number(emp.mealAllowance || 0);
+            const ta = Number(emp.transportAllowance || 0);
+
+            // حساب الراتب الفعلي لهذا الشهر بناءً على أيام العمل
             const monthSalary = Math.round(((bsM + ma + ta) / 30) * wdM);
 
+            // جلب السلف والخصومات الخاصة بهذا الشهر
             const monthLoans = loans.filter((l) => {
               if (l.empId !== emp.id) return false;
               const t = normalizePayrollMonth(
@@ -6497,8 +6506,13 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
               0,
             );
 
+            // تحديث الرصيد التراكمي: (الراتب - الخصومات) + الرصيد السابق
+            runningBalance = runningBalance + monthSalary - monthDebits;
+
+            // إذا وصلنا للشهر المطلوب، نحفظ البيانات للعرض
             if (m === month) {
-              previousBalance = runningBalance;
+              lastCalculatedGross = monthSalary;
+              lastWorkDays = wdM;
               currentLoans = monthLoans
                 .filter((l) => l.type === "سلفة")
                 .reduce((s, l) => s + Number(l.amount), 0);
@@ -6506,10 +6520,9 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
                 .filter((l) => l.type === "خصم")
                 .reduce((s, l) => s + Number(l.amount), 0);
             }
-
-            runningBalance = runningBalance + monthSalary - monthDebits;
           }
 
+          // الآن runningBalance يحتوي على الرصيد النهائي المطابق تماماً لكشف الحساب
           if (runningBalance !== 0) hasCO = true;
 
           payrollData.push({
@@ -6517,25 +6530,40 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
             name: emp.name,
             dept: emp.dept,
             position: emp.position || "-",
-            baseSalary: bs,
-            actualBaseSalary: ab,
-            allowances: al,
-            grossSalary: gs,
+            baseSalary: getEmployeeSalaryForMonth(emp.id, month),
+            actualBaseSalary:
+              lastCalculatedGross -
+              (Number(emp.mealAllowance || 0) +
+                Number(emp.transportAllowance || 0)) *
+                (lastWorkDays / 30), // تقريب للراتب الأساسي الفعلي
+            allowances: Math.round(
+              ((Number(emp.mealAllowance || 0) +
+                Number(emp.transportAllowance || 0)) /
+                30) *
+                lastWorkDays,
+            ),
+            grossSalary: lastCalculatedGross,
             currentLoans: currentLoans,
             currentDeductions: currentDeductions,
-            carryOver: previousBalance,
-            previousBalance: previousBalance,
-            currentMonthDue: gs - currentLoans - currentDeductions,
+            carryOver:
+              runningBalance -
+              (lastCalculatedGross - (currentLoans + currentDeductions)), // الرصيد القادم من قبل
+            previousBalance:
+              runningBalance -
+              (lastCalculatedGross - (currentLoans + currentDeductions)),
+            currentMonthDue:
+              lastCalculatedGross - currentLoans - currentDeductions,
             totalDeductions: currentLoans + currentDeductions,
-            net: runningBalance,
-            netDue: runningBalance,
+            net: runningBalance, // الصافي التراكمي
+            netDue: runningBalance, // هذا ما سيظهر في الجدول وهو مطابق للكشف
             newCarryOver: runningBalance < 0 ? runningBalance : 0,
             month: month,
-            workDays: wd,
+            workDays: lastWorkDays,
             isWeekly: false,
           });
         });
 
+        // ترتيب الموظفين بحيث يظهر الذين لديهم عجز أو سلف في الأعلى
         payrollData.sort((a, b) => {
           const at =
             a.currentLoans + a.currentDeductions + Math.abs(a.carryOver || 0);
@@ -6554,11 +6582,19 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
         const month = document.getElementById("payrollMonth").value;
         const isWeekly = payrollMode === "weekly";
         const week = document.getElementById("payrollWeek").value || "1";
-        const payrollHeaders = document.querySelectorAll("#payrollTable thead th");
+        const payrollHeaders = document.querySelectorAll(
+          "#payrollTable thead th",
+        );
         if (payrollHeaders.length >= 7) {
-          payrollHeaders[4].innerText = isWeekly ? "سلفيات الأسبوع" : "سلفيات الشهر";
-          payrollHeaders[5].innerText = isWeekly ? "خصومات الأسبوع" : "خصومات الشهر";
-          payrollHeaders[6].innerText = isWeekly ? "رصيد نهاية الشهر" : "الصافي المستحق";
+          payrollHeaders[4].innerText = isWeekly
+            ? "سلفيات الأسبوع"
+            : "سلفيات الشهر";
+          payrollHeaders[5].innerText = isWeekly
+            ? "خصومات الأسبوع"
+            : "خصومات الشهر";
+          payrollHeaders[6].innerText = isWeekly
+            ? "رصيد نهاية الشهر"
+            : "الصافي المستحق";
         }
         const tp = Math.ceil(payrollData.length / ITEMS_PER_PAGE);
         if (payrollPage > tp && tp > 0) payrollPage = tp;
@@ -7401,76 +7437,89 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
       function openStatement(empId, month) {
         const emp = employees.find((e) => e.id === empId);
         if (!emp) return;
-        const bs = getEmployeeSalaryForMonth(empId, month),
-          ma = Number(emp.mealAllowance || 0),
-          ta = Number(emp.transportAllowance || 0),
-          fs = bs + ma + ta;
-        const pr = payrollData.find(
-          (p) => p.empId === empId && p.month === month,
-        );
-        const wd = pr ? pr.workDays : 30;
-        const actualSalary = Math.round((fs / 30) * wd);
-        const allMonthsSet = new Set(
-          loans
-            .filter((l) => l.empId === empId)
-            .map((l) =>
-              normalizePayrollMonth(
-                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
-              ),
-            )
-            .filter(Boolean),
-        );
+
+        // 1. تحديد جميع الأشهر ذات الصلة (أشهر العمل، أشهر السلف، والشهر الحالي)
+        const allMonthsSet = new Set();
+
+        // إضافة الأشهر التي تم تسجيل أيام عمل فيها
         Object.keys(workDaysPerEmployee).forEach((m) => {
           if (
             workDaysPerEmployee[m] &&
             workDaysPerEmployee[m][empId] !== undefined
-          )
+          ) {
             allMonthsSet.add(m);
-        });
-        allMonthsSet.add(normalizePayrollMonth(month));
-        const allMonths = [...allMonthsSet].sort();
-        let carryOver = 0;
-        const rows = [];
-        for (const m of allMonths) {
-          const wdM = getWD(empId, m);
-          const bsM = getEmployeeSalaryForMonth(empId, m);
-          const fsM = bsM + ma + ta;
-          const agM = Math.round((fsM / 30) * wdM);
-          if (carryOver > 0) {
-            rows.push({
-              date: `${m}-01`,
-              time: "00:00",
-              type: "مترحلات",
-              desc: `مبالغ مرحّلة من أشهر سابقة`,
-              tm: m,
-              cr: 0,
-              db: carryOver,
-              isCO: true,
-            });
           }
-          rows.push({
-            date: `${m}-01`,
-            time: "00:01",
-            type: "راتب",
-            desc: `الراتب الفعلي (${wdM} يوم)`,
-            tm: m,
-            cr: agM,
-            db: 0,
-          });
+        });
+
+        // إضافة الأشهر الموجودة في السلف والخصومات
+        loans.forEach((l) => {
+          if (l.empId !== empId) return;
+          const t = normalizePayrollMonth(
+            l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
+          );
+          if (t) allMonthsSet.add(t);
+        });
+
+        // التأكد من إضافة الشهر المطلوب عرضه
+        allMonthsSet.add(normalizePayrollMonth(month));
+
+        // ترتيب الأشهر زمنياً
+        const allMonths = [...allMonthsSet].sort();
+
+        // إذا لم توجد بيانات سابقة، نبدأ بالشهر الحالي
+        if (allMonths.length === 0)
+          allMonths.push(normalizePayrollMonth(month));
+
+        let runningBalance = 0; // الرصيد التراكمي (يبدأ من صفر)
+        const rows = [];
+        const ma = Number(emp.mealAllowance || 0);
+        const ta = Number(emp.transportAllowance || 0);
+
+        // 2. الدوران على كل شهر وحساب الرصيد تراكمياً (نفس منطق الرواتب)
+        for (const m of allMonths) {
+          const wdM = getWD(empId, m); // أيام العمل
+          const bsM = getEmployeeSalaryForMonth(empId, m); // الراتب الأساسي
+          const fsM = bsM + ma + ta; // الراتب الشامل
+
+          // حساب راتب هذا الشهر الفعلي بناء على أيام العمل
+          const actualSalary = Math.round((fsM / 30) * wdM);
+
+          // جلب السلف والخصومات لهذا الشهر
           const monthLoans = loans
-            .filter(
-              (l) =>
-                l.empId === empId &&
-                normalizePayrollMonth(
-                  l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
-                ) === m,
-            )
+            .filter((l) => {
+              if (l.empId !== empId) return false;
+              const t = normalizePayrollMonth(
+                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
+              );
+              return t === m;
+            })
             .sort(
               (a, b) =>
                 a.date.localeCompare(b.date) ||
                 (a.time || "").localeCompare(b.time || ""),
             );
-          for (const l of monthLoans) {
+
+          const totalDeductionsThisMonth = monthLoans.reduce(
+            (s, l) => s + Number(l.amount),
+            0,
+          );
+
+          // --- إضافة حركات للكشف ---
+
+          // أ) إضافة سطر للراتب (دائن)
+          rows.push({
+            date: `${m}-01`,
+            time: "00:01",
+            type: "راتب",
+            desc: `الراتب الفعلي (${wdM} يوم) - ${bsM.toLocaleString()} أساسي`,
+            tm: m,
+            cr: actualSalary, // دائن
+            db: 0,
+            isCO: false,
+          });
+
+          // ب) إضافة أسطر للسلف والخصومات (مدين)
+          monthLoans.forEach((l) => {
             rows.push({
               date: l.date,
               time: l.time || "--:--",
@@ -7478,32 +7527,49 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
               desc: l.note || (l.type === "سلفة" ? "سلفة" : "خصم"),
               tm: l.targetMonth,
               cr: 0,
-              db: Number(l.amount),
+              db: Number(l.amount), // مدين
+              isCO: false,
             });
-          }
-          const monthCredits = agM;
-          const monthDebits =
-            monthLoans.reduce((s, l) => s + Number(l.amount), 0) + carryOver;
-          const balance = monthCredits - monthDebits;
-          carryOver = balance < 0 ? Math.abs(balance) : 0;
+          });
+
+          // ج) تحديث الرصيد التراكمي
+          // الرصيد الجديد = الرصيد القديم + راتب الشهر - خصومات الشهر
+          runningBalance =
+            runningBalance + actualSalary - totalDeductionsThisMonth;
+
+          // د) إذا كان هناك رصيد سابق (غير صفر) قبل دخول هذا الشهر، نعرضه كحركة افتتاحية للرصيد المرحّل
+          // ملاحظة: لعرض الكشف بشكل واضح، يمكننا عرض الرصيد المرحّل في أول سطر إذا كان موجوداً
+          // لكن الأهم هو أن الرصيد النهائي (runningBalance) يطابق الرواتب.
         }
-        let rb = 0;
+
+        // الآن نقوم بإعادة حساب الرصيد لكل سطر لغرض العرض (Running Balance Column)
+        let displayBalance = 0;
         rows.forEach((r) => {
-          if (r.type === "راتب") rb += r.cr;
-          else if (r.isCO) rb = -r.db;
-          else rb -= r.db;
-          r.bal = rb;
+          displayBalance = displayBalance + r.cr - r.db;
+          r.bal = displayBalance;
         });
+
+        // القيم للعرض في الهيدر
+        const currentMonthData = payrollData.find(
+          (p) => p.empId === empId && p.month === month,
+        );
+        const actualSalaryCurrent = currentMonthData
+          ? currentMonthData.grossSalary
+          : 0;
+
         document.getElementById("statementContent").innerHTML =
-          `<div class="statement-header"><h3><i class="fas fa-user-tie"></i> ${emp.name}</h3><div class="statement-info-grid"><div class="statement-info-item"><div class="label">القسم</div><div class="value">${emp.dept}</div></div><div class="statement-info-item"><div class="label">الوظيفة</div><div class="value">${emp.position || "-"}</div></div><div class="statement-info-item"><div class="label">الراتب الأساسي للشهر</div><div class="value">${bs.toLocaleString()} ج.س</div></div><div class="statement-info-item"><div class="label">الراتب المستحق</div><div class="value" id="stmtActualSalary">${actualSalary.toLocaleString()} ج.س</div></div><div class="statement-info-item"><div class="label">الفترة المحددة</div><div class="value" id="stmtPeriod">${month}</div></div><div class="statement-info-item"><div class="label">عدد الأشهر</div><div class="value" id="stmtMonthsCount">${allMonths.length} شهر</div></div></div></div><div class="stmt-filter-box"><h4><i class="fas fa-filter"></i> فلترة حسب شهر الخصم</h4><div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:flex-end"><div style="flex:1;min-width:150px"><label style="font-size:0.85rem;font-weight:700;display:block;margin-bottom:0.3rem"><i class="fas fa-calendar-alt"></i> من:</label><input type="month" id="stmtMF" onchange="applyStmtFilters()" style="width:100%"></div><div style="flex:1;min-width:150px"><label style="font-size:0.85rem;font-weight:700;display:block;margin-bottom:0.3rem"><i class="fas fa-calendar-alt"></i> إلى:</label><input type="month" id="stmtMT" onchange="applyStmtFilters()" style="width:100%"></div><button class="btn btn-outline" onclick="resetStmtFilters()" style="height:44px"><i class="fas fa-undo"></i> إعادة</button><button class="btn btn-primary" onclick="printStatement()" style="height:44px"><i class="fas fa-print"></i> طباعة</button></div></div><div style="overflow-x:auto"><table class="statement-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>النوع</th><th>شهر الخصم</th><th>البيان</th><th>دائن (+)</th><th>مدين (-)</th><th>الرصيد</th></tr></thead><tbody id="stmtTB"></tbody></table></div><div class="statement-summary" id="stmtSM"></div>`;
+          `<div class="statement-header"><h3><i class="fas fa-user-tie"></i> ${emp.name}</h3><div class="statement-info-grid"><div class="statement-info-item"><div class="label">القسم</div><div class="value">${emp.dept}</div></div><div class="statement-info-item"><div class="label">الوظيفة</div><div class="value">${emp.position || "-"}</div></div><div class="statement-info-item"><div class="label">الراتب الأساسي للشهر</div><div class="value">${getEmployeeSalaryForMonth(empId, month).toLocaleString()} ج.س</div></div><div class="statement-info-item"><div class="label">الصافي التراكمي (حتى ${month})</div><div class="value" style="color:${runningBalance < 0 ? "var(--danger)" : "var(--success)"}">${runningBalance.toLocaleString()} ج.س</div></div><div class="statement-info-item"><div class="label">الفترة المحددة</div><div class="value" id="stmtPeriod">${month}</div></div><div class="statement-info-item"><div class="label">عدد الأشهر المحسوبة</div><div class="value" id="stmtMonthsCount">${allMonths.length} شهر</div></div></div></div><div class="stmt-filter-box"><h4><i class="fas fa-filter"></i> فلترة حسب شهر الخصم</h4><div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:flex-end"><div style="flex:1;min-width:150px"><label style="font-size:0.85rem;font-weight:700;display:block;margin-bottom:0.3rem"><i class="fas fa-calendar-alt"></i> من:</label><input type="month" id="stmtMF" onchange="applyStmtFilters()" style="width:100%"></div><div style="flex:1;min-width:150px"><label style="font-size:0.85rem;font-weight:700;display:block;margin-bottom:0.3rem"><i class="fas fa-calendar-alt"></i> إلى:</label><input type="month" id="stmtMT" onchange="applyStmtFilters()" style="width:100%"></div><button class="btn btn-outline" onclick="resetStmtFilters()" style="height:44px"><i class="fas fa-undo"></i> إعادة</button><button class="btn btn-primary" onclick="printStatement()" style="height:44px"><i class="fas fa-print"></i> طباعة</button></div></div><div style="overflow-x:auto"><table class="statement-table"><thead><tr><th>#</th><th>التاريخ</th><th>الوقت</th><th>النوع</th><th>شهر الخصم</th><th>البيان</th><th>دائن (+)</th><th>مدين (-)</th><th>الرصيد التراكمي</th></tr></thead><tbody id="stmtTB"></tbody></table></div><div class="statement-summary" id="stmtSM"></div>`;
+
         window._stmt = {
           emp,
           month,
-          fullSalary: fs,
-          actualSalary,
+          fullSalary: getEmployeeSalaryForMonth(empId, month) + ma + ta,
+          actualSalary: actualSalaryCurrent,
           rows,
           allMonths,
+          finalBalance: runningBalance, // حفظ الرصيد النهائي الصحيح
         };
+
         applyStmtFilters();
         openModal("statementModal");
       }
@@ -7526,7 +7592,8 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           .map((r) => {
             const weekLoansList = loans.filter(
               (loan) =>
-                loan.empId === empId && getWeeklyLoanWeek(loan, month) === r.week,
+                loan.empId === empId &&
+                getWeeklyLoanWeek(loan, month) === r.week,
             );
             const loansDetail =
               weekLoansList.length > 0
@@ -7548,8 +7615,18 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
 
         const [y, mo] = month.split("-");
         const monthNames = [
-          "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-          "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر",
+          "يناير",
+          "فبراير",
+          "مارس",
+          "أبريل",
+          "مايو",
+          "يونيو",
+          "يوليو",
+          "أغسطس",
+          "سبتمبر",
+          "أكتوبر",
+          "نوفمبر",
+          "ديسمبر",
         ];
         const monthText = `${monthNames[parseInt(mo) - 1]} ${y}`;
 
@@ -7610,8 +7687,15 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
     </div>`;
 
         window._weeklyStmt = {
-          emp, month, rows, totalNet, totalDays, totalGross, totalDeductions,
-          totalLoans, totalDeduct,
+          emp,
+          month,
+          rows,
+          totalNet,
+          totalDays,
+          totalGross,
+          totalDeductions,
+          totalLoans,
+          totalDeduct,
         };
         openModal("statementModal");
       }
@@ -8373,13 +8457,13 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           payrollMode !== "monthly"
             ? []
             : fe === "all"
-            ? employees.filter(
-                (e) => e.paymentType !== "weekly" && !e.suspended,
-              )
-            : employees.filter(
-                (e) =>
-                  e.id === fe && e.paymentType !== "weekly" && !e.suspended,
-              );
+              ? employees.filter(
+                  (e) => e.paymentType !== "weekly" && !e.suspended,
+                )
+              : employees.filter(
+                  (e) =>
+                    e.id === fe && e.paymentType !== "weekly" && !e.suspended,
+                );
 
         const monthlyData = [];
         monthlyEmps.forEach((emp) => {
@@ -8468,18 +8552,20 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           payrollMode !== "weekly"
             ? []
             : fe === "all"
-            ? employees.filter(
-                (e) => e.paymentType === "weekly" && !e.suspended,
-              )
-            : employees.filter(
-                (e) =>
-                  e.id === fe && e.paymentType === "weekly" && !e.suspended,
-              );
+              ? employees.filter(
+                  (e) => e.paymentType === "weekly" && !e.suspended,
+                )
+              : employees.filter(
+                  (e) =>
+                    e.id === fe && e.paymentType === "weekly" && !e.suspended,
+                );
 
         const weeklyData = [];
         weeklyEmps.forEach((emp) => {
           const ledger = calculateWeeklyPayroll(emp, month, selectedWeek);
-          const weekRow = ledger.rows.find((row) => row.week === String(selectedWeek));
+          const weekRow = ledger.rows.find(
+            (row) => row.week === String(selectedWeek),
+          );
           if (!weekRow) return;
 
           weeklyData.push({
@@ -8490,7 +8576,8 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
             totalDeductions: weekRow.loans + weekRow.deductions,
             previousBalance: weekRow.previousBalance,
             weekNetDue: weekRow.net,
-            monthEndBalance: calculateWeeklyPayroll(emp, month, "4").endingBalance,
+            monthEndBalance: calculateWeeklyPayroll(emp, month, "4")
+              .endingBalance,
             netDue: calculateWeeklyPayroll(emp, month, "4").endingBalance,
           });
         });
@@ -8510,7 +8597,9 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
 
         printContent(
           `${getPrintHeader(
-            payrollMode === "weekly" ? "كشف الرواتب الأسبوعي" : "كشف الرواتب الشهري",
+            payrollMode === "weekly"
+              ? "كشف الرواتب الأسبوعي"
+              : "كشف الرواتب الشهري",
             `شهر: ${month}${payrollMode === "weekly" ? ` | الأسبوع: ${selectedWeek}` : ""}`,
           )}
     <div class="summary-box">
@@ -8611,11 +8700,14 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
       function printPayslip(empId, month) {
         const e = employees.find((x) => x.id === empId);
         if (!e) return;
-        const p = payrollData.find((x) => x.empId === empId && x.month === month);
+        const p = payrollData.find(
+          (x) => x.empId === empId && x.month === month,
+        );
         if (!p) return;
         const monthBase = getEmployeeSalaryForMonth(empId, month);
         const isWeekly = p.isWeekly;
-        const week = p.week || document.getElementById("payrollWeek").value || "1";
+        const week =
+          p.week || document.getElementById("payrollWeek").value || "1";
         printContent(
           `${getPrintHeader(isWeekly ? "قسيمة راتب أسبوعي" : "قسيمة راتب", `${e.name} - ${month}${isWeekly ? " - أسبوع " + week : ""}`)}<div class="work-days-info"><i class="fas fa-calendar-day"></i> أيام العمل: <strong>${p.workDays}</strong> يوم</div>${p.previousBalance !== 0 ? `<div style="background:#f9f9f9;border:2px solid ${p.previousBalance < 0 ? "#dc3545" : "#198754"};border-radius:8px;padding:10px;margin:15px 0;text-align:center;color:${p.previousBalance < 0 ? "#dc3545" : "#198754"}"><strong>الرصيد المرحّل من الفترات السابقة: ${p.previousBalance > 0 ? "+" : ""}${p.previousBalance.toLocaleString()} ج.س</strong></div>` : ""}<table class="doc-table"><thead><tr><th>البيان</th><th>الكامل</th><th>الفعلي</th></tr></thead><tbody><tr><td>${isWeekly ? "الراتب الأسبوعي (الشهري ÷ 4)" : "الراتب الأساسي"}</td><td>${(isWeekly ? p.baseSalary : monthBase).toLocaleString()}</td><td><strong>${p.actualBaseSalary.toLocaleString()}</strong></td></tr><tr><td>البدلات</td><td>-</td><td>${p.allowances.toLocaleString()}</td></tr><tr><td>${isWeekly ? "السلف والخصومات لهذا الأسبوع" : "الخصومات"}</td><td>-</td><td style="color:#dc3545">${p.totalDeductions.toLocaleString()}</td></tr>${isWeekly ? `<tr><td>رصيد الأسبوع ${week}</td><td colspan="2"><strong>${p.weekNetDue > 0 ? "+" : ""}${p.weekNetDue.toLocaleString()} ج.س</strong></td></tr>` : ""}<tr style="background:${p.netDue < 0 ? "#dc3545" : "#d4af37"};color:#fff;font-size:16pt"><td><strong>${isWeekly ? "الصافي المستحق لنهاية الشهر" : "الرصيد التراكمي المستحق"}</strong></td><td colspan="2"><strong>${p.netDue.toLocaleString()} ج.س</strong></td></tr></tbody></table>${getSignatures()}${getPrintFooter()}`,
           "قسيمة",
