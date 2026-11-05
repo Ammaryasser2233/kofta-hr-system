@@ -5738,6 +5738,15 @@ ${e.suspended ? '<div class="mobile-card-row"><span class="label">تاريخ ا�
           d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0")
         );
       }
+      function nextMonth(m) {
+        const nm = normalizeMonth(m);
+        if (!nm) return "";
+        const parts = nm.split("-");
+        const d = new Date(Number(parts[0]), Number(parts[1]), 1);
+        return (
+          d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0")
+        );
+      }
       function getEmployeeSalaryForMonth(employeeId, yearOrMonth, month) {
         const emp = employees.find((e) => e.id === employeeId);
         if (!emp) return 0;
@@ -7438,37 +7447,57 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         const emp = employees.find((e) => e.id === empId);
         if (!emp) return;
 
-        // 1. تحديد جميع الأشهر ذات الصلة (أشهر العمل، أشهر السلف، والشهر الحالي)
+        // 1. بناء فترة متصلة من شهر التعيين حتى الشهر المطلوب.
+        // سابقاً كانت الأشهر التي لا تحتوي على حركة تُهمل، فيختفي الرصيد المرحّل.
+        const targetMonth = normalizePayrollMonth(month);
         const allMonthsSet = new Set();
-
-        // إضافة الأشهر التي تم تسجيل أيام عمل فيها
+        const joinMonth = normalizePayrollMonth(emp.joinDate || "");
+        let firstMonth = joinMonth;
+        if (!firstMonth) {
+          const knownMonths = [];
+          Object.keys(workDaysPerEmployee).forEach((m) => {
+            if (
+              workDaysPerEmployee[m] &&
+              workDaysPerEmployee[m][empId] !== undefined
+            )
+              knownMonths.push(normalizePayrollMonth(m));
+          });
+          loans.forEach((l) => {
+            if (l.empId === empId) {
+              const t = normalizePayrollMonth(
+                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
+              );
+              if (t) knownMonths.push(t);
+            }
+          });
+          firstMonth = knownMonths.filter(Boolean).sort()[0] || targetMonth;
+        }
+        if (!firstMonth || firstMonth > targetMonth) firstMonth = targetMonth;
+        let cursor = firstMonth;
+        while (cursor && cursor <= targetMonth) {
+          allMonthsSet.add(cursor);
+          cursor = nextMonth(cursor);
+        }
         Object.keys(workDaysPerEmployee).forEach((m) => {
+          const nm = normalizePayrollMonth(m);
           if (
+            nm &&
+            nm >= firstMonth &&
+            nm <= targetMonth &&
             workDaysPerEmployee[m] &&
             workDaysPerEmployee[m][empId] !== undefined
-          ) {
-            allMonthsSet.add(m);
-          }
+          )
+            allMonthsSet.add(nm);
         });
-
-        // إضافة الأشهر الموجودة في السلف والخصومات
         loans.forEach((l) => {
           if (l.empId !== empId) return;
           const t = normalizePayrollMonth(
             l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
           );
-          if (t) allMonthsSet.add(t);
+          if (t && t >= firstMonth && t <= targetMonth) allMonthsSet.add(t);
         });
-
-        // التأكد من إضافة الشهر المطلوب عرضه
-        allMonthsSet.add(normalizePayrollMonth(month));
-
-        // ترتيب الأشهر زمنياً
         const allMonths = [...allMonthsSet].sort();
-
-        // إذا لم توجد بيانات سابقة، نبدأ بالشهر الحالي
-        if (allMonths.length === 0)
-          allMonths.push(normalizePayrollMonth(month));
+        if (allMonths.length === 0) allMonths.push(targetMonth);
 
         let runningBalance = 0; // الرصيد التراكمي (يبدأ من صفر)
         const rows = [];
@@ -7525,7 +7554,9 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
               time: l.time || "--:--",
               type: l.type,
               desc: l.note || (l.type === "سلفة" ? "سلفة" : "خصم"),
-              tm: l.targetMonth,
+              tm: normalizePayrollMonth(
+                l.targetMonth || (l.date ? l.date.substring(0, 7) : ""),
+              ),
               cr: 0,
               db: Number(l.amount), // مدين
               isCO: false,
@@ -7805,17 +7836,32 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         if (!s) return;
         const mf = document.getElementById("stmtMF").value,
           mt = document.getElementById("stmtMT").value;
-        let fr = s.rows.filter((r) => {
-          let m = true;
-          if (mf && r.tm < mf) m = false;
-          if (mt && r.tm > mt) m = false;
-          return m;
-        });
+        const beforeFilter = s.rows.filter(
+          (r) => (!mf || r.tm < mf) && (!mt || r.tm <= mt),
+        );
+        // صافي الترحيل = إجمالي الرواتب الفعلية - إجمالي السلفيات والخصومات.
+        const openingBalance = beforeFilter.reduce(
+          (balance, r) => balance + Number(r.cr || 0) - Number(r.db || 0),
+          0,
+        );
+        let fr = s.rows.filter(
+          (r) => (!mf || r.tm >= mf) && (!mt || r.tm <= mt),
+        );
+        if (mf && beforeFilter.length) {
+          fr.unshift({
+            date: `${mf}-01`,
+            time: "00:00",
+            type: "ترحيل",
+            tm: prevMonth(mf),
+            desc: `صافي الرصيد المرحّل بعد السلفيات والخصومات من بداية التعيين حتى ${prevMonth(mf)}`,
+            cr: openingBalance > 0 ? openingBalance : 0,
+            db: openingBalance < 0 ? Math.abs(openingBalance) : 0,
+            isCO: true,
+          });
+        }
         let rb = 0;
         fr = fr.map((r) => {
-          if (r.type === "راتب") rb += r.cr;
-          else if (r.isCO) rb = -r.db;
-          else rb -= r.db;
+          rb += r.cr - r.db;
           return { ...r, bal: rb };
         });
         const periodEl = document.getElementById("stmtPeriod");
@@ -7843,7 +7889,7 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
                 .map((r, i) => {
                   const st = r.isCO
                     ? "background:rgba(229,72,77,.10);"
-                    : r.tm !== s.month && r.type !== "راتب"
+                    : r.tm !== s.month && r.type !== "راتب" && !r.isCO
                       ? "background:rgba(212,175,55,.10);"
                       : "";
                   return `<tr style="${st}"><td>${i + 1}</td><td><strong>${r.date}</strong></td><td>${r.time}</td><td><span class="badge ${r.type === "سلفة" ? "badge-loan" : r.type === "خصم" ? "badge-deduction" : r.isCO ? "badge-carryover" : ""}">${r.type}</span></td><td><span class="stmt-info-badge ${r.type === "راتب" ? "added" : r.isCO ? "carryover" : "deducted"}">${r.tm}</span></td><td>${r.desc}</td><td class="${r.cr > 0 ? "positive" : ""}">${r.cr > 0 ? r.cr.toLocaleString() : "-"}</td><td class="${r.db > 0 ? "negative" : ""}">${r.db > 0 ? r.db.toLocaleString() : "-"}</td><td class="${r.bal < 0 ? "negative" : "positive"}"><strong>${r.bal.toLocaleString()}</strong></td></tr>`;
@@ -7866,17 +7912,32 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
         if (!s) return;
         const mf = document.getElementById("stmtMF").value,
           mt = document.getElementById("stmtMT").value;
-        let fr = s.rows.filter((r) => {
-          let m = true;
-          if (mf && r.tm < mf) m = false;
-          if (mt && r.tm > mt) m = false;
-          return m;
-        });
+        const beforeFilter = s.rows.filter(
+          (r) => (!mf || r.tm < mf) && (!mt || r.tm <= mt),
+        );
+        // صافي الترحيل = إجمالي الرواتب الفعلية - إجمالي السلفيات والخصومات.
+        const openingBalance = beforeFilter.reduce(
+          (balance, r) => balance + Number(r.cr || 0) - Number(r.db || 0),
+          0,
+        );
+        let fr = s.rows.filter(
+          (r) => (!mf || r.tm >= mf) && (!mt || r.tm <= mt),
+        );
+        if (mf && beforeFilter.length) {
+          fr.unshift({
+            date: `${mf}-01`,
+            time: "00:00",
+            type: "ترحيل",
+            tm: prevMonth(mf),
+            desc: `صافي الرصيد المرحّل بعد السلفيات والخصومات من بداية التعيين حتى ${prevMonth(mf)}`,
+            cr: openingBalance > 0 ? openingBalance : 0,
+            db: openingBalance < 0 ? Math.abs(openingBalance) : 0,
+            isCO: true,
+          });
+        }
         let rb = 0;
         fr = fr.map((r) => {
-          if (r.type === "راتب") rb += r.cr;
-          else if (r.isCO) rb = -r.db;
-          else rb -= r.db;
+          rb += r.cr - r.db;
           return { ...r, bal: rb };
         });
         const tc = fr.reduce((a, r) => a + r.cr, 0),
@@ -8397,19 +8458,17 @@ ${themRemaining > 0 ? `<div style="color:var(--success)">• له عندنا: <s
           title +
           "</title><link href='https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap' rel='stylesheet'><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'><style>" +
           cssStyles +
-          "</style></head><body><div class='print-actions'><button class='btn-print' onclick='window.print()'><i class='fas fa-print'></i> طباعة</button><button class='btn-close' onclick='window.close()'><i class='fas fa-times'></i> إغلاق</button></div><div class='print-container'>" +
+          "</style></head><body><div class='print-actions'><button class='btn-print' type='button' onclick='runPrint()'><i class='fas fa-print'></i> طباعة</button><button class='btn-close' onclick='window.close()'><i class='fas fa-times'></i> إغلاق</button></div><div class='print-container'>" +
           htmlContent +
-          "</div><script>document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { window.close(); } });</" +
+          "</div><script>function runPrint(){try{window.focus();window.print()}catch(e){alert('تعذر فتح الطباعة من هذا المتصفح. افتح الصفحة في Chrome أو Safari.')}}document.addEventListener('keydown',function(e){if(e.key==='Escape')window.close()});</" +
           "script></body></html>";
         printWindow.document.open();
         printWindow.document.write(fullHtml);
         printWindow.document.close();
-        setTimeout(() => {
-          try {
-            printWindow.focus();
-            printWindow.print();
-          } catch (err) {}
-        }, 800);
+        // الطباعة تبدأ فقط من ضغطة المستخدم على زر «طباعة» في صفحة التقرير.
+        try {
+          printWindow.focus();
+        } catch (err) {}
       }
       function getPrintHeader(t, s = "") {
         return `<div style="margin-bottom:25px"><div style="display:flex;justify-content:space-between;align-items:center;padding:15px 10px"><div style="flex:0 0 100px"><img src="${LOGO_URL}" style="width:90px;height:90px;object-fit:contain" onerror="this.style.display='none'"></div><div style="flex:1;text-align:center;padding:0 20px"><h1 style="font-size:28pt;font-weight:900;color:#d4af37;margin:0">${RESTAURANT_NAME}</h1><p style="font-size:10pt;color:#666;margin:5px 0 10px">${RESTAURANT_TAGLINE}</p><h2 style="font-size:18pt;font-weight:800;color:#151515;margin:5px 0;border-bottom:2px solid #d4af37;display:inline-block;padding-bottom:5px">${t}</h2>${s ? `<p style="font-size:10pt;color:#666">${s}</p>` : ""}</div><div style="flex:0 0 180px;text-align:left"><div style="background:#f9f9f9;border:1px solid #e0e0e0;border-radius:6px;padding:6px 10px;margin-bottom:5px;font-size:9pt"><i class="fas fa-calendar-alt" style="color:#d4af37;margin-left:5px"></i> ${new Date().toLocaleDateString("ar-EG")}</div><div style="background:#f9f9f9;border:1px solid #e0e0e0;border-radius:6px;padding:6px 10px;margin-bottom:5px;font-size:9pt"><i class="fas fa-clock" style="color:#d4af37;margin-left:5px"></i> ${new Date().toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" })}</div></div></div><div style="height:4px;background:linear-gradient(90deg,transparent 0%,#d4af37 20%,#d4af37 80%,transparent 100%);margin-top:10px"></div></div>`;
